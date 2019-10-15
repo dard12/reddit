@@ -36,5 +36,5 @@ export function getQuestions(): QuestionDoc[] {
         'When should you use !! and ?. Give some interesting edge cases',
       tags: ['technical'],
     },
-  ];
+  ] as QuestionDoc[];
 }

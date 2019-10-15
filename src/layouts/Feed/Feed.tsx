@@ -1,15 +1,25 @@
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import { getQuestions } from '../../hardcoded';
+import { connect } from 'react-redux';
 import styles from './Feed.module.scss';
 import Question from '../../containers/Question/Question';
 import SearchBar from '../../containers/SearchBar/SearchBar';
+import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
+import { loadDocsAction } from '../../redux/actions';
 
 interface FeedProps {}
 
 function Feed(props: FeedProps) {
-  const docs = getQuestions();
+  const { result } = useAxiosGet('/api/question');
+
+  useLoadDocs({ collection: 'question', result, loadDocsAction });
+
+  if (!result) {
+    return null;
+  }
+
+  const docs = result.docs;
 
   return (
     <div className={styles.feedPage}>
@@ -33,13 +43,16 @@ function Feed(props: FeedProps) {
         </div>
       </div>
 
-      {_.map(docs, questionDoc => (
-        <Link to="/question" key={questionDoc.id}>
-          <Question questionDoc={questionDoc} />
+      {_.map(docs, ({ id }) => (
+        <Link to="/question" key={id}>
+          <Question question={id} />
         </Link>
       ))}
     </div>
   );
 }
 
-export default Feed;
+export default connect(
+  null,
+  { loadDocsAction },
+)(Feed);

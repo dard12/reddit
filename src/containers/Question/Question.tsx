@@ -1,14 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styles from './Question.module.scss';
 import QuestionVote from '../../containers/QuestionVote/QuestionVote';
 import { QuestionDoc } from '../../../src-server/models';
+import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
+import { createDocSelector } from '../../redux/selectors';
+import { loadDocsAction } from '../../redux/actions';
 
 interface QuestionProps {
+  question: number;
   questionDoc?: QuestionDoc;
+  loadDocsAction?: Function;
 }
 
 function Question(props: QuestionProps) {
-  const { questionDoc } = props;
+  const { question, questionDoc, loadDocsAction } = props;
+  const { result } = useAxiosGet(
+    '/api/question',
+    { id: question },
+    { cachedResult: questionDoc },
+  );
+
+  useLoadDocs({ collection: 'question', result, loadDocsAction });
 
   if (!questionDoc) {
     return null;
@@ -35,4 +48,11 @@ function Question(props: QuestionProps) {
   );
 }
 
-export default Question;
+export default connect(
+  createDocSelector({
+    collection: 'question',
+    id: 'question',
+    prop: 'questionDoc',
+  }),
+  { loadDocsAction },
+)(Question);

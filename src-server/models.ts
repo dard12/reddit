@@ -7,4 +7,6 @@ export interface QuestionDoc {
   title: string;
   description: string;
   tags: string[];
+  response_count: number;
+  meta_count: number;
 }
