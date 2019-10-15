@@ -45,7 +45,7 @@ function QuestionPage(props: QuestionPageProps) {
           </div>
         </div>
 
-        <CommentBox />
+        <CommentBox question={question} />
       </div>
 
       <div>

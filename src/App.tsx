@@ -16,7 +16,6 @@ function App() {
         <Suspense fallback={null}>
           <Switch>
             <Route
-              exact
               path="/question:question"
               render={props => {
                 const { question } = props.match.params;

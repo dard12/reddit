@@ -6,6 +6,7 @@ import { QuestionDoc } from '../../../src-server/models';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
+import { Link } from 'react-router-dom';
 
 interface QuestionProps {
   question: number;
@@ -27,7 +28,8 @@ function Question(props: QuestionProps) {
     return null;
   }
 
-  const { title, description } = questionDoc;
+  const { title, description, meta_count, response_count } = questionDoc;
+  const questionLink = `/question/${question}`;
 
   return (
     <div className={styles.item}>
@@ -39,9 +41,15 @@ function Question(props: QuestionProps) {
         </div>
         <div className={styles.itemDescription}>{description}</div>
         <div className={styles.itemActions}>
-          <span className={styles.itemMeta}>17 responses</span>
+          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
+            {response_count} responses
+          </Link>
+
           <span>•</span>
-          <span className={styles.itemMeta}>3 meta-comments</span>
+
+          <Link to={`${questionLink}/meta`} className={styles.itemMeta}>
+            {meta_count} meta-comments
+          </Link>
         </div>
       </div>
     </div>
