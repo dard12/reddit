@@ -1,0 +1,45 @@
+@import '../../template.scss';
+
+.item {
+  display: flex;
+  padding: calc(20rem / 14);
+  background-color: $white;
+  border: 2px solid $dark-9;
+  cursor: pointer;
+
+  &:hover .itemHeader span {
+    background-color: #9cf4dc;
+  }
+}
+
+.itemContent {
+  display: grid;
+  grid-gap: $margin-2;
+}
+
+.itemHeader {
+  font-weight: 600;
+  border-bottom: 2px solid $dark-7;
+  padding-bottom: $margin-2;
+  text-transform: uppercase;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: $serif;
+}
+
+.itemDescription {
+  white-space: pre-line;
+  max-width: $width-2;
+}
+
+.itemComment {
+  font-weight: 600;
+  font-size: $text-2;
+  margin-right: $margin-2;
+
+  &:hover {
+    background-color: #9cf4dc;
+    text-decoration: underline;
+  }
+}

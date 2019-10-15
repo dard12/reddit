@@ -5,7 +5,7 @@ import Navbar from './layouts/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 
 const Feed = lazy(() => import('./layouts/Feed/Feed'));
-const PostPage = lazy(() => import('./layouts/PostPage/PostPage'));
+const PostPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
-            <Route exact path="/post" render={props => <PostPage />} />
+            <Route exact path="/question" render={props => <PostPage />} />
             <Route exact path="/feed" render={props => <Feed />} />
 
             <Route render={() => <Redirect to="/feed" />} />

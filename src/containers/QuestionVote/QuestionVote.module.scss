@@ -1,0 +1,17 @@
+@import '../../template.scss';
+
+.vote {
+  display: grid;
+  grid-gap: $margin-3;
+  font-size: $text-5;
+  font-weight: 600;
+  margin-right: $margin-4;
+
+  svg {
+    border-radius: 50%;
+  }
+
+  svg:hover {
+    background-color: #9cf4dc;
+  }
+}

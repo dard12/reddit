@@ -1,36 +1,19 @@
 import React from 'react';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import TextareaAutosize from 'react-textarea-autosize';
-import styles from './PostPage.module.scss';
-import feedStyles from '../Feed/Feed.module.scss';
+import styles from './QuestionPage.module.scss';
 import Comment from '../../containers/Comment/Comment';
+import Question from '../../containers/Question/Question';
 
-interface PostPageProps {}
+interface QuestionPageProps {}
 
-function PostPage(props: PostPageProps) {
+function QuestionPage(props: QuestionPageProps) {
   const question = 'What makes a good manager?';
   const description =
     'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor.';
 
   return (
     <div className={styles.postPage}>
-      <div className={feedStyles.item}>
-        <div className={feedStyles.vote}>
-          <IoIosArrowUp />
-          <span>26</span>
-          <IoIosArrowDown />
-        </div>
-
-        <div className={feedStyles.itemContent}>
-          <div className={feedStyles.itemHeader}>
-            <span>{question}</span>
-          </div>
-          <div className={feedStyles.itemDescription}>{description}</div>
-          <div className={feedStyles.itemActions}>
-            <span>2 hours ago</span>
-          </div>
-        </div>
-      </div>
+      <Question questionDoc={{ question, description }} />
 
       <div className={styles.responseSection}>
         <div className={styles.heading}>Your Comment</div>
@@ -62,4 +45,4 @@ function PostPage(props: PostPageProps) {
   );
 }
 
-export default PostPage;
+export default QuestionPage;
