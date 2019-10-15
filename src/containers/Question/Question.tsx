@@ -1,14 +1,20 @@
 import React from 'react';
 import styles from './Question.module.scss';
 import QuestionVote from '../../containers/QuestionVote/QuestionVote';
+import { QuestionDoc } from '../../../src-server/models';
 
 interface QuestionProps {
-  questionDoc?: any;
+  questionDoc?: QuestionDoc;
 }
 
 function Question(props: QuestionProps) {
   const { questionDoc } = props;
-  const { question, description } = questionDoc;
+
+  if (!questionDoc) {
+    return null;
+  }
+
+  const { title, description } = questionDoc;
 
   return (
     <div className={styles.item}>
@@ -16,11 +22,11 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <span>{question}</span>
+          <span>{title}</span>
         </div>
         <div className={styles.itemDescription}>{description}</div>
         <div className={styles.itemActions}>
-          <span className={styles.itemMeta}>17 answers</span>
+          <span className={styles.itemMeta}>17 responses</span>
           <span>•</span>
           <span className={styles.itemMeta}>3 meta-comments</span>
         </div>

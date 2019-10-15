@@ -6,31 +6,29 @@
   background-color: $white;
   border: 2px solid $dark-9;
   cursor: pointer;
+}
+
+.itemContent {
+  display: grid;
+  grid-gap: $margin-2;
+  min-width: $width-2;
 
   &:hover .itemHeader span {
     background-color: $primary-5;
   }
 }
 
-.itemContent {
-  display: grid;
-  grid-gap: $margin-2;
-}
-
 .itemHeader {
   font-weight: 600;
-  border-bottom: 2px solid $dark-7;
-  padding-bottom: $margin-2;
+  border-bottom: 2px solid $dark-8;
   text-transform: uppercase;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   font-family: $serif;
+  display: block;
+  padding-right: $margin-3;
 }
 
 .itemDescription {
   white-space: pre-line;
-  max-width: $width-2;
 }
 
 .itemMeta {

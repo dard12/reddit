@@ -8,14 +8,15 @@
 .commentRow {
   display: flex;
   justify-content: flex-end;
+  margin-top: $margin-2;
 }
 
 .commentBtn {
-  border: 2px solid $dark-9;
+  background-color: $dark-9;
+  color: $white;
   font-weight: 600;
 
   &:hover {
-    background-color: $primary-5;
-    text-decoration: underline;
+    color: $primary-5;
   }
 }

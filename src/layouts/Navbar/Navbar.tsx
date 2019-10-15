@@ -30,6 +30,10 @@ function Navbar(props: NavbarProps) {
             Home
           </NavLink>
 
+          <NavLink to="/feed">Add a Question</NavLink>
+
+          <NavLink to="/profile">Profile</NavLink>
+
           <NavLink to="/" className={styles.logoutBtn}>
             Logout
           </NavLink>

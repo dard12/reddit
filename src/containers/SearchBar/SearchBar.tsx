@@ -36,15 +36,13 @@ function SearchBar(props: SearchBarProps) {
   };
 
   return (
-    <div className={styles.searchContainer}>
-      <Input
-        className={styles.searchBar}
-        placeholder="Search for interview questions..."
-        onChange={onChange}
-        onKeyUp={onKeyUp}
-        value={query}
-      />
-    </div>
+    <Input
+      className={styles.searchBar}
+      placeholder="Search for Interview Questions..."
+      onChange={onChange}
+      onKeyUp={onKeyUp}
+      value={query}
+    />
   );
 }
 

@@ -9,8 +9,7 @@ function CommentBox(props: CommentBoxProps) {
   return (
     <React.Fragment>
       <div className={styles.commentBox}>
-        <TextareaAutosize placeholder="What do you think?" minRows={5} />
-
+        <TextareaAutosize placeholder="What do you think?" minRows={3} />
         <div className={styles.commentRow}>
           <Button className={styles.commentBtn}>Comment</Button>
         </div>
