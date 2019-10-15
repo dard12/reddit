@@ -1,14 +1,15 @@
 import React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import styles from './QuestionPage.module.scss';
-import Comment from '../../containers/Comment/Comment';
 import Question from '../../containers/Question/Question';
 import CommentBox from '../../containers/CommentBox/CommentBox';
 import { QuestionDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
+import QuestionComments from '../../containers/QuestionComments/QuestionComments';
 
 interface QuestionPageProps {
   question: number;
@@ -28,6 +29,7 @@ function QuestionPage(props: QuestionPageProps) {
 
   const response_count = _.get(questionDoc, 'response_count');
   const meta_count = _.get(questionDoc, 'meta_count');
+  const questionLink = `question/${question}`;
 
   return (
     <div className={styles.questionPage}>
@@ -36,28 +38,20 @@ function QuestionPage(props: QuestionPageProps) {
       <div>
         <div className={styles.sectionToggle}>
           <div className="tabs">
-            <div className="active">
+            <NavLink to={`${questionLink}/responses`} activeClassName="active">
               <span>Answer Discussion {`(${response_count})`}</span>
-            </div>
-            <div>
+            </NavLink>
+
+            <NavLink to={`${questionLink}/meta`} activeClassName="active">
               <span>Meta Discussion {`(${meta_count})`}</span>
-            </div>
+            </NavLink>
           </div>
         </div>
 
         <CommentBox question={question} />
       </div>
 
-      <div>
-        <Comment>
-          <Comment>
-            <Comment />
-          </Comment>
-          <Comment />
-        </Comment>
-        <Comment />
-        <Comment />
-      </div>
+      <QuestionComments question={question} />
     </div>
   );
 }
