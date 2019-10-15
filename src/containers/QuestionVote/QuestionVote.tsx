@@ -6,6 +6,7 @@ import styles from './QuestionVote.module.scss';
 import { QuestionDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
+import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 
 interface QuestionVoteProps {
   question: number;
@@ -13,8 +14,16 @@ interface QuestionVoteProps {
 }
 
 function QuestionVote(props: QuestionVoteProps) {
-  const { questionDoc } = props;
+  const { question, questionDoc } = props;
   const [myVote, setMyVote] = useState(0);
+  const { result } = useAxiosGet(
+    '/api/question',
+    { id: question },
+    { cachedResult: questionDoc },
+  );
+
+  useLoadDocs({ collection: 'question', result, loadDocsAction });
+
   const vote = _.get(questionDoc, 'vote');
   const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);

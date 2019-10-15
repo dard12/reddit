@@ -36,7 +36,7 @@ function QuestionPage(props: QuestionPageProps) {
       <Question question={question} />
 
       <div>
-        <div className={styles.sectionToggle}>
+        <div className={styles.sectionTabs}>
           <div className="tabs">
             <NavLink to={`${questionLink}/responses`} activeClassName="active">
               <span>Answer Discussion {`(${response_count})`}</span>

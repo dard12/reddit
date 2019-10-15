@@ -8,11 +8,13 @@ import SearchBar from '../../containers/SearchBar/SearchBar';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import HomeTabs from '../../containers/HomeTabs/HomeTabs';
+import { getQueryParams } from '../../history';
 
 interface FeedProps {}
 
 function Feed(props: FeedProps) {
-  const { result } = useAxiosGet('/api/question');
+  const search = getQueryParams('search');
+  const { result } = useAxiosGet('/api/question', { search });
 
   useLoadDocs({ collection: 'question', result, loadDocsAction });
 
