@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styles from './Question.module.scss';
 import QuestionVote from '../../containers/QuestionVote/QuestionVote';
 import { QuestionDoc } from '../../../src-server/models';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
-import { Link } from 'react-router-dom';
 
 interface QuestionProps {
   question: number;
@@ -33,7 +33,7 @@ function Question(props: QuestionProps) {
 
   return (
     <div className={styles.item}>
-      <QuestionVote />
+      <QuestionVote question={question} />
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
