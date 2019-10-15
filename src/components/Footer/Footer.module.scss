@@ -1,7 +1,6 @@
 @import '../../template.scss';
 
 .footer {
-  @extend .shadow-1;
   width: 100%;
   background-color: $white;
   padding: $margin-4 $margin-5;
@@ -10,6 +9,7 @@
   grid-template-columns: 1fr 1fr 1fr 3fr;
   line-height: 1.7;
   box-sizing: border-box;
+  border-top: 2px solid $dark-9;
 
   a {
     @extend .hoverLink;
@@ -23,6 +23,5 @@
 
 .footerLabel {
   font-weight: bold;
-  color: $dark-5;
   margin-bottom: $margin-1;
 }
