@@ -1,0 +1,24 @@
+{
+  "workbench.colorTheme": "Monokai",
+  "workbench.iconTheme": "vs-minimal",
+
+  "workbench.statusBar.feedback.visible": false,
+  "workbench.activityBar.visible": false,
+  "workbench.editor.enablePreview": false,
+
+  "editor.formatOnSave": true,
+  "editor.fontSize": 14,
+  "editor.tabSize": 2,
+
+  "eslint.validate": ["typescript", "typescriptreact"],
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

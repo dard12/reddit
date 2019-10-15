@@ -1,0 +1,8 @@
+@import '../../template.scss';
+
+.toggleLink {
+  @extend .hoverLink;
+  padding: 0;
+  color: $primary-4;
+  margin-left: $margin-2;
+}

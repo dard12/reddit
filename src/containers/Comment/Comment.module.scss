@@ -1,0 +1,76 @@
+@import '../../template.scss';
+
+.comment {
+  display: flex;
+  margin-top: $margin-3;
+}
+
+.commentContent {
+  display: grid;
+  grid-gap: $margin-1;
+}
+
+.author {
+  font-weight: 600;
+  font-size: $text-1;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9cf4dc;
+    text-decoration: underline;
+  }
+}
+
+.reply {
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9cf4dc;
+    text-decoration: underline;
+  }
+}
+
+.timestamp {
+  margin-left: $margin-2;
+}
+
+.commentFooter {
+  margin-top: $margin-1;
+  font-size: $text-1;
+  display: flex;
+}
+
+.vote {
+  display: flex;
+  flex-direction: column;
+  margin-right: $margin-3;
+  margin-top: $margin-1;
+  font-size: $text-3;
+  align-items: center;
+
+  > svg {
+    margin-bottom: $margin-2;
+    flex-shrink: 0;
+  }
+
+  svg {
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  svg:hover {
+    background-color: #9cf4dc;
+  }
+}
+
+.threadLine {
+  width: 2px;
+  background-color: $dark-8;
+  height: 100%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #9cf4dc;
+  }
+}

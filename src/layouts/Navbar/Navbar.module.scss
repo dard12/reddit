@@ -1,0 +1,63 @@
+@import '../../template.scss';
+
+.navbarContainer {
+  background-color: $white;
+  width: 100vw;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: $width-5;
+  margin: 0 auto;
+  padding: 0 $margin-3;
+  height: $margin-5;
+  border-bottom: 3px solid $dark-9;
+
+  a {
+    @extend .transition;
+    padding: $margin-3;
+    display: block;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-device-width: 768px) {
+      padding: $margin-2;
+      font-size: $text-1;
+    }
+  }
+
+  .navActions {
+    display: flex;
+
+    .active {
+      font-weight: 600;
+    }
+  }
+
+  .brand {
+    font-family: $serif;
+    font-weight: 600;
+    margin-right: $margin-5;
+    font-size: $text-5;
+    padding: 0;
+
+    @media (max-device-width: 768px) {
+      margin-right: $margin-3;
+    }
+  }
+
+  .home {
+    @media (max-device-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+.logoutBtn {
+  color: $dark-6;
+}

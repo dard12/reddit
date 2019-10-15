@@ -1,0 +1,35 @@
+@import '../../template.scss';
+
+.list {
+  display: grid;
+  grid-gap: $margin-4;
+}
+
+.summary {
+  white-space: pre-line;
+}
+
+.addQuestion {
+  @extend .outlineBtn;
+  height: $text-8;
+  background-color: $dark-2;
+  color: $dark-6;
+}
+
+.questionHeader {
+  font-size: $text-7;
+  font-weight: 600;
+  text-align: center;
+  font-family: $serif;
+  background-color: $dark-1;
+  padding-top: $margin-4;
+}
+
+.questionContainer {
+  background-color: $dark-1;
+  padding: $margin-4 $margin-5;
+  width: $width-2;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: $margin-3;
+}

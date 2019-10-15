@@ -1,0 +1,50 @@
+@import '../../template.scss';
+
+.profileCard {
+  display: grid;
+  grid-gap: $margin-4;
+}
+
+.profileHead {
+  @extend .card;
+  display: grid;
+  grid-gap: $margin-4;
+  justify-content: center;
+}
+
+.profilePicture {
+  @extend .badge;
+  width: calc(100rem / 14);
+  height: calc(100rem / 14);
+  justify-self: center;
+  font-size: $text-8;
+}
+
+.profileInfo {
+  text-align: center;
+}
+
+.profileName {
+  font-weight: 600;
+}
+
+.profileLinks {
+  border-top: 1px solid $dark-2;
+  padding-top: $margin-4;
+  display: grid;
+  grid-gap: $margin-2;
+
+  a {
+    color: $dark-5;
+  }
+}
+
+.contactBtn {
+  @extend .btn;
+  text-align: center;
+}
+
+.profileAction {
+  display: grid;
+  grid-gap: $margin-2;
+}

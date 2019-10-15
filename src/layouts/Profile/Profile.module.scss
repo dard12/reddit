@@ -1,0 +1,10 @@
+@import '../../template.scss';
+
+.profilePage {
+  width: $width-5;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.8fr 2fr 1fr;
+  grid-gap: $margin-4;
+  align-items: flex-start;
+}

@@ -1,0 +1,11 @@
+@import '../../template.scss';
+
+.questionTabs {
+  @extend .tabs;
+  display: flex;
+  justify-content: center;
+
+  > * {
+    padding: $margin-3;
+  }
+}

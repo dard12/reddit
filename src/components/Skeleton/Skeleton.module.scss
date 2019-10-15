@@ -1,0 +1,34 @@
+@import '../../template.scss';
+
+@keyframes pulse {
+  0% {
+    background-color: $dark-1;
+  }
+
+  50% {
+    background-color: $dark-2;
+  }
+
+  100% {
+    background-color: $dark-1;
+  }
+}
+
+.skeleton {
+  animation: fadeIn 1s ease 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.line {
+  background-color: $dark-1;
+  animation: pulse 3s ease infinite;
+  display: inline-block;
+  width: 100%;
+  height: 1em;
+}
+
+.line + .line {
+  margin-top: $margin-2;
+}

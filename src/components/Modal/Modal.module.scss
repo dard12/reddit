@@ -1,0 +1,26 @@
+@import '../../template.scss';
+
+.overlay {
+  animation: fadeIn 0.1s ease;
+  background-color: rgba(45, 45, 56, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.modal {
+  @extend .shadow-2;
+  outline: none;
+  border-radius: $border-radius-1;
+  overflow: auto;
+  max-height: 90vh;
+}
+
+.modalOpen {
+  overflow: hidden;
+}

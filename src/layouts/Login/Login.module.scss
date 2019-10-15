@@ -1,0 +1,90 @@
+@import '../../template.scss';
+
+.loginForm {
+  width: $width-1;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: $margin-2;
+  font-size: $text-3;
+
+  @media (max-device-width: 768px) {
+    width: 100%;
+    margin-top: $margin-5;
+  }
+}
+
+.terms {
+  cursor: pointer;
+  font-size: $text-2;
+  display: inline-block;
+
+  &:first-of-type {
+    margin-top: $margin-2;
+  }
+}
+
+.humanCheck {
+  display: inline-flex;
+  align-items: center;
+  margin-top: $margin-2;
+  cursor: pointer;
+}
+
+.passwordRow {
+  margin-top: $margin-3;
+
+  button {
+    width: 100%;
+  }
+}
+
+.facebookAuth {
+  text-align: center;
+  background-color: #3b5998;
+
+  &:hover:not([disabled]) {
+    background-color: #3b5998;
+  }
+}
+
+.googleAuth {
+  text-align: center;
+  background-color: #db3236;
+
+  &:hover:not([disabled]) {
+    background-color: #db3236;
+  }
+}
+
+.switchContainer {
+  text-align: center;
+  margin-top: $margin-3;
+  font-family: $sans-serif;
+  font-size: $text-3;
+
+  a {
+    margin-left: $margin-2;
+  }
+}
+
+.loginDivider {
+  font-size: $text-6;
+  font-family: $serif;
+  text-align: center;
+  font-weight: bold;
+  margin: $margin-1;
+}
+
+.loginHeader {
+  font-size: $text-7;
+  font-family: $serif;
+  text-align: center;
+  margin-top: 0;
+}
+
+.loginError {
+  font-size: $text-2;
+  font-family: $sans-serif;
+  margin-top: $margin-2;
+  color: $red;
+}

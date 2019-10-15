@@ -1,0 +1,99 @@
+@import './template.scss';
+
+html,
+body {
+  font-size: 14px;
+}
+
+@media (max-device-width: 768px) {
+  html,
+  body {
+    font-size: 12px;
+  }
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: 'liga' on;
+  font-feature-settings: 'liga' on;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  line-height: $line-height-3;
+  margin: 0;
+  padding: 0;
+  color: $dark-9;
+  font-family: $sans-serif;
+  background-color: $white;
+
+  textarea {
+    line-height: $line-height-3;
+  }
+}
+
+a {
+  color: $dark-9;
+  text-decoration: none;
+}
+
+.page-container {
+  width: $width-5;
+  margin: 0 auto;
+  margin-bottom: calc(30rem / 14);
+  padding: $margin-4;
+
+  @media (max-device-width: 768px) {
+    width: 100vw;
+    box-sizing: border-box;
+  }
+}
+
+.cc-window {
+  position: fixed;
+  bottom: $margin-3;
+  left: $margin-3;
+  border-radius: $border-radius-1;
+  padding: $margin-3;
+  max-width: calc(270rem / 14);
+  background-color: $dark-9;
+  color: $white;
+  z-index: 1;
+}
+
+.cc-link {
+  @extend .link;
+  color: $white;
+}
+
+.cc-dismiss {
+  border-radius: $border-radius-1;
+  padding: 0.4em 1em;
+  margin-top: 1em;
+  display: inline-block;
+  color: $white;
+  font-weight: bold;
+  border: 2px solid $white;
+  cursor: pointer;
+}
+
+.legal-container {
+  @extend .card;
+  width: $width-2;
+  margin: $margin-5 auto;
+  display: grid;
+  grid-gap: $margin-4;
+  font-size: $text-3;
+  padding: $margin-5;
+
+  .heading-2.faded {
+    font-size: $text-4;
+    margin-bottom: $margin-1;
+  }
+
+  @media (max-device-width: 768px) {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+  }
+}

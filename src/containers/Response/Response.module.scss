@@ -1,0 +1,30 @@
+@import '../../template.scss';
+
+.section {
+  @extend .card;
+  display: grid;
+  grid-gap: $margin-3;
+  color: $dark-6;
+}
+
+.sectionHeader {
+  font-weight: 600;
+  color: $dark-9;
+  border-bottom: 1px solid $dark-2;
+  padding-bottom: $margin-2;
+  text-transform: uppercase;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sectionDescription {
+  white-space: pre-line;
+  max-width: $width-2;
+}
+
+.addResponse {
+  @extend .outlineBtn;
+  height: calc(250rem / 14);
+  background-color: $dark-1;
+}
