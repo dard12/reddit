@@ -1,0 +1,27 @@
+@import '../../template.scss';
+
+.searchContainer {
+  margin-right: auto;
+  display: flex;
+}
+
+.searchBar {
+  border: 2px solid $dark-9;
+  width: calc(500rem / 14);
+  font-weight: 600;
+
+  &:focus {
+    @include placeholder($dark-8);
+  }
+}
+
+.searchBtn {
+  border: 2px solid $dark-9;
+  margin-left: $margin-2;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #9cf4dc;
+    text-decoration: underline;
+  }
+}

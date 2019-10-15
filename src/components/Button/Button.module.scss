@@ -3,10 +3,9 @@
 .button {
   @extend .transition;
   outline: none;
-  border-radius: $border-radius-1;
   padding: 0.6em 1em;
-  border: none;
   cursor: pointer;
+  border: 1px solid $dark-9;
 
   &.primary {
     background-color: $primary-4;

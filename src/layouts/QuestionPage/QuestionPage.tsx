@@ -1,8 +1,8 @@
 import React from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import styles from './QuestionPage.module.scss';
 import Comment from '../../containers/Comment/Comment';
 import Question from '../../containers/Question/Question';
+import CommentBox from '../../containers/CommentBox/CommentBox';
 
 interface QuestionPageProps {}
 
@@ -14,22 +14,7 @@ function QuestionPage(props: QuestionPageProps) {
   return (
     <div className={styles.postPage}>
       <Question questionDoc={{ question, description }} />
-
-      <div className={styles.responseSection}>
-        <div className={styles.heading}>Your Comment</div>
-        <div className={styles.commentBox}>
-          <TextareaAutosize
-            placeholder="What do you think?"
-            minRows={5}
-            autoFocus
-          />
-        </div>
-        <div className={styles.commentRow}>
-          <button className={styles.commentBtn} type="button">
-            Comment
-          </button>
-        </div>
-      </div>
+      <CommentBox />
 
       <div>
         <Comment>
