@@ -1,17 +1,18 @@
 @import '../../template.scss';
 
 .searchContainer {
-  margin-right: auto;
   display: flex;
 }
 
 .searchBar {
   border: 2px solid $dark-9;
-  width: calc(500rem / 14);
   font-weight: 600;
+  width: 100%;
+  font-size: $text-3;
 
-  &:focus {
-    @include placeholder($dark-8);
+  &::placeholder {
+    font-family: $serif;
+    color: $dark-9;
   }
 }
 

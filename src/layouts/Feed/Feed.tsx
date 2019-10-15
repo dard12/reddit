@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getQuestions } from '../../hardcoded';
 import styles from './Feed.module.scss';
 import Question from '../../containers/Question/Question';
+import SearchBar from '../../containers/SearchBar/SearchBar';
 
 interface FeedProps {}
 
@@ -12,6 +13,8 @@ function Feed(props: FeedProps) {
 
   return (
     <div className={styles.feedPage}>
+      <SearchBar />
+
       <div className={styles.feedTabs}>
         <div className={styles.feedTabActive}>Technical Skill</div>
         <div>Team Fit</div>

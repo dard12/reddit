@@ -4,7 +4,7 @@
   width: $width-3;
   margin: 0 auto;
   display: grid;
-  grid-gap: $margin-3;
+  grid-gap: $margin-4;
 }
 
 .feedTabs {
@@ -12,7 +12,6 @@
   justify-content: space-between;
   border: 2px solid $dark-9;
   padding: 0 $margin-3;
-  margin-bottom: $margin-3;
 
   > * {
     margin: $margin-3 $margin-4;
