@@ -16,12 +16,15 @@ function Comment(props: CommentProps) {
       {collapsed && (
         <React.Fragment>
           <div className={styles.vote}>
-            <IoIosAddCircle onClick={toggleCollapsed} />
+            <IoIosAddCircle
+              className={styles.collapseIcon}
+              onClick={toggleCollapsed}
+            />
           </div>
           <div className={styles.collapsed}>
             <span className={styles.author}>Username</span>
-            <span className={styles.collapse} onClick={toggleCollapsed}>
-              [+2]
+            <span className={styles.collapseText} onClick={toggleCollapsed}>
+              [ +2 ]
             </span>
           </div>
         </React.Fragment>
@@ -37,8 +40,8 @@ function Comment(props: CommentProps) {
           <div className={styles.commentContent}>
             <div>
               <span className={styles.author}>Username</span>
-              <span className={styles.collapse} onClick={toggleCollapsed}>
-                [-]
+              <span className={styles.collapseText} onClick={toggleCollapsed}>
+                [ - ]
               </span>
             </div>
 

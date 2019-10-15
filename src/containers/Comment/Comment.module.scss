@@ -79,7 +79,11 @@
   }
 }
 
-.collapse {
+.collapseIcon {
+  background-color: $primary-5;
+}
+
+.collapseText {
   margin-left: $margin-2;
   cursor: pointer;
   font-size: $text-1;
