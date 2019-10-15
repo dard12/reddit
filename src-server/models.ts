@@ -9,4 +9,5 @@ export interface QuestionDoc {
   tags: string[];
   response_count: number;
   meta_count: number;
+  vote: number;
 }
