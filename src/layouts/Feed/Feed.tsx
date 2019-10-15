@@ -13,13 +13,23 @@ function Feed(props: FeedProps) {
 
   return (
     <div className={styles.feedPage}>
-      <SearchBar />
+      <div>
+        <SearchBar />
 
-      <div className={styles.feedTabs}>
-        <div className={styles.feedTabActive}>Technical Skill</div>
-        <div>Team Fit</div>
-        <div>Personal Motivation</div>
-        <div>Fun / Other</div>
+        <div className="tabs">
+          <div className="active">
+            <span>Technical Skill</span>
+          </div>
+          <div>
+            <span>Team Fit</span>
+          </div>
+          <div>
+            <span>Personal Motivation</span>
+          </div>
+          <div>
+            <span>Fun / Other</span>
+          </div>
+        </div>
       </div>
 
       {_.map(docs, questionDoc => (

@@ -6,23 +6,3 @@
   display: grid;
   grid-gap: $margin-4;
 }
-
-.feedTabs {
-  display: flex;
-  justify-content: space-between;
-  border: 2px solid $dark-9;
-  padding: 0 $margin-3;
-
-  > * {
-    margin: $margin-3 $margin-4;
-    cursor: pointer;
-  }
-
-  > *:hover {
-    text-decoration: underline;
-  }
-}
-
-.feedTabActive {
-  font-weight: 600;
-}

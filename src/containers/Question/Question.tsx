@@ -20,8 +20,9 @@ function Question(props: QuestionProps) {
         </div>
         <div className={styles.itemDescription}>{description}</div>
         <div className={styles.itemActions}>
-          <span className={styles.itemComment}>17 comments</span>
-          <span>2 hours ago</span>
+          <span className={styles.itemMeta}>17 answers</span>
+          <span>•</span>
+          <span className={styles.itemMeta}>3 meta-comments</span>
         </div>
       </div>
     </div>

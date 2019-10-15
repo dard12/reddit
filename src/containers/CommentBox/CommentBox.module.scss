@@ -2,9 +2,7 @@
 
 .commentBox {
   padding: calc(20rem / 14);
-  background-color: $white;
   border: 2px solid $dark-9;
-  cursor: pointer;
 }
 
 .commentRow {
@@ -17,12 +15,7 @@
   font-weight: 600;
 
   &:hover {
-    background-color: #9cf4dc;
+    background-color: $primary-5;
     text-decoration: underline;
   }
-}
-
-.responseSection {
-  display: grid;
-  grid-gap: $margin-3;
 }

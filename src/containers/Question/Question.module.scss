@@ -8,7 +8,7 @@
   cursor: pointer;
 
   &:hover .itemHeader span {
-    background-color: #9cf4dc;
+    background-color: $primary-5;
   }
 }
 
@@ -33,13 +33,17 @@
   max-width: $width-2;
 }
 
-.itemComment {
+.itemMeta {
   font-weight: 600;
   font-size: $text-2;
   margin-right: $margin-2;
 
   &:hover {
-    background-color: #9cf4dc;
+    background-color: $primary-5;
     text-decoration: underline;
   }
+}
+
+* + .itemMeta {
+  margin-left: $margin-2;
 }

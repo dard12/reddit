@@ -7,19 +7,15 @@ interface CommentBoxProps {}
 
 function CommentBox(props: CommentBoxProps) {
   return (
-    <div className={styles.responseSection}>
-      <div className={styles.heading}>Your Comment</div>
+    <React.Fragment>
       <div className={styles.commentBox}>
-        <TextareaAutosize
-          placeholder="What do you think?"
-          minRows={5}
-          autoFocus
-        />
+        <TextareaAutosize placeholder="What do you think?" minRows={5} />
+
+        <div className={styles.commentRow}>
+          <Button className={styles.commentBtn}>Comment</Button>
+        </div>
       </div>
-      <div className={styles.commentRow}>
-        <Button className={styles.commentBtn}>Comment</Button>
-      </div>
-    </div>
+    </React.Fragment>
   );
 }
 

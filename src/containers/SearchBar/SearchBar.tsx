@@ -44,10 +44,6 @@ function SearchBar(props: SearchBarProps) {
         onKeyUp={onKeyUp}
         value={query}
       />
-
-      <Button className={styles.searchBtn} onClick={submit}>
-        Search
-      </Button>
     </div>
   );
 }

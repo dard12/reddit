@@ -1,4 +1,4 @@
-$primary-5: hsl(230, 85%, 60%);
+$primary-5: #9cf4dc;
 $primary-4: hsl(230, 85%, 70%);
 $primary-3: hsl(230, 85%, 80%);
 $primary-2: hsl(230, 85%, 90%);
@@ -127,31 +127,28 @@ $line-height-1: 1.2;
 
   &:hover {
     text-decoration: underline;
-    color: $primary-4;
+    background-color: $primary-5;
   }
 }
 
 .tabs {
-  @extend .card;
-  padding: 0;
-  color: $dark-5;
+  display: flex;
+  justify-content: space-around;
+  border: 2px solid $dark-9;
+  padding: 0 $margin-3;
 
   > * {
-    display: inline-block;
-    padding: $margin-3 $margin-4;
-    font-size: $text-1;
-    color: $dark-5;
-    text-transform: uppercase;
+    margin: $margin-3 $margin-4;
     cursor: pointer;
-
-    @media (max-device-width: 768px) {
-      padding: $margin-2 $margin-3;
-    }
   }
 
-  > .active {
-    color: $dark-9;
-    border-bottom: 2px solid $primary-4;
+  > *:hover span {
+    text-decoration: underline;
+    background-color: $primary-5;
+  }
+
+  .active {
+    font-weight: 600;
   }
 }
 

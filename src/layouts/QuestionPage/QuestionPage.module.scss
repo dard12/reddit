@@ -1,10 +1,19 @@
 @import '../../template.scss';
 
-.postPage {
+.questionPage {
   width: $width-3;
   margin: 0 auto;
   display: grid;
   grid-gap: $margin-4;
+}
+
+.sectionToggle {
+  text-align: center;
+  margin-bottom: $margin-3;
+}
+
+.sectionTabs {
+  @extend .tabs;
 }
 
 .heading {

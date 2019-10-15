@@ -12,9 +12,23 @@ function QuestionPage(props: QuestionPageProps) {
     'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor.';
 
   return (
-    <div className={styles.postPage}>
+    <div className={styles.questionPage}>
       <Question questionDoc={{ question, description }} />
-      <CommentBox />
+
+      <div>
+        <div className={styles.sectionToggle}>
+          <div className={styles.sectionTabs}>
+            <div className={styles.active}>
+              <span>Answers (17)</span>
+            </div>
+            <div>
+              <span>Meta Discussion (3)</span>
+            </div>
+          </div>
+        </div>
+
+        <CommentBox />
+      </div>
 
       <div>
         <Comment>
