@@ -77,12 +77,12 @@ function Login(props: LoginProps) {
 
     if (isLogin) {
       axios
-        .post('/login', { user_name: username, password })
+        .post('/login', { username, password })
         .then(() => history.push('/login?success=true'))
         .catch(() => authError('Username and password do not match.'));
     } else {
       axios
-        .post('/register', { user_name: username, email, password })
+        .post('/register', { username, email, password })
         .then(() => history.push('/login?success=true'))
         .catch(() =>
           authError('This username or email already has an account.'),

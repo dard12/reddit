@@ -22,27 +22,29 @@ function CommentBox(props: CommentBoxProps) {
     if (_.size(_.trim(content)) && !isSubmitting) {
       setIsSubmitting(true);
 
-      axios.post('/api/comment', { question, content }).then(() => {
-        setIsSubmitting(false);
-        setContent('');
-      });
+      axios
+        .post('/api/comment', { question_id: question, content })
+        .then(() => {
+          setIsSubmitting(false);
+          setContent('');
+        });
     }
   };
 
   return (
     <React.Fragment>
-      <div className="card">
+      <div className={styles.commentText}>
         <TextareaAutosize
           placeholder="Write a comment…"
-          minRows={3}
+          minRows={4}
           value={content}
           onChange={onChange}
         />
-        <div className={styles.commentRow}>
-          <Button className="btn" onClick={onClickPublish}>
-            Comment
-          </Button>
-        </div>
+      </div>
+      <div className={styles.commentAction}>
+        <Button className="btn" onClick={onClickPublish}>
+          Comment
+        </Button>
       </div>
     </React.Fragment>
   );

@@ -1,6 +1,10 @@
 @import '../../template.scss';
 
-.commentRow {
+.commentText {
+  @extend .card;
+}
+
+.commentAction {
   display: flex;
   justify-content: flex-end;
   margin-top: $margin-2;

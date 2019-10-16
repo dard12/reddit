@@ -8,6 +8,7 @@
 }
 
 .sectionTabs {
+  @extend .tabs;
   text-align: center;
   margin-bottom: $margin-3;
 }

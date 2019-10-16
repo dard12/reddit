@@ -23,7 +23,7 @@ router.get('/api/question', async (req, res) => {
 router.post('/api/question', requireAuth, async (req, res) => {
   const { body, user } = req;
 
-  await pg.insert({ ...body, author_id: user.id }).from('questions');
+  await pg.insert({ ...body, author_id: user.id }).into('questions');
 
   res.status(200).send();
 });

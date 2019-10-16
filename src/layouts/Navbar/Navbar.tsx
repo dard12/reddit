@@ -11,14 +11,15 @@ import { logoutAction } from '../../redux/actions';
 import { usernameSelector } from '../../redux/selectors';
 import Modal from '../../components/Modal/Modal';
 import AddQuestion from '../../containers/AddQuestion/AddQuestion';
+import { axios } from '../../App';
 
 interface NavbarProps extends RouteComponentProps {
-  logoutAction?: Function;
   username?: string;
+  logoutAction?: Function;
 }
 
 function Navbar(props: NavbarProps) {
-  const { username } = props;
+  const { username, logoutAction } = props;
 
   return (
     <div className={styles.navbarContainer}>
@@ -40,7 +41,14 @@ function Navbar(props: NavbarProps) {
           <NavLink to="/profile">Profile</NavLink>
 
           {username ? (
-            <NavLink to="/logout" className={styles.logoutBtn}>
+            <NavLink
+              to="/"
+              className={styles.logoutBtn}
+              onClick={() => {
+                axios.get('/logout');
+                logoutAction && logoutAction();
+              }}
+            >
               Logout
             </NavLink>
           ) : (

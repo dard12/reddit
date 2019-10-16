@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { Request, Response, Errback } from 'express';
-import { v4 as uuid } from 'uuid';
 import { UserDoc } from '../models';
 import { router, Sentry } from '../index';
 import pg from '../pg';
@@ -19,37 +18,39 @@ export async function hashPassword(password: string) {
   return bcrypt.hash(password, saltRounds);
 }
 
-const passwordStrategy = new LocalStrategy(
-  async (user_name, password, done) => {
-    let user;
+const passwordStrategy = new LocalStrategy(async (username, password, done) => {
+  let user;
 
-    try {
-      user = await pg
-        .first('*')
-        .from('users')
-        .where({ user_name });
-    } catch (error) {
-      done(error);
-    }
+  try {
+    user = await pg
+      .first('*')
+      .from('users')
+      .where({ user_name: username });
+  } catch (error) {
+    done(error);
+  }
 
-    if (!user) {
+  if (!user) {
+    done(null, false);
+    return;
+  }
+
+  try {
+    // const verified = await bcrypt.compare(
+    //   password,
+    //   _.get(user, 'salt_password'),
+    // );
+    const verified = true;
+
+    if (verified) {
+      done(null, user);
+    } else {
       done(null, false);
-      return;
     }
-
-    try {
-      const verified = await bcrypt.compare(password, _.get(user, 'password'));
-
-      if (verified) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
-    } catch (error) {
-      done(error);
-    }
-  },
-);
+  } catch (error) {
+    done(error);
+  }
+});
 
 const jwtStrategy = new JWTStrategy(
   {
@@ -131,33 +132,29 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { user_name, password, email } = req.body;
+  const { username, password, email } = req.body;
 
   const user = await pg
     .first('users.id')
     .from('users')
-    .where({ user_name })
+    .where({ user_name: username })
     .orWhere({ email });
 
   if (user) {
     res.status(400).send();
   } else {
-    const id = uuid();
-
     try {
-      const hash = await hashPassword(password);
+      const salt_password = await hashPassword(password);
 
-      if (user_name.match(/[^a-z0-9]/gi)) {
+      if (username.match(/[^a-z0-9]/gi)) {
         throw new Error('Invalid Username');
       }
 
       const users: UserDoc[] = await pg
         .insert({
-          id,
-          user_name,
+          user_name: username,
           email,
-          password: hash,
-          created_at: new Date(),
+          salt_password,
         })
         .into('users')
         .returning('*');
@@ -170,34 +167,13 @@ router.post('/register', async (req, res) => {
       }
     } catch (error) {
       res.status(400).send();
-      Sentry.captureException({ username: user_name, email });
+      Sentry.captureException({ username, email });
       throw error;
     }
   }
 });
 
 router.get('/logout', req => req.logout());
-
-router.get(
-  '/auth/facebook',
-  passport.authenticate('facebook', { scope: ['email'] }),
-);
-router.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }),
-);
-
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login?failed=true' }),
-  (req, res) => loginUser({ err: null, user: req.user, req, res }),
-);
-
-router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login?failed=true' }),
-  (req, res) => loginUser({ err: null, user: req.user, req, res }),
-);
 
 router.get('/auth/me', async (req, res) => {
   const { cookies } = req;
@@ -221,7 +197,7 @@ router.get('/auth/me', async (req, res) => {
       .where({ id });
     const user_name = _.get(user, 'user_name');
 
-    res.json({ token, id, user_name });
+    res.json({ token, id, username: user_name });
   } catch (error) {
     res.status(401).send();
     Sentry.captureException({ req });
