@@ -28,3 +28,11 @@ export interface CommentDoc {
   up_vote: number;
   down_vote: number;
 }
+
+export interface VoteDoc {
+  id: number;
+  user_id: number;
+  action: 'up_vote' | 'down_vote';
+  subject_id: number;
+  subject_type: 'comments' | 'questions';
+}

@@ -136,7 +136,7 @@ def build_and_populate_tables(env='test'):
     def get_user_tb_req():
         return """
             CREATE TABLE IF NOT EXISTS users
-              (id         int PRIMARY KEY,
+              (id         bigserial PRIMARY KEY,
                user_name  varchar UNIQUE,
                full_name  varchar,
                photo_link varchar,
@@ -148,7 +148,7 @@ def build_and_populate_tables(env='test'):
     def get_question_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS questions
-                 (id              int PRIMARY KEY,
+                 (id              bigserial PRIMARY KEY,
                   title           varchar,
                   description     varchar,
                   tags            varchar Array,
@@ -161,7 +161,7 @@ def build_and_populate_tables(env='test'):
     def get_comment_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS comments
-                 (id              int PRIMARY KEY,
+                 (id              bigserial PRIMARY KEY,
                   content         varchar,
                   type            comment_type,
                   author_id       int REFERENCES users (id),
@@ -174,10 +174,10 @@ def build_and_populate_tables(env='test'):
                """
     def get_user_activity_tb_req():
         return """ 
-                CREATE TABLE IF NOT EXISTS user_activity
-                (id           int PRIMARY KEY,
+                CREATE TABLE IF NOT EXISTS votes
+                (id           bigserial PRIMARY KEY,
                  user_id      int REFERENCES users (id),
-                 action       user_action_type,
+                 action       vote_options_type,
                  subject_id   int,  
                  subject_type allowed_subject_types,
                 )
@@ -201,11 +201,10 @@ def build_and_populate_tables(env='test'):
        'hard_coded_rows': comment_rows
        },
     ]
-
     # Define tables
     enum_map = {
         'comment_type'         : {'response', 'meta'},
-        'user_action_type'     : {'up_vote', 'down_vote', 'flag'},
+        'vote_options_type'     : {'up_vote', 'down_vote'},
         'allowed_subject_types': {'comments', 'questions'}
     }
     ppu.build_enum_types(conn, enum_map)
@@ -277,7 +276,7 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    # build_and_populate_tables('production')
+    build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     py_interact(locals())
 
