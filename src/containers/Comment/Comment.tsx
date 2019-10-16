@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IoIosArrowUp, IoIosArrowDown, IoIosAddCircle } from 'react-icons/io';
+import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import styles from './Comment.module.scss';
@@ -9,6 +9,8 @@ import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import UserName from '../UserName/UserName';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
+import CommentVote from '../CommentVote/CommentVote';
+import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
 
 interface CommentProps {
   comment: number;
@@ -32,13 +34,16 @@ function Comment(props: CommentProps) {
 
   const { author_id, content, created_at } = commentDoc;
   const childrenComments = _.filter(allComments, { parent_id: comment });
-  const childrenIds = _.omit(_.map(childrenComments, 'id'), comment);
+  const childrenIds = _.without(_.map(childrenComments, 'id'), comment);
+
+  console.log({ allComments });
+  console.log({ childrenComments, childrenIds });
 
   return (
     <div className={styles.comment}>
       {collapsed && (
         <React.Fragment>
-          <div className={styles.vote}>
+          <div className={commentVoteStyles.vote}>
             <IoIosAddCircle
               className={styles.collapseIcon}
               onClick={toggleCollapsed}
@@ -57,11 +62,13 @@ function Comment(props: CommentProps) {
 
       {!collapsed && (
         <React.Fragment>
-          <div className={styles.vote}>
-            <IoIosArrowUp />
-            <IoIosArrowDown />
-            <div className={styles.threadLine} onClick={toggleCollapsed} />
-          </div>
+          <CommentVote
+            comment={comment}
+            threadLine={
+              <div className={styles.threadLine} onClick={toggleCollapsed} />
+            }
+          />
+
           <div className={styles.commentContent}>
             <div>
               <span className={styles.author}>
@@ -82,7 +89,7 @@ function Comment(props: CommentProps) {
             </div>
 
             {_.map(childrenIds, id => (
-              <Comment comment={id} allComments={allComments} />
+              <Comment comment={id} allComments={allComments} key={id} />
             ))}
           </div>
         </React.Fragment>

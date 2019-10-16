@@ -16,7 +16,7 @@ function App() {
         <Suspense fallback={null}>
           <Switch>
             <Route
-              path="/question:question"
+              path="/question/:question"
               render={props => {
                 const { question } = props.match.params;
                 return question && <QuestionPage question={question} />;
