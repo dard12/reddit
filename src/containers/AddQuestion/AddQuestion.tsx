@@ -34,8 +34,9 @@ function AddQuestion(props: AddQuestionProps) {
   };
 
   return (
-    <div className="card">
+    <div className={styles.addQuestion}>
       <Input
+        className={styles.questionTitle}
         placeholder="Write a question…"
         value={title}
         onChange={createOnChange(setTitle)}
