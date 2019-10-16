@@ -8,7 +8,7 @@ import { Request, Response, Errback } from 'express';
 import { UserDoc } from '../models';
 import { router, Sentry } from '../index';
 import pg from '../pg';
-import id from '../utility';
+import getId from '../utility';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -153,7 +153,7 @@ router.post('/register', async (req, res) => {
 
       const users: UserDoc[] = await pg
         .insert({
-          id: id(),
+          id: getId(),
           user_name: username,
           email,
           salt_password,
