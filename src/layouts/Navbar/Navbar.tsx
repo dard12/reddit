@@ -28,7 +28,7 @@ function Navbar(props: NavbarProps) {
         </Link>
 
         <div className={styles.navActions}>
-          <NavLink to="/feed" activeClassName={styles.active}>
+          <NavLink to="/question" activeClassName={styles.active}>
             Home
           </NavLink>
 

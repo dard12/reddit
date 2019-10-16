@@ -24,7 +24,11 @@ function Comment(props: CommentProps) {
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
-  const { result } = useAxiosGet('/api/comment', { id: comment });
+  const { result } = useAxiosGet(
+    '/api/comment',
+    { id: comment },
+    { cachedResult: commentDoc },
+  );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
@@ -33,11 +37,10 @@ function Comment(props: CommentProps) {
   }
 
   const { author_id, content, created_at } = commentDoc;
-  const childrenComments = _.filter(allComments, { parent_id: comment });
-  const childrenIds = _.without(_.map(childrenComments, 'id'), comment);
-
-  console.log({ allComments });
-  console.log({ childrenComments, childrenIds });
+  const childrenComments = _.filter(
+    allComments,
+    ({ id, parent_id }) => id !== comment && parent_id === comment,
+  );
 
   return (
     <div className={styles.comment}>
@@ -88,8 +91,12 @@ function Comment(props: CommentProps) {
               </div>
             </div>
 
-            {_.map(childrenIds, id => (
-              <Comment comment={id} allComments={allComments} key={id} />
+            {_.map(childrenComments, ({ id }) => (
+              <ConnectedComment
+                comment={id}
+                allComments={allComments}
+                key={id}
+              />
             ))}
           </div>
         </React.Fragment>
@@ -98,7 +105,7 @@ function Comment(props: CommentProps) {
   );
 }
 
-export default connect(
+const ConnectedComment = connect(
   createDocSelector({
     collection: 'comments',
     id: 'comment',
@@ -106,3 +113,5 @@ export default connect(
   }),
   { loadDocsAction },
 )(Comment);
+
+export default ConnectedComment;
