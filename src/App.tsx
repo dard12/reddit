@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 
 const Home = lazy(() => import('./layouts/Home/Home'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
+const Login = lazy(() => import('./layouts/Login/Login'));
 
 function App() {
   return (
@@ -23,6 +24,13 @@ function App() {
               }}
             />
             <Route exact path="/question" render={props => <Home />} />
+
+            <Route exact path="/login" render={props => <Login {...props} />} />
+            <Route
+              exact
+              path="/register"
+              render={props => <Login {...props} />}
+            />
 
             <Route render={() => <Redirect to="/question" />} />
           </Switch>
