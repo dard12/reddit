@@ -3,7 +3,7 @@ import { router, requireAuth } from '../index';
 import pg from '../pg';
 
 router.post('/api/vote', requireAuth, async (req, res) => {
-  const { vote, user } = req;
+  // const { vote, user } = req;
   // id - auto-inc leave out
   // user_id:  user.id
   // action: 'up_vote' or  'down_vote';

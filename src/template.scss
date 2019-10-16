@@ -136,13 +136,14 @@ $line-height-1: 1.2;
     cursor: pointer;
   }
 
-  > *:hover span {
+  > *:hover {
     text-decoration: underline;
     background-color: $primary-5;
   }
 
   .active {
     font-weight: 600;
+    text-decoration: underline;
   }
 }
 

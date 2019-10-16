@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { Request, Response, Errback } from 'express';
-import { v4 as uuid } from 'uuid';
 import { UserDoc } from '../models';
 import { router, Sentry } from '../index';
 import pg from '../pg';
@@ -145,8 +144,6 @@ router.post('/register', async (req, res) => {
   if (user) {
     res.status(400).send();
   } else {
-    const id = uuid();
-
     try {
       const salt_password = await hashPassword(password);
 
@@ -156,11 +153,9 @@ router.post('/register', async (req, res) => {
 
       const users: UserDoc[] = await pg
         .insert({
-          id,
           user_name: username,
           email,
           salt_password,
-          created_at: new Date(),
         })
         .into('users')
         .returning('*');

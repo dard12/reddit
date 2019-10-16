@@ -31,18 +31,18 @@ function CommentBox(props: CommentBoxProps) {
 
   return (
     <React.Fragment>
-      <div className="card">
+      <div className={styles.commentText}>
         <TextareaAutosize
           placeholder="Write a comment…"
-          minRows={3}
+          minRows={4}
           value={content}
           onChange={onChange}
         />
-        <div className={styles.commentRow}>
-          <Button className="btn" onClick={onClickPublish}>
-            Comment
-          </Button>
-        </div>
+      </div>
+      <div className={styles.commentAction}>
+        <Button className="btn" onClick={onClickPublish}>
+          Comment
+        </Button>
       </div>
     </React.Fragment>
   );
