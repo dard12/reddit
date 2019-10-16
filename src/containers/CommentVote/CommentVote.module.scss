@@ -1,0 +1,27 @@
+@import '../../template.scss';
+
+.vote {
+  display: flex;
+  flex-direction: column;
+  margin-right: $margin-3;
+  margin-top: 3px;
+  font-size: $text-3;
+  align-items: center;
+
+  > svg {
+    flex-shrink: 0;
+  }
+
+  svg + svg {
+    margin-top: $margin-2;
+  }
+
+  svg {
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  svg:hover {
+    background-color: $primary-5;
+  }
+}

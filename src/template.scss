@@ -83,19 +83,13 @@ $line-height-1: 1.2;
   box-shadow: 0 3px $text-8 rgba($dark-9, 0.5);
 }
 
-.pane {
-  @extend .shadow-1;
-  background-color: $white;
-  border-radius: $border-radius-1;
-}
-
 .card {
-  @extend .pane;
-  padding: $margin-4;
+  border: 2px solid $dark-9;
+  padding: calc(20rem / 14);
+  background-color: $white;
 }
 
 .chip {
-  @extend .pane;
   padding: $margin-1 $margin-2;
 }
 

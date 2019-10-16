@@ -32,7 +32,7 @@ function Comment(props: CommentProps) {
 
   const { author_id, content, created_at } = commentDoc;
   const childrenComments = _.filter(allComments, { parent_id: comment });
-  const childrenIds = _.map(childrenComments, 'id');
+  const childrenIds = _.omit(_.map(childrenComments, 'id'), comment);
 
   return (
     <div className={styles.comment}>

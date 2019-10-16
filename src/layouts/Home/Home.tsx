@@ -17,7 +17,14 @@ interface HomeProps {
 function Home(props: HomeProps) {
   const { loadDocsAction } = props;
   const search = getQueryParams('search');
-  const { result } = useAxiosGet('/api/question', { search });
+  const tag = getQueryParams('tag');
+
+  const { result } = useAxiosGet('/api/question', {
+    search: {
+      text: search,
+      tags: [tag],
+    },
+  });
 
   useLoadDocs({ collection: 'question', result, loadDocsAction });
 

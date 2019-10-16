@@ -22,7 +22,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   }
 
   const docs: CommentDoc[] = result.docs;
-  const rootComments = _.reject(docs, 'parent_id');
+  const rootComments = _.filter(docs, ({ id, parent_id }) => id === parent_id);
 
   return (
     <div>

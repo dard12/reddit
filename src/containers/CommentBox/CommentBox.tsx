@@ -31,7 +31,7 @@ function CommentBox(props: CommentBoxProps) {
 
   return (
     <React.Fragment>
-      <div className={styles.commentBox}>
+      <div className="card">
         <TextareaAutosize
           placeholder="Write a comment…"
           minRows={3}
