@@ -1,28 +1,10 @@
 @import '../../template.scss';
 
 .button {
-  @extend .transition;
   outline: none;
   padding: 0.6em 1em;
   cursor: pointer;
   border: 1px solid $dark-9;
-
-  &.primary {
-    background-color: $primary-4;
-
-    &:hover:not([disabled]) {
-      background-color: $primary-5;
-    }
-  }
-
-  &.grey {
-    color: $dark-8;
-    background-color: $dark-3;
-
-    &:hover:not([disabled]) {
-      background-color: $dark-3;
-    }
-  }
 
   &[disabled] {
     color: $dark-5;
