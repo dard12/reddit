@@ -33,7 +33,9 @@ app.get('*', (req, res) => {
 });
 
 // import './routes/auth';
-// import './routes/user';
+import './routes/user';
+import './routes/comment';
+import './routes/question';
 
 if (isProd) {
   app.use(Sentry.Handlers.errorHandler());

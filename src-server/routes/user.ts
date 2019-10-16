@@ -5,7 +5,7 @@ router.get('/api/user', async (req, res) => {
   const { query } = req;
   const docs = await pg
     .select('*')
-    .from('ratings.user')
+    .from('user')
     .where(query);
 
   res.status(200).send({ docs });
