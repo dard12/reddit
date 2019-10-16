@@ -7,6 +7,8 @@ import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
+import UserName from '../UserName/UserName';
+import TimeAgo from '../../components/TimeAgo/TimeAgo';
 
 interface CommentProps {
   comment: number;
@@ -28,7 +30,7 @@ function Comment(props: CommentProps) {
     return null;
   }
 
-  const { content } = commentDoc;
+  const { author_id, content, created_at } = commentDoc;
   const childrenComments = _.filter(allComments, { parent_id: comment });
   const childrenIds = _.map(childrenComments, 'id');
 
@@ -43,7 +45,9 @@ function Comment(props: CommentProps) {
             />
           </div>
           <div className={styles.collapsed}>
-            <span className={styles.author}>Username</span>
+            <span className={styles.author}>
+              <UserName user={author_id} />
+            </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
               [ +2 ]
             </span>
@@ -60,7 +64,9 @@ function Comment(props: CommentProps) {
           </div>
           <div className={styles.commentContent}>
             <div>
-              <span className={styles.author}>Username</span>
+              <span className={styles.author}>
+                <UserName user={author_id} />
+              </span>
               <span className={styles.collapseText} onClick={toggleCollapsed}>
                 [ - ]
               </span>
@@ -70,7 +76,9 @@ function Comment(props: CommentProps) {
 
             <div className={styles.commentFooter}>
               <div className={styles.reply}> Reply </div>
-              <div className={styles.timestamp}>2 hours ago</div>
+              <div className={styles.timestamp}>
+                <TimeAgo timestamp={created_at} />
+              </div>
             </div>
 
             {_.map(childrenIds, id => (
