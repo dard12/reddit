@@ -38,11 +38,11 @@ function QuestionPage(props: QuestionPageProps) {
       <div>
         <div className={styles.sectionTabs}>
           <div className="tabs">
-            <NavLink to={`${questionLink}/responses`} activeClassName="active">
+            <NavLink to={`/${questionLink}/responses`} activeClassName="active">
               <span>Answer Discussion {`(${response_count})`}</span>
             </NavLink>
 
-            <NavLink to={`${questionLink}/meta`} activeClassName="active">
+            <NavLink to={`/${questionLink}/meta`} activeClassName="active">
               <span>Meta Discussion {`(${meta_count})`}</span>
             </NavLink>
           </div>
