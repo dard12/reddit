@@ -5,6 +5,7 @@ import traceback
 from datetime import datetime
 from environs import Env
 import getpass
+import boto3
 import time
 import sys
 import os
@@ -68,7 +69,7 @@ def get_sql_db(env):
                             password =pw,
                             host     =host,
                             port     =5432,
-                            droppable=False)
+                            droppable=True)
     else:
         raise Exception('Wrong env variables passed in dbc')
 
@@ -144,6 +145,13 @@ def drop_everything(database):
     conn.commit()
     cur.close()
     conn.close()
+
+
+def manual_warehouse_all_tbs(conn):
+    """ quick and dirty dump all tables to s3,
+        so we can dump back in very easily
+    """
+
 
 
 def bulk_insert(cur, table_name, columns, rows):
@@ -377,3 +385,12 @@ def build_enum_types(conn, enum_map):
         cur.execute(f"CREATE TYPE {type_name} AS ENUM ({str_vals});")
     conn.commit()
 
+def build_util_funcs(conn):
+    req = """ 
+    create function rand_bigint() returns bigint as $$
+    select abs(('x'||substr(md5(random()::text || clock_timestamp()::text),1,16))::bit(64)::bigint);
+    $$ language sql;
+    """
+    cur = conn.cursor()
+    cur.execute(req)
+    conn.commit()

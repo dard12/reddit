@@ -10,6 +10,8 @@ users_rows = [
   {'id': 0,
    'user_name':' lihsing-lung',
    'full_name': 'Li-Hsing Lung',
+   'email'    : 'ricky@rick.com',
+   'salt_password': 'pw',
    'photo_link':       'https://media.licdn.com/dms/image/C4E03AQFZuKnltRJvLw/profile-displayphoto-shrink_200_200/0?e=1575504000&v=beta&t=emev1QeLoHJMtRaJAijqS1VKIhcBC0QlUptC0Ks6psM',
    'summary': '''Hey, my name is Li-Hsing Lung. I love building products and doing impactful work.
 
@@ -18,16 +20,22 @@ users_rows = [
    {'id': 1,
     'user_name': 'michael-duplessis',
     'full_name': 'Michael Duplessis',
+    'email'    : 'dupes@dupes.com',
+    'salt_password': 'pw',
     'photo_link': 'https://lh3.googleusercontent.com/a-/AAuE7mCLZpb1dbmKdKDOmoto2-05ezGG7i4pNnO3p4M=s384-cc',
     'summary': ''},
   {'id': 2,
    'user_name': 'tito-mbagwu',
    'full_name': 'Tito Mbagwu',
+    'email'    : 'tito@tito.com',
+    'salt_password': 'pw',
    'photo_link': '',
    'summary': ''},
   {'id': 3,
    'user_name': 'CoverStory',
    'full_name': 'CoverStory',
+   'email'    : 'cover@story.com',
+    'salt_password': 'pw',
    'photo_link': '',
    'summary': ''},
 ]
@@ -127,6 +135,8 @@ question_rows = [
   'down_vote': 2
  },
 ]
+vote_rows = []
+
 
 def build_and_populate_tables(env='test'):
     conn = ppu.conn_retry(ppu.get_sql_db(env))
@@ -136,19 +146,21 @@ def build_and_populate_tables(env='test'):
     def get_user_tb_req():
         return """
             CREATE TABLE IF NOT EXISTS users
-              (id         bigserial PRIMARY KEY,
-               user_name  varchar UNIQUE,
-               full_name  varchar,
-               photo_link varchar,
-               summary    varchar,
-               is_deleted boolean
+              (id              bigint PRIMARY KEY,
+               user_name       varchar UNIQUE,
+               full_name       varchar,
+               email           varchar,
+               salt_password   varchar,
+               photo_link      varchar,
+               summary         varchar,
+               is_deleted      boolean
                )
             """
   
     def get_question_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS questions
-                 (id              bigserial PRIMARY KEY,
+                 (id              bigint PRIMARY KEY,
                   title           varchar,
                   description     varchar,
                   tags            varchar Array,
@@ -161,7 +173,7 @@ def build_and_populate_tables(env='test'):
     def get_comment_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS comments
-                 (id              bigserial PRIMARY KEY,
+                 (id              bigint PRIMARY KEY,
                   content         varchar,
                   type            comment_type,
                   author_id       int REFERENCES users (id),
@@ -172,15 +184,14 @@ def build_and_populate_tables(env='test'):
                   down_vote       int,
                   is_deleted      boolean)
                """
-    def get_user_activity_tb_req():
+    def get_votes_tb_req():
         return """ 
                 CREATE TABLE IF NOT EXISTS votes
-                (id           bigserial PRIMARY KEY,
+                (id           bigint PRIMARY KEY,
                  user_id      int REFERENCES users (id),
                  action       vote_options_type,
                  subject_id   int,  
-                 subject_type allowed_subject_types,
-                )
+                 subject_type allowed_subject_types)
                """
 
     tables = [
@@ -191,7 +202,7 @@ def build_and_populate_tables(env='test'):
        },
 
       {'table_name': 'users',
-       'columns': ['id', 'user_name', 'full_name', 'photo_link', 'summary'],
+       'columns': ['id', 'user_name', 'full_name', 'email', 'salt_password', 'photo_link', 'summary'],
        'pkeys': ['id'],
        'hard_coded_rows':  users_rows,
        },
@@ -200,15 +211,25 @@ def build_and_populate_tables(env='test'):
        'pkeys': ['id'],
        'hard_coded_rows': comment_rows
        },
+      {'table_name': 'votes',
+       'columns': [
+                'id',           
+                'user_id',      
+                'action',       
+                'subject_id',   
+                'subject_type'], 
+       'pkeys': ['id'],
+       'hard_coded_rows': vote_rows
+       },
     ]
     # Define tables
     enum_map = {
         'comment_type'         : {'response', 'meta'},
-        'vote_options_type'     : {'up_vote', 'down_vote'},
+        'vote_options_type'    : {'up_vote', 'down_vote'},
         'allowed_subject_types': {'comments', 'questions'}
     }
     ppu.build_enum_types(conn, enum_map)
-    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req()]:
+    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_votes_tb_req()]:
         cur.execute(req)
     conn.commit()
 
@@ -276,7 +297,7 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    build_and_populate_tables('dev')
+    # build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     py_interact(locals())
 
