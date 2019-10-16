@@ -14,7 +14,6 @@
 }
 
 .modal {
-  @extend .shadow-2;
   outline: none;
   border-radius: $border-radius-1;
   overflow: auto;

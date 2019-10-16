@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
+import id from '../utility';
 
 router.get('/api/question', async (req, res) => {
   const { query } = req;
@@ -23,7 +24,7 @@ router.get('/api/question', async (req, res) => {
 router.post('/api/question', requireAuth, async (req, res) => {
   const { body, user } = req;
 
-  await pg.insert({ ...body, author_id: user.id }).into('questions');
+  await pg.insert({ ...body, id: id(), author_id: user.id }).into('questions');
 
   res.status(200).send();
 });

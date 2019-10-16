@@ -1,9 +1,6 @@
-import crypto from 'crypto';
 import bigint from 'big-integer';
+import _ from 'lodash';
 
-// const crypto = ('crypto');
-// var biformat = require('biguint-format');
-
-// // Adjust # bytes as needed
-const seed = bigint(crypto.randomBytes(8), 'dec');
-console.log(bigInt(seed));
+export default function id() {
+  return _.toNumber(bigint.randBetween('0', '9223372036854775807'));
+}

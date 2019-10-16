@@ -1,5 +1,6 @@
 import { router, requireAuth } from '../index';
 import pg from '../pg';
+import id from '../utility';
 
 router.get('/api/comment', async (req, res) => {
   const { query } = req;
@@ -14,7 +15,7 @@ router.get('/api/comment', async (req, res) => {
 router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user } = req;
 
-  await pg.insert({ ...body, author_id: user.id }).into('comments');
+  await pg.insert({ ...body, id: id(), author_id: user.id }).into('comments');
 
   res.status(200).send();
 });
