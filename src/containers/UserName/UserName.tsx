@@ -28,13 +28,13 @@ function UserName(props: UserNameProps) {
     return <Skeleton inline />;
   }
 
-  const { username } = userDoc;
+  const { user_name } = userDoc;
 
   return plainName ? (
-    <React.Fragment>{username}</React.Fragment>
+    <React.Fragment>{user_name}</React.Fragment>
   ) : (
-    <Link className="hoverLink" to={`/profile/${username}`}>
-      {username}
+    <Link className="hoverLink" to={`/profile/${user_name}`}>
+      {user_name}
     </Link>
   );
 }
