@@ -2,7 +2,7 @@ export interface UserDoc {
   id: number;
   user_name: string;
   email: string;
-  password: string;
+  salt_password: string;
   full_name?: string;
   photo_link?: string;
   summary?: string;
