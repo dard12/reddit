@@ -16,6 +16,7 @@ export interface QuestionDoc {
   up_vote: number;
   down_vote: number;
 }
+
 export interface CommentDoc {
   id: number;
   content: string;
@@ -27,4 +28,3 @@ export interface CommentDoc {
   up_vote: number;
   down_vote: number;
 }
-s;
