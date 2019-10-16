@@ -39,7 +39,7 @@ function CommentBox(props: CommentBoxProps) {
           onChange={onChange}
         />
         <div className={styles.commentRow}>
-          <Button className={styles.commentBtn} onClick={onClickPublish}>
+          <Button className="btn" onClick={onClickPublish}>
             Comment
           </Button>
         </div>

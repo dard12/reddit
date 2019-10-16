@@ -206,7 +206,6 @@ $line-height-1: 1.2;
 }
 
 input {
-  @extend .transition;
   outline: none;
   padding: 0.6em 1em;
 }
@@ -228,7 +227,6 @@ textarea {
 
   &:focus,
   &:hover {
-    @extend .shadow-1;
     border-color: $dark-6;
   }
 }
@@ -239,45 +237,19 @@ textarea {
   min-width: calc(70rem / 14);
   display: inline-block;
   outline: none;
-  border-radius: $border-radius-1;
   padding: 0.6em 1em;
   border: none;
   cursor: pointer;
+  font-weight: 600;
 
   &:hover:not([disabled]) {
-    @extend .shadow-1;
+    color: $primary-5;
     background-color: $dark-8;
-    transform: translateY(-1px);
   }
 }
 
 .faded {
   color: $dark-6;
-}
-
-.ctaButton {
-  @extend .btn;
-  font-size: $text-3;
-  background-color: $primary-5;
-  font-weight: 600;
-  padding-left: $margin-4;
-  padding-right: $margin-4;
-  box-shadow: 0 3px $text-6 rgba($primary-5, 0.5);
-  margin-right: $margin-2;
-
-  &:hover:not([disabled]) {
-    background-color: $primary-5;
-    box-shadow: 0 6px $text-6 rgba($primary-5, 0.7);
-  }
-}
-
-.ctaButtonSecondary {
-  @extend .btn;
-  font-size: $text-3;
-  font-weight: 600;
-  padding-left: $margin-4;
-  padding-right: $margin-4;
-  margin-left: $margin-2;
 }
 
 .outlineBtn {
