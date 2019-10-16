@@ -23,6 +23,7 @@ function Home(props: HomeProps) {
       text: query,
       tags: [tag],
     },
+    sort: 'up_vote',
   });
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
