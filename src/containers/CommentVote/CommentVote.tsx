@@ -2,47 +2,47 @@ import React, { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import styles from './QuestionVote.module.scss';
-import { QuestionDoc } from '../../../src-server/models';
+import styles from './CommentVote.module.scss';
+import { CommentDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 
-interface QuestionVoteProps {
-  question: number;
-  questionDoc?: QuestionDoc;
+interface CommentVoteProps {
+  comment: number;
+  commentDoc?: CommentDoc;
   loadDocsAction?: Function;
+  threadLine?: any;
 }
 
-function QuestionVote(props: QuestionVoteProps) {
-  const { question, questionDoc, loadDocsAction } = props;
+function CommentVote(props: CommentVoteProps) {
+  const { comment, commentDoc, loadDocsAction, threadLine } = props;
   const [myVote, setMyVote] = useState(0);
   const { result } = useAxiosGet(
-    '/api/question',
-    { id: question },
-    { cachedResult: questionDoc },
+    '/api/comment',
+    { id: comment },
+    { cachedResult: commentDoc },
   );
 
-  useLoadDocs({ collection: 'questions', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  const vote = _.get(questionDoc, 'vote');
   const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
 
   return (
     <div className={styles.vote}>
       <IoIosArrowUp onClick={upVote} />
-      <span>{vote && vote + myVote}</span>
       <IoIosArrowDown onClick={downVote} />
+      {threadLine}
     </div>
   );
 }
 
 export default connect(
   createDocSelector({
-    collection: 'questions',
-    id: 'question',
-    prop: 'questionDoc',
+    collection: 'comments',
+    id: 'comment',
+    prop: 'commentDoc',
   }),
   { loadDocsAction },
-)(QuestionVote);
+)(CommentVote);

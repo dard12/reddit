@@ -22,7 +22,7 @@ function UserName(props: UserNameProps) {
     { cachedResult: userDoc },
   );
 
-  useLoadDocs({ collection: 'user', result, loadDocsAction });
+  useLoadDocs({ collection: 'users', result, loadDocsAction });
 
   if (!userDoc) {
     return <Skeleton inline />;
@@ -41,7 +41,7 @@ function UserName(props: UserNameProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'user',
+    collection: 'users',
     id: 'user',
     prop: 'userDoc',
   }),

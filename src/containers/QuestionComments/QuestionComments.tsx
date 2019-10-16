@@ -15,14 +15,14 @@ function QuestionComments(props: QuestionCommentsProps) {
   const { question, loadDocsAction } = props;
   const { result } = useAxiosGet('/api/comment', { question_id: question });
 
-  useLoadDocs({ collection: 'comment', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!result) {
     return null;
   }
 
   const docs: CommentDoc[] = result.docs;
-  const rootComments = _.reject(docs, 'parent_id');
+  const rootComments = _.filter(docs, ({ id, parent_id }) => id === parent_id);
 
   return (
     <div>

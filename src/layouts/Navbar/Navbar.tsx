@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import styles from './Navbar.module.scss';
 import { logoutAction } from '../../redux/actions';
 import { usernameSelector } from '../../redux/selectors';
+import Modal from '../../components/Modal/Modal';
+import AddQuestion from '../../containers/AddQuestion/AddQuestion';
 
 interface NavbarProps extends RouteComponentProps {
   logoutAction?: Function;
@@ -30,7 +32,10 @@ function Navbar(props: NavbarProps) {
             Home
           </NavLink>
 
-          <NavLink to="/feed">Add a Question</NavLink>
+          <Modal
+            buttonChildren="Add a question"
+            render={closeModal => <AddQuestion closeModal={closeModal} />}
+          />
 
           <NavLink to="/profile">Profile</NavLink>
 
