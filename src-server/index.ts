@@ -32,7 +32,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
-// import './routes/auth';
+import './routes/auth';
 import './routes/user';
 import './routes/comment';
 import './routes/question';

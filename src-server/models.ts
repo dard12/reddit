@@ -1,9 +1,11 @@
 export interface UserDoc {
   id: number;
   user_name: string;
-  full_name: string;
-  photo_link: string;
-  summary: string;
+  email: string;
+  salt_password: string;
+  full_name?: string;
+  photo_link?: string;
+  summary?: string;
 }
 
 export interface QuestionDoc {

@@ -1,7 +1,5 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import passportJWT from 'passport-jwt';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -9,143 +7,44 @@ import _ from 'lodash';
 import { Request, Response, Errback } from 'express';
 import { v4 as uuid } from 'uuid';
 import { UserDoc } from '../models';
-import { router, origin, Sentry } from '../index';
+import { router, Sentry } from '../index';
 import pg from '../pg';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const {
-  TOKEN_SECRET = '',
-  FACEBOOK_CLIENT = '',
-  FACEBOOK_SECRET = '',
-  GOOGLE_CLIENT = '',
-  GOOGLE_SECRET = '',
-} = process.env;
+const { TOKEN_SECRET = '' } = process.env;
 
 export async function hashPassword(password: string) {
   const saltRounds = 10;
   return bcrypt.hash(password, saltRounds);
 }
 
-const passwordStrategy = new LocalStrategy(async (username, password, done) => {
-  let user;
-
-  try {
-    user = await pg
-      .first('*')
-      .from('ratings.user')
-      .where({ username });
-  } catch (error) {
-    done(error);
-  }
-
-  if (!user) {
-    done(null, false);
-    return;
-  }
-
-  try {
-    const verified = await bcrypt.compare(password, _.get(user, 'password'));
-
-    if (verified) {
-      done(null, user);
-    } else {
-      done(null, false);
-    }
-  } catch (error) {
-    done(error);
-  }
-});
-
-const facebookStrategy = new FacebookStrategy(
-  {
-    clientID: FACEBOOK_CLIENT,
-    clientSecret: FACEBOOK_SECRET,
-    callbackURL: `${origin}/auth/facebook/callback`,
-    // https://developers.facebook.com/docs/facebook-login/permissions#reference-default
-    profileFields: ['id', 'first_name', 'last_name', 'email'],
-    enableProof: true,
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    const { id: facebook_id, name, emails } = profile;
-    const first_name = _.get(name, 'givenName') || '';
-    const last_name = _.get(name, 'familyName') || '';
-
-    const email = _.first(_.compact(_.map(emails, 'value'))) || '';
-    const id = uuid();
+const passwordStrategy = new LocalStrategy(
+  async (user_name, password, done) => {
+    let user;
 
     try {
-      await pg.raw(
-        `
-        INSERT INTO ratings.user (id, facebook_id, first_name, last_name, email, username, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT (facebook_id)
-        DO NOTHING
-        `,
-        [id, facebook_id, first_name, last_name, email, id, new Date()],
-      );
-    } catch (error) {
-      // Do nothing
-    }
-
-    try {
-      await pg
-        .update({ facebook_id })
-        .from('ratings.user')
-        .where({ email });
-
-      const user = await pg
+      user = await pg
         .first('*')
-        .from('ratings.user')
-        .where({ facebook_id });
-
-      done(null, user);
+        .from('users')
+        .where({ user_name });
     } catch (error) {
       done(error);
     }
-  },
-);
 
-const googleStrategy = new GoogleStrategy(
-  {
-    clientID: GOOGLE_CLIENT,
-    clientSecret: GOOGLE_SECRET,
-    callbackURL: `${origin}/auth/google/callback`,
-  },
-  async (token, tokenSecret, profile, done) => {
-    const { id: google_id, name, emails, photos } = profile;
-    const first_name = _.get(name, 'givenName') || '';
-    const last_name = _.get(name, 'familyName') || '';
-    const photo = _.first(_.compact(_.map(photos, 'value'))) || '';
-    const email = _.first(_.compact(_.map(emails, 'value'))) || '';
-    const id = uuid();
-
-    try {
-      await pg.raw(
-        `
-        INSERT INTO ratings.user (id, google_id, first_name, last_name, email, username, photo, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT (google_id)
-        DO NOTHING
-      `,
-        [id, google_id, first_name, last_name, email, id, photo, new Date()],
-      );
-    } catch (error) {
-      // do nothing
+    if (!user) {
+      done(null, false);
+      return;
     }
 
     try {
-      await pg
-        .update({ google_id, photo })
-        .from('ratings.user')
-        .where({ email });
+      const verified = await bcrypt.compare(password, _.get(user, 'password'));
 
-      const user = await pg
-        .first('*')
-        .from('ratings.user')
-        .where({ google_id });
-
-      done(undefined, user);
+      if (verified) {
+        done(null, user);
+      } else {
+        done(null, false);
+      }
     } catch (error) {
       done(error);
     }
@@ -168,7 +67,7 @@ const jwtStrategy = new JWTStrategy(
 
       const user = await pg
         .first('*')
-        .from('ratings.user')
+        .from('users')
         .where({ id });
 
       done(null, user);
@@ -179,8 +78,6 @@ const jwtStrategy = new JWTStrategy(
 );
 
 passport.use(passwordStrategy);
-passport.use(facebookStrategy);
-passport.use(googleStrategy);
 passport.use(jwtStrategy);
 
 passport.serializeUser((user: UserDoc, done) => done(null, user.id));
@@ -188,7 +85,7 @@ passport.deserializeUser(async (id, done) => {
   try {
     const user = await pg
       .first('*')
-      .from('ratings.user')
+      .from('users')
       .where({ id });
 
     done(null, user);
@@ -234,12 +131,12 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { username, password, email } = req.body;
+  const { user_name, password, email } = req.body;
 
   const user = await pg
-    .first('ratings.user.id')
-    .from('ratings.user')
-    .where({ username })
+    .first('users.id')
+    .from('users')
+    .where({ user_name })
     .orWhere({ email });
 
   if (user) {
@@ -250,13 +147,19 @@ router.post('/register', async (req, res) => {
     try {
       const hash = await hashPassword(password);
 
-      if (username.match(/[^a-z0-9]/gi)) {
+      if (user_name.match(/[^a-z0-9]/gi)) {
         throw new Error('Invalid Username');
       }
 
       const users: UserDoc[] = await pg
-        .insert({ id, username, email, password: hash, created_at: new Date() })
-        .into('ratings.user')
+        .insert({
+          id,
+          user_name,
+          email,
+          password: hash,
+          created_at: new Date(),
+        })
+        .into('users')
         .returning('*');
       const user = _.first(users);
 
@@ -267,7 +170,7 @@ router.post('/register', async (req, res) => {
       }
     } catch (error) {
       res.status(400).send();
-      Sentry.captureException({ username, email });
+      Sentry.captureException({ username: user_name, email });
       throw error;
     }
   }
@@ -314,11 +217,11 @@ router.get('/auth/me', async (req, res) => {
 
     const user = await pg
       .first('*')
-      .from('ratings.user')
+      .from('users')
       .where({ id });
-    const username = _.get(user, 'username');
+    const user_name = _.get(user, 'user_name');
 
-    res.json({ token, id, username });
+    res.json({ token, id, user_name });
   } catch (error) {
     res.status(401).send();
     Sentry.captureException({ req });

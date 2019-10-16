@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './Home.module.scss';
 import Question from '../../containers/Question/Question';
@@ -16,14 +15,15 @@ interface HomeProps {
 
 function Home(props: HomeProps) {
   const { loadDocsAction } = props;
-  const search = getQueryParams('search');
+  const query = getQueryParams('query');
   const tag = getQueryParams('tag');
 
   const { result } = useAxiosGet('/api/question', {
     search: {
-      text: search,
+      text: query,
       tags: [tag],
     },
+    sort: 'up_vote',
   });
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });

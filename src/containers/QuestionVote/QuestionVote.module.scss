@@ -5,10 +5,13 @@
   grid-gap: $margin-3;
   font-size: $text-5;
   font-weight: 600;
-  margin-right: $margin-4;
+  margin-right: $margin-3;
   text-align: center;
+  width: calc(50rem / 14);
 
   svg {
+    display: block;
+    margin: auto;
     cursor: pointer;
     border-radius: 50%;
   }
