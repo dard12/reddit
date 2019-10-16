@@ -25,14 +25,16 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  const vote = _.get(questionDoc, 'vote');
+  const up_vote = _.get(questionDoc, 'up_vote') || 0;
+  const down_vote = _.get(questionDoc, 'down_vote') || 0;
+  const score = up_vote - down_vote + myVote;
   const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
 
   return (
     <div className={styles.vote}>
       <IoIosArrowUp onClick={upVote} />
-      <span>{vote && vote + myVote}</span>
+      <span>{questionDoc && score}</span>
       <IoIosArrowDown onClick={downVote} />
     </div>
   );

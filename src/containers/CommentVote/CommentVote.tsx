@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import styles from './CommentVote.module.scss';
 import { CommentDoc } from '../../../src-server/models';

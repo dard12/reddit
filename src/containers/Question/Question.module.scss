@@ -3,17 +3,12 @@
 .item {
   @extend .card;
   display: flex;
-  cursor: pointer;
 }
 
 .itemContent {
   display: grid;
   grid-gap: $margin-2;
   min-width: $width-2;
-
-  &:hover .itemHeader span {
-    background-color: $primary-5;
-  }
 }
 
 .itemHeader {
@@ -23,6 +18,12 @@
   font-family: $serif;
   display: block;
   padding-right: $margin-3;
+  text-decoration: none;
+
+  a:hover {
+    background-color: $primary-5;
+    text-decoration: none;
+  }
 }
 
 .itemDescription {

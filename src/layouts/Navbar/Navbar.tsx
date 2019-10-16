@@ -28,7 +28,7 @@ function Navbar(props: NavbarProps) {
         </Link>
 
         <div className={styles.navActions}>
-          <NavLink to="/feed" activeClassName={styles.active}>
+          <NavLink to="/question" activeClassName={styles.active}>
             Home
           </NavLink>
 
@@ -39,9 +39,16 @@ function Navbar(props: NavbarProps) {
 
           <NavLink to="/profile">Profile</NavLink>
 
-          <NavLink to="/" className={styles.logoutBtn}>
-            Logout
-          </NavLink>
+          {username ? (
+            <NavLink to="/logout" className={styles.logoutBtn}>
+              Logout
+            </NavLink>
+          ) : (
+            <React.Fragment>
+              <NavLink to="/register">Sign up</NavLink>
+              <NavLink to="/login">Login</NavLink>
+            </React.Fragment>
+          )}
         </div>
       </div>
     </div>

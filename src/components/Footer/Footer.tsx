@@ -8,10 +8,10 @@ export default function Footer() {
       <div>
         <div className={styles.footerLabel}>Account</div>
         <div>
-          <Link to="/">Login</Link>
+          <Link to="/login">Login</Link>
         </div>
         <div>
-          <Link to="/">Sign up</Link>
+          <Link to="/register">Sign up</Link>
         </div>
       </div>
       <div>

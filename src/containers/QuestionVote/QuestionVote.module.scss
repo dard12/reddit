@@ -6,8 +6,10 @@
   font-size: $text-5;
   font-weight: 600;
   margin-right: $margin-4;
+  text-align: center;
 
   svg {
+    cursor: pointer;
     border-radius: 50%;
   }
 

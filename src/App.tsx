@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 
 const Home = lazy(() => import('./layouts/Home/Home'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
+const Login = lazy(() => import('./layouts/Login/Login'));
 
 function App() {
   return (
@@ -16,13 +17,20 @@ function App() {
         <Suspense fallback={null}>
           <Switch>
             <Route
-              path="/question:question"
+              path="/question/:question"
               render={props => {
                 const { question } = props.match.params;
                 return question && <QuestionPage question={question} />;
               }}
             />
             <Route exact path="/question" render={props => <Home />} />
+
+            <Route exact path="/login" render={props => <Login {...props} />} />
+            <Route
+              exact
+              path="/register"
+              render={props => <Login {...props} />}
+            />
 
             <Route render={() => <Redirect to="/question" />} />
           </Switch>
