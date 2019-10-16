@@ -194,8 +194,8 @@ def py_interact(f_locals):
     code.interact(banner=banner, local=context)
 
 if __name__ == '__main__':
-    build_and_populate_tables('test')
-    conn = ppu.conn_retry(ppu.get_sql_db(env='test'))
+    #build_and_populate_tables('test')
+    conn = ppu.conn_retry(ppu.get_sql_db(env='production'))
     py_interact(locals())
 
 

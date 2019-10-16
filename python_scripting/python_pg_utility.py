@@ -14,10 +14,10 @@ POSTGRES_COPY_NULL_AS = r'\N'
 
 # abstract this into some standard environ variable handling
 PROD_ARGS = {
-    'name':  '',
-    'user': '',
+    'name': 'postgres',
+    'user': 'postgres',
     'password': '',
-    'host': ''
+    'host': 'minidb.cpoebeflfeyk.us-east-1.rds.amazonaws.com'
 }
 
 class PostgresDB(object):
