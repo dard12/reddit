@@ -140,7 +140,9 @@ def build_and_populate_tables(env='test'):
                user_name  varchar UNIQUE,
                full_name  varchar,
                photo_link varchar,
-               summary    varchar)
+               summary    varchar,
+               is_deleted boolean
+               )
             """
   
     def get_question_tb_req():
@@ -153,7 +155,8 @@ def build_and_populate_tables(env='test'):
                   response_count  int,
                   meta_count      int,
                   up_vote         int,
-                  down_vote       int)
+                  down_vote       int,
+                  is_deleted      boolean)
                """
     def get_comment_tb_req():
         return """
@@ -166,7 +169,18 @@ def build_and_populate_tables(env='test'):
                   parent_id       int REFERENCES comments (id),
                   created_at      timestamp,
                   up_vote         int,
-                  down_vote       int)
+                  down_vote       int,
+                  is_deleted      boolean)
+               """
+    def get_user_activity_tb_req():
+        return """ 
+                CREATE TABLE IF NOT EXISTS user_activity
+                (id           int PRIMARY KEY,
+                 user_id      int REFERENCES users (id),
+                 action       user_action_type,
+                 subject_id   int,  
+                 subject_type allowed_subject_types,
+                )
                """
 
     tables = [
@@ -189,9 +203,12 @@ def build_and_populate_tables(env='test'):
     ]
 
     # Define tables
-    # when we full wipe need to re-create, change this to a look up of types,
-    # create if nto in table of types
-    # cur.execute("CREATE TYPE IF NOT EXISTS comment_type AS ENUM ('response', 'meta');")
+    enum_map = {
+        'comment_type'         : {'response', 'meta'},
+        'user_action_type'     : {'up_vote', 'down_vote', 'flag'},
+        'allowed_subject_types': {'comments', 'questions'}
+    }
+    ppu.build_enum_types(conn, enum_map)
     for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req()]:
         cur.execute(req)
     conn.commit()
@@ -260,8 +277,8 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    build_and_populate_tables('production')
-    conn = ppu.conn_retry(ppu.get_sql_db(env='production'))
+    # build_and_populate_tables('production')
+    conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     py_interact(locals())
 
 

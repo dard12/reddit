@@ -3,6 +3,7 @@ import psycopg2 as pg
 from numbers import Number
 import traceback
 from datetime import datetime
+from environs import Env
 import getpass
 import time
 import sys
@@ -11,14 +12,6 @@ import io
 
 POSTGRES_COPY_COL_DELIMITER = chr(127)
 POSTGRES_COPY_NULL_AS = r'\N'
-
-# abstract this into some standard environ variable handling
-PROD_ARGS = {
-    'name': 'postgres',
-    'user': 'postgres',
-    'password': '',
-    'host': 'minidb.cpoebeflfeyk.us-east-1.rds.amazonaws.com'
-}
 
 class PostgresDB(object):
     def __init__(self, name=None, user=None, password=None, host=None,
@@ -62,11 +55,18 @@ def get_sql_db(env):
                             droppable=True,
                             ssl=False)
 
-    elif env == 'production':
-        sql_db = PostgresDB(name     =PROD_ARGS['name'],
-                            user     =PROD_ARGS['user'],
-                            password =PROD_ARGS['password'],
-                            host     =PROD_ARGS['host'],
+    elif env == 'dev':
+        env = Env()
+        env_path = os.path.realpath('..') + '/envs/dev.env'
+        env.read_env(env_path)  
+        name = env("PG_DB_NAME")  
+        pw = env('PG_USER_PASSWORD')
+        user = env('PG_USER')
+        host = env('PG_HOST')
+        sql_db = PostgresDB(name     =name,
+                            user     =user,
+                            password =pw,
+                            host     =host,
                             port     =5432,
                             droppable=False)
     else:
@@ -223,7 +223,6 @@ def make_copyable(row, delimiter, null_as):
     return delimiter.join(new_row)
 
 
-
 def pkey_upsert(cur, perm_table, temp_table, pkeys, all_cols):
     """ Little helper does a standard pkey upsert, then insert
         Doesnt commit
@@ -347,3 +346,34 @@ def print_order_sql_rows(rows, cols_to_sort=[0], siz=45, sort_lambda=None):
     if sort_lambda:
         rows.sort(key=sort_lambda)
     print_sql_rows(rows, siz)
+
+
+
+def build_enum_types(conn, enum_map):
+    """ TO safely add 'enum types', i.e. value constriants on a column. i.e.
+        gender columns must be one of ['male', 'female'] 
+    """
+    cur = conn.cursor()
+    cur.execute(""" 
+        SELECT pg_type.typname AS enumtype, 
+               pg_enum.enumlabel AS enumlabel
+        FROM pg_type 
+        JOIN pg_enum 
+          ON pg_enum.enumtypid = pg_type.oid;""")
+    res = list(cur)
+    exis_enum_map = {}
+    for type_name, value in res:
+        exis_enum_map.setdefault(type_name, set())
+        exis_enum_map[type_name].add(value)
+
+    to_build = {}
+    for type_name, values in enum_map.items():
+        if type_name in exis_enum_map:
+            assert values == exis_enum_map[type_name], f"delete {type_name}, re-run build_enum_types"
+        else:
+            to_build[type_name] = values
+    for type_name, vals in to_build.items(): 
+        str_vals = ','.join("'%s'" % v for v in vals)
+        cur.execute(f"CREATE TYPE {type_name} AS ENUM ({str_vals});")
+    conn.commit()
+
