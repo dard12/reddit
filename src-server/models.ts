@@ -1,5 +1,6 @@
 export interface UserDoc {
   id: number;
+  username: string;
 }
 
 export interface QuestionDoc {
