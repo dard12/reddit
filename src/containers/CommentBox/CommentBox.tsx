@@ -22,10 +22,12 @@ function CommentBox(props: CommentBoxProps) {
     if (_.size(_.trim(content)) && !isSubmitting) {
       setIsSubmitting(true);
 
-      axios.post('/api/comment', { question, content }).then(() => {
-        setIsSubmitting(false);
-        setContent('');
-      });
+      axios
+        .post('/api/comment', { question_id: question, content })
+        .then(() => {
+          setIsSubmitting(false);
+          setContent('');
+        });
     }
   };
 

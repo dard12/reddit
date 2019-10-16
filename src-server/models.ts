@@ -13,6 +13,7 @@ export interface QuestionDoc {
   title: string;
   description: string;
   tags: string[];
+  author_id: number;
   response_count: number;
   meta_count: number;
   up_vote: number;
