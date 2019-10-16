@@ -40,9 +40,7 @@ function Home(props: HomeProps) {
       <HomeTabs />
 
       {_.map(docs, ({ id }) => (
-        <Link to={`/question/${id}`} key={id}>
-          <Question question={id} />
-        </Link>
+        <Question question={id} key={id} />
       ))}
     </div>
   );

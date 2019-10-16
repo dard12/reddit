@@ -37,7 +37,9 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <span>{title}</span>
+          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
+            <span>{title}</span>
+          </Link>
         </div>
         <div className={styles.itemDescription}>{description}</div>
         <div className={styles.itemActions}>

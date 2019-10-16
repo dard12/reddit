@@ -13,5 +13,9 @@ router.get('/api/comment', async (req, res) => {
 });
 
 router.post('/api/comment', requireAuth, async (req, res) => {
-  // const { body, user } = req;
+  const { body, user } = req;
+
+  await pg.insert({ ...body, author_id: user.id }).from('comments');
+
+  res.status(200).send();
 });
