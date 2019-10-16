@@ -10,9 +10,12 @@ import { loadDocsAction } from '../../redux/actions';
 import HomeTabs from '../../containers/HomeTabs/HomeTabs';
 import { getQueryParams } from '../../history';
 
-interface HomeProps {}
+interface HomeProps {
+  loadDocsAction?: Function;
+}
 
 function Home(props: HomeProps) {
+  const { loadDocsAction } = props;
   const search = getQueryParams('search');
   const { result } = useAxiosGet('/api/question', { search });
 

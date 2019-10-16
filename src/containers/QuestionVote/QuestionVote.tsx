@@ -11,10 +11,11 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 interface QuestionVoteProps {
   question: number;
   questionDoc?: QuestionDoc;
+  loadDocsAction?: Function;
 }
 
 function QuestionVote(props: QuestionVoteProps) {
-  const { question, questionDoc } = props;
+  const { question, questionDoc, loadDocsAction } = props;
   const [myVote, setMyVote] = useState(0);
   const { result } = useAxiosGet(
     '/api/question',
