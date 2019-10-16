@@ -14,12 +14,12 @@ import AddQuestion from '../../containers/AddQuestion/AddQuestion';
 import { axios } from '../../App';
 
 interface NavbarProps extends RouteComponentProps {
-  logoutAction?: Function;
   username?: string;
+  logoutAction?: Function;
 }
 
 function Navbar(props: NavbarProps) {
-  const { username } = props;
+  const { username, logoutAction } = props;
 
   return (
     <div className={styles.navbarContainer}>
