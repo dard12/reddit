@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/big-integer": "0.0.31",
     "@types/body-parser": "^1.17.0",
     "@types/classnames": "^2.2.7",
     "@types/cookie-parser": "^1.4.1",
