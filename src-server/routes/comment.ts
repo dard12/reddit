@@ -5,7 +5,7 @@ router.get('/api/comment', async (req, res) => {
   const { query } = req;
   const docs = await pg
     .select('*')
-    .from('comment')
+    .from('comments')
     .where(query);
 
   res.status(200).send({ docs });

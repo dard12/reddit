@@ -27,4 +27,3 @@ export interface CommentDoc {
   up_vote: number;
   down_vote: number;
 }
-s;
