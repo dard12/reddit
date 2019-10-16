@@ -26,7 +26,7 @@ function Home(props: HomeProps) {
     },
   });
 
-  useLoadDocs({ collection: 'question', result, loadDocsAction });
+  useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   if (!result) {
     return null;

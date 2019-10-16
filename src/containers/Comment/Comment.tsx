@@ -24,7 +24,7 @@ function Comment(props: CommentProps) {
 
   const { result } = useAxiosGet('/api/comment', { id: comment });
 
-  useLoadDocs({ collection: 'comment', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!commentDoc) {
     return null;
@@ -93,7 +93,7 @@ function Comment(props: CommentProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'comment',
+    collection: 'comments',
     id: 'comment',
     prop: 'commentDoc',
   }),

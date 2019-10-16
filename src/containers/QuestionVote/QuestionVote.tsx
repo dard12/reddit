@@ -23,7 +23,7 @@ function QuestionVote(props: QuestionVoteProps) {
     { cachedResult: questionDoc },
   );
 
-  useLoadDocs({ collection: 'question', result, loadDocsAction });
+  useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   const vote = _.get(questionDoc, 'vote');
   const upVote = () => setMyVote(1);
@@ -40,7 +40,7 @@ function QuestionVote(props: QuestionVoteProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'question',
+    collection: 'questions',
     id: 'question',
     prop: 'questionDoc',
   }),

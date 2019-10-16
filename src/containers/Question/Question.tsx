@@ -22,7 +22,7 @@ function Question(props: QuestionProps) {
     { cachedResult: questionDoc },
   );
 
-  useLoadDocs({ collection: 'question', result, loadDocsAction });
+  useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   if (!questionDoc) {
     return null;
@@ -58,7 +58,7 @@ function Question(props: QuestionProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'question',
+    collection: 'questions',
     id: 'question',
     prop: 'questionDoc',
   }),

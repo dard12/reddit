@@ -24,7 +24,7 @@ function CommentVote(props: CommentVoteProps) {
     { cachedResult: commentDoc },
   );
 
-  useLoadDocs({ collection: 'comment', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
@@ -40,7 +40,7 @@ function CommentVote(props: CommentVoteProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'comment',
+    collection: 'comments',
     id: 'comment',
     prop: 'commentDoc',
   }),

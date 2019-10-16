@@ -25,7 +25,7 @@ function QuestionPage(props: QuestionPageProps) {
     { cachedResult: questionDoc },
   );
 
-  useLoadDocs({ collection: 'question', result, loadDocsAction });
+  useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   const response_count = _.get(questionDoc, 'response_count');
   const meta_count = _.get(questionDoc, 'meta_count');
@@ -58,7 +58,7 @@ function QuestionPage(props: QuestionPageProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'question',
+    collection: 'questions',
     id: 'question',
     prop: 'questionDoc',
   }),

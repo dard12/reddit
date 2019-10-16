@@ -1,0 +1,7 @@
+@import '../../template.scss';
+
+.questionRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $margin-2;
+}

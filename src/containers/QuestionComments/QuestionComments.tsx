@@ -15,7 +15,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   const { question, loadDocsAction } = props;
   const { result } = useAxiosGet('/api/comment', { question_id: question });
 
-  useLoadDocs({ collection: 'comment', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!result) {
     return null;
