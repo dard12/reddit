@@ -20,7 +20,7 @@ export async function hashPassword(password: string) {
 }
 
 const passwordStrategy = new LocalStrategy(
-  async (user_name, password, done) => {
+  async (user_name, salt_password, done) => {
     let user;
 
     try {
@@ -38,7 +38,10 @@ const passwordStrategy = new LocalStrategy(
     }
 
     try {
-      const verified = await bcrypt.compare(password, _.get(user, 'password'));
+      const verified = await bcrypt.compare(
+        salt_password,
+        _.get(user, 'salt_password'),
+      );
 
       if (verified) {
         done(null, user);
@@ -131,12 +134,12 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { user_name, password, email } = req.body;
+  const { username, password, email } = req.body;
 
   const user = await pg
     .first('users.id')
     .from('users')
-    .where({ user_name })
+    .where({ user_name: username })
     .orWhere({ email });
 
   if (user) {
@@ -145,18 +148,18 @@ router.post('/register', async (req, res) => {
     const id = uuid();
 
     try {
-      const hash = await hashPassword(password);
+      const salt_password = await hashPassword(password);
 
-      if (user_name.match(/[^a-z0-9]/gi)) {
+      if (username.match(/[^a-z0-9]/gi)) {
         throw new Error('Invalid Username');
       }
 
       const users: UserDoc[] = await pg
         .insert({
           id,
-          user_name,
+          user_name: username,
           email,
-          password: hash,
+          salt_password,
           created_at: new Date(),
         })
         .into('users')
@@ -170,7 +173,7 @@ router.post('/register', async (req, res) => {
       }
     } catch (error) {
       res.status(400).send();
-      Sentry.captureException({ username: user_name, email });
+      Sentry.captureException({ username, email });
       throw error;
     }
   }
