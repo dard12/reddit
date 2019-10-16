@@ -2,13 +2,6 @@
 
 .commentText {
   @extend .card;
-  display: flex;
-  padding: 0;
-
-  textarea {
-    width: 100%;
-    padding: $margin-3;
-  }
 }
 
 .commentAction {

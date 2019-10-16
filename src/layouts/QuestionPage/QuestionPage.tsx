@@ -29,7 +29,6 @@ function QuestionPage(props: QuestionPageProps) {
 
   const response_count = _.get(questionDoc, 'response_count');
   const meta_count = _.get(questionDoc, 'meta_count');
-  const questionLink = `question/${question}`;
 
   return (
     <div className={styles.questionPage}>
@@ -37,15 +36,12 @@ function QuestionPage(props: QuestionPageProps) {
 
       <div>
         <div className={styles.sectionTabs}>
-          <NavLink
-            to={`/${questionLink}/responses`}
-            activeClassName={styles.active}
-          >
-            <span>Answer Discussion {`(${response_count})`}</span>
+          <NavLink to="responses" activeClassName={styles.active}>
+            Answer Discussion {`(${response_count})`}
           </NavLink>
 
-          <NavLink to={`/${questionLink}/meta`} activeClassName={styles.active}>
-            <span>Meta Discussion {`(${meta_count})`}</span>
+          <NavLink to="meta" activeClassName={styles.active}>
+            Meta Discussion {`(${meta_count})`}
           </NavLink>
         </div>
 
