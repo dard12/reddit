@@ -5,7 +5,7 @@ router.get('/api/question', async (req, res) => {
   const { query } = req;
   const docs = await pg
     .select('*')
-    .from('question')
+    .from('questions')
     .where(query);
 
   res.status(200).send({ docs });

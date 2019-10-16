@@ -1,6 +1,9 @@
 export interface UserDoc {
   id: number;
-  username: string;
+  user_name: string;
+  full_name: string;
+  photo_link: string;
+  summary: string;
 }
 
 export interface QuestionDoc {
@@ -10,9 +13,9 @@ export interface QuestionDoc {
   tags: string[];
   response_count: number;
   meta_count: number;
-  vote: number;
+  up_vote: number;
+  down_vote: number;
 }
-
 export interface CommentDoc {
   id: number;
   content: string;
@@ -21,5 +24,7 @@ export interface CommentDoc {
   question_id: number;
   parent_id?: number;
   created_at: Date;
-  vote: number;
+  up_vote: number;
+  down_vote: number;
 }
+s;

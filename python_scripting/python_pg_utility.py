@@ -263,3 +263,87 @@ def pkey_upsert(cur, perm_table, temp_table, pkeys, all_cols):
                         pkey_eq))
 
     cur.execute(step_2_q)
+
+
+
+def print_sql_rows(rows, max_col_size=30, seperate=None, atleast=None,
+                   print_row_num=True):
+    """ prints rows excellified """
+    if not rows:
+        return
+
+    if len({len(row) for row in rows}) > 1:
+        padded_rows = []
+        maxi = max(len(r) for r in rows)
+        for row in rows:
+            if len(row) < maxi:
+                new_row = row + ['' for _ in range(maxi - len(row))]
+                padded_rows.append(new_row)
+            else:
+                padded_rows.append(row)
+        rows = padded_rows
+
+    if seperate is not None:
+        new_rows = []
+        rows.sort(key=lambda x: x[seperate])
+        last = None
+        for row in rows:
+            if row[seperate] != last:
+                new_rows.append(['' for _ in range(len(rows[0]))])
+                last = row[seperate]
+            new_rows.append(row)
+        rows = new_rows
+
+    maxies = [0 for _ in range(len(rows[0]))]
+    for row in rows:
+        for i, elem in enumerate(row):
+            maxies[i] = max(maxies[i], len(str(elem)))
+
+    s = ''
+    buff_up = 0
+    for m in maxies:
+        if atleast:
+            buff_up = max(min(max_col_size, m), atleast)
+        s += ' %' + str(max(min(m, max_col_size), buff_up)) + 's |'
+
+    if print_row_num:
+        s = '%4s |' + s
+    for idx, row in enumerate(rows):
+
+        trimed = []
+        for ind, elem in enumerate(row):
+            cut_off = min(maxies[ind], max_col_size)
+            padded_elem = str(elem)[:cut_off]
+
+            if len(padded_elem) < cut_off:
+                padded_elem += ' ' * (cut_off - len(padded_elem))
+            trimed.append(padded_elem)
+
+        if print_row_num:
+            trimed = tuple([idx] + list(trimed))
+        print(s % trimed)
+
+def print_order_sql_rows(rows, cols_to_sort=[0], siz=45, sort_lambda=None):
+    if not isinstance(cols_to_sort, list):
+        cols_to_sort = [cols_to_sort]
+    for i in range(len(cols_to_sort)):
+        idx = cols_to_sort[-(i + 1)]
+        typ_cnt = {type(r[idx]): 0 for r in rows}
+        for r in rows:
+            typ_cnt[type(r[idx])] += 1
+        maj_type = sorted([(t,c) for t,c in typ_cnt.items()], key=lambda x:-x[1])[0][0]
+        swap = {int: -1,
+                float: -1,
+                str: '',
+                bool: False,
+                list: [],
+                datetime: datetime(1970, 1,1)}[maj_type]
+        for r_idx, r in enumerate(rows):
+            if type(r[idx]) != maj_type:
+                r_l = list(r)
+                r_l[idx] = swap
+                rows[r_idx] = tuple(r_l)
+        rows.sort(key=lambda x:x[idx])
+    if sort_lambda:
+        rows.sort(key=sort_lambda)
+    print_sql_rows(rows, siz)
