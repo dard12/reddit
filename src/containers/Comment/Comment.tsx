@@ -1,15 +1,36 @@
 import React, { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown, IoIosAddCircle } from 'react-icons/io';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import styles from './Comment.module.scss';
+import { CommentDoc } from '../../../src-server/models';
+import { loadDocsAction } from '../../redux/actions';
+import { createDocSelector } from '../../redux/selectors';
+import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 
 interface CommentProps {
-  children?: any;
+  comment: number;
+  allComments: CommentDoc[];
+  commentDoc?: CommentDoc;
+  loadDocsAction?: Function;
 }
 
 function Comment(props: CommentProps) {
-  const { children } = props;
+  const { comment, allComments, commentDoc, loadDocsAction } = props;
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
+
+  const { result } = useAxiosGet('/api/comment', { id: comment });
+
+  useLoadDocs({ collection: 'comment', result, loadDocsAction });
+
+  if (!commentDoc) {
+    return null;
+  }
+
+  const { content } = commentDoc;
+  const childrenComments = _.filter(allComments, { parent_id: comment });
+  const childrenIds = _.map(childrenComments, 'id');
 
   return (
     <div className={styles.comment}>
@@ -45,21 +66,16 @@ function Comment(props: CommentProps) {
               </span>
             </div>
 
-            <div>
-              Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-              commodo consequat. Duis aute irure dolor. Quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor. Quis nostrud exercitation
-              ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor.
-            </div>
+            <div>{content}</div>
 
             <div className={styles.commentFooter}>
               <div className={styles.reply}> Reply </div>
               <div className={styles.timestamp}>2 hours ago</div>
             </div>
 
-            {children}
+            {_.map(childrenIds, id => (
+              <Comment comment={id} allComments={allComments} />
+            ))}
           </div>
         </React.Fragment>
       )}
@@ -67,4 +83,11 @@ function Comment(props: CommentProps) {
   );
 }
 
-export default Comment;
+export default connect(
+  createDocSelector({
+    collection: 'comment',
+    id: 'comment',
+    prop: 'commentDoc',
+  }),
+  { loadDocsAction },
+)(Comment);
