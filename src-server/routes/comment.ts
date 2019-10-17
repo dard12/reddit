@@ -21,7 +21,16 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     body.parent_id = id;
   }
 
-  await pg.insert({ ...body, id, author_id: user.id }).into('comments');
+  await pg
+    .insert({
+      ...body,
+      id,
+      author_id: user.id,
+      up_vote: 0,
+      down_vote: 0,
+      created_at: new Date(),
+    })
+    .into('comments');
 
   res.status(200).send();
 });
