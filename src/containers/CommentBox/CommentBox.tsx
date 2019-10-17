@@ -4,7 +4,6 @@ import _ from 'lodash';
 import styles from './CommentBox.module.scss';
 import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
-import { getQueryParams } from '../../history';
 
 interface CommentBoxProps {
   question: number;
@@ -42,12 +41,23 @@ function CommentBox(props: CommentBoxProps) {
     }
   };
 
+  let placeholder;
+
+  if (parent_id) {
+    placeholder = 'Write your reply';
+  } else if (type === 'response') {
+    placeholder = 'How would you respond to this question?';
+  } else {
+    placeholder =
+      'Is this a good interview question? What makes this a good or bad question?';
+  }
+
   return (
     <React.Fragment>
       <div className={styles.commentText}>
         <TextareaAutosize
-          placeholder="Write a comment…"
-          minRows={4}
+          placeholder={placeholder}
+          minRows={2}
           value={content}
           onChange={onChange}
         />
@@ -55,7 +65,7 @@ function CommentBox(props: CommentBoxProps) {
           {actions}
 
           <Button className="btn" onClick={onClickPublish}>
-            Comment
+            {parent_id ? 'Reply' : 'Comment'}
           </Button>
         </div>
       </div>
