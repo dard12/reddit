@@ -46,6 +46,10 @@ function Comment(props: CommentProps) {
     ({ id, parent_id }) => id !== comment && parent_id === comment,
   );
 
+  const afterSubmit = () => {
+    toggleReplying();
+  };
+
   return (
     <div className={styles.comment}>
       {collapsed && (
@@ -103,7 +107,7 @@ function Comment(props: CommentProps) {
                   question={question_id}
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
-                  afterSubmit={toggleReplying}
+                  afterSubmit={afterSubmit}
                 />
               </div>
             )}
