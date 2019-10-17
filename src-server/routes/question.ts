@@ -6,7 +6,12 @@ import getId from '../utility';
 router.get('/api/question', async (req, res) => {
   const { query } = req;
   const { sort } = query;
+  let search = null;
+  if (query.search) {
+    search = JSON.parse(query.search);
+  }
   const where = _.omit(query, ['search', 'sort']);
+
   const pgQuery = pg
     .select('*')
     .from('questions')
