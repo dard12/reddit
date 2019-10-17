@@ -38,7 +38,7 @@ function QuestionPage(props: QuestionPageProps) {
 
   return (
     <div className={styles.questionPage}>
-      <Question question={question} />
+      <Question question={question} disableActions />
 
       <div>
         <QuestionTabs allTypes={allTypes} />

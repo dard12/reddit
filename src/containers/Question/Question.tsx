@@ -10,12 +10,13 @@ import { loadDocsAction } from '../../redux/actions';
 
 interface QuestionProps {
   question: number;
+  disableActions?: boolean;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }
 
 function Question(props: QuestionProps) {
-  const { question, questionDoc, loadDocsAction } = props;
+  const { question, disableActions, questionDoc, loadDocsAction } = props;
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -45,20 +46,22 @@ function Question(props: QuestionProps) {
           </Link>
         </div>
         <div className={styles.itemDescription}>{description}</div>
-        <div className={styles.itemActions}>
-          <Link
-            to={`${questionLink}?type=response`}
-            className={styles.itemMeta}
-          >
-            {response_count} responses
-          </Link>
+        {!disableActions && (
+          <div className={styles.itemActions}>
+            <Link
+              to={`${questionLink}?type=response`}
+              className={styles.itemMeta}
+            >
+              {response_count} responses
+            </Link>
 
-          <span>•</span>
+            <span>•</span>
 
-          <Link to={`${questionLink}?type=meta`} className={styles.itemMeta}>
-            {meta_count} meta-comments
-          </Link>
-        </div>
+            <Link to={`${questionLink}?type=meta`} className={styles.itemMeta}>
+              {meta_count} meta-comments
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
