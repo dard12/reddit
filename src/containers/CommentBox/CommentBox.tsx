@@ -4,6 +4,7 @@ import _ from 'lodash';
 import styles from './CommentBox.module.scss';
 import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
+import { getQueryParams } from '../../history';
 
 interface CommentBoxProps {
   question: number;
@@ -16,6 +17,7 @@ function CommentBox(props: CommentBoxProps) {
   const { question, parent_id, actions, afterSubmit } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const type = getQueryParams('type');
 
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.currentTarget.value);
@@ -26,7 +28,12 @@ function CommentBox(props: CommentBoxProps) {
       setIsSubmitting(true);
 
       axios
-        .post('/api/comment', { question_id: question, parent_id, content })
+        .post('/api/comment', {
+          question_id: question,
+          parent_id,
+          content,
+          type,
+        })
         .then(() => {
           setIsSubmitting(false);
           setContent('');

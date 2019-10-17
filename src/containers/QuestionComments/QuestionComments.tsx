@@ -5,6 +5,7 @@ import Comment from '../../containers/Comment/Comment';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
+import { getQueryParams } from '../../history';
 
 interface QuestionCommentsProps {
   question: number;
@@ -13,7 +14,11 @@ interface QuestionCommentsProps {
 
 function QuestionComments(props: QuestionCommentsProps) {
   const { question, loadDocsAction } = props;
-  const { result } = useAxiosGet('/api/comment', { question_id: question });
+  const type = getQueryParams('type');
+  const { result } = useAxiosGet('/api/comment', {
+    question_id: question,
+    type,
+  });
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 

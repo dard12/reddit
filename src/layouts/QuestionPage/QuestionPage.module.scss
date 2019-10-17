@@ -7,12 +7,6 @@
   grid-gap: $margin-4;
 }
 
-.sectionTabs {
-  @extend .tabs;
-  text-align: center;
-  margin-bottom: $margin-3;
-}
-
 .heading {
   font-weight: 600;
 }

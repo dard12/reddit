@@ -37,19 +37,25 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
+          <Link
+            to={`${questionLink}?type=response`}
+            className={styles.itemMeta}
+          >
             <span>{title}</span>
           </Link>
         </div>
         <div className={styles.itemDescription}>{description}</div>
         <div className={styles.itemActions}>
-          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
+          <Link
+            to={`${questionLink}?type=response`}
+            className={styles.itemMeta}
+          >
             {response_count} responses
           </Link>
 
           <span>•</span>
 
-          <Link to={`${questionLink}/meta`} className={styles.itemMeta}>
+          <Link to={`${questionLink}?type=meta`} className={styles.itemMeta}>
             {meta_count} meta-comments
           </Link>
         </div>
