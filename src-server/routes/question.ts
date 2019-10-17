@@ -23,8 +23,7 @@ router.get('/api/question', async (req, res) => {
 
 router.post('/api/question', requireAuth, async (req, res) => {
   const { body, user } = req;
-
-  await pg
+  const docs = await pg
     .insert({
       ...body,
       id: getId(),
@@ -34,7 +33,8 @@ router.post('/api/question', requireAuth, async (req, res) => {
       up_vote: 0,
       down_vote: 0,
     })
-    .into('questions');
+    .into('questions')
+    .returning('*');
 
-  res.status(200).send();
+  res.status(200).send({ docs });
 });

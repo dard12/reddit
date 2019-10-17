@@ -5,6 +5,7 @@ import styles from './AddQuestion.module.scss';
 import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
 import { Input } from '../../components/Input/Input';
+import history from '../../history';
 
 interface AddQuestionProps {
   closeModal: Function;
@@ -26,8 +27,10 @@ function AddQuestion(props: AddQuestionProps) {
     if (_.size(_.trim(title)) && !isSubmitting) {
       setIsSubmitting(true);
 
-      axios.post('/api/question', { title, description }).then(() => {
+      axios.post('/api/question', { title, description }).then(res => {
+        const id = _.get(res, 'data.docs[0].id');
         setIsSubmitting(false);
+        history.push(`/question/${id}`);
         closeModal();
       });
     }
