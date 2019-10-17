@@ -9,3 +9,23 @@
     margin-left: $margin-2;
   }
 }
+
+.addQuestion {
+  @extend .card;
+  display: grid;
+  grid-gap: $margin-3;
+  width: $width-2;
+}
+
+.questionTitle {
+  border: 0;
+  border-bottom: 2px solid $dark-9;
+  padding: $margin-3 0;
+  font-weight: 600;
+  font-family: $serif;
+  font-size: $text-3;
+
+  &::placeholder {
+    color: $dark-8;
+  }
+}

@@ -7,10 +7,12 @@ import { axios } from '../../App';
 
 interface CommentBoxProps {
   question: number;
+  parent_id?: number;
+  actions?: any;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question } = props;
+  const { question, parent_id, actions } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,7 +25,7 @@ function CommentBox(props: CommentBoxProps) {
       setIsSubmitting(true);
 
       axios
-        .post('/api/comment', { question_id: question, content })
+        .post('/api/comment', { question_id: question, parent_id, content })
         .then(() => {
           setIsSubmitting(false);
           setContent('');
@@ -40,11 +42,13 @@ function CommentBox(props: CommentBoxProps) {
           value={content}
           onChange={onChange}
         />
-      </div>
-      <div className={styles.commentAction}>
-        <Button className="btn" onClick={onClickPublish}>
-          Comment
-        </Button>
+        <div className={styles.commentAction}>
+          {actions}
+
+          <Button className="btn" onClick={onClickPublish}>
+            Comment
+          </Button>
+        </div>
       </div>
     </React.Fragment>
   );
