@@ -8,6 +8,7 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import HomeTabs from '../../containers/HomeTabs/HomeTabs';
 import { getQueryParams } from '../../history';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface HomeProps {
   loadDocsAction?: Function;
@@ -28,20 +29,22 @@ function Home(props: HomeProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  if (!result) {
-    return null;
-  }
-
-  const docs = result.docs;
+  const docs = _.get(result, 'docs');
 
   return (
     <div className={styles.homePage}>
       <SearchBar />
       <HomeTabs />
 
-      {_.map(docs, ({ id }) => (
-        <Question question={id} key={id} />
-      ))}
+      {result ? (
+        _.map(docs, ({ id }) => <Question question={id} key={id} />)
+      ) : (
+        <React.Fragment>
+          {_.times(5, index => (
+            <Skeleton key={index} count={4} />
+          ))}
+        </React.Fragment>
+      )}
     </div>
   );
 }

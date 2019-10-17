@@ -7,6 +7,7 @@ import { QuestionDoc } from '../../../src-server/models';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface QuestionProps {
   question: number;
@@ -26,7 +27,7 @@ function Question(props: QuestionProps) {
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   if (!questionDoc) {
-    return null;
+    return <Skeleton card count={4} />;
   }
 
   const { title, description, meta_count, response_count } = questionDoc;

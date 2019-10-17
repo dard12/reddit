@@ -5,6 +5,7 @@ import Comment from '../../containers/Comment/Comment';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface QuestionCommentsProps {
   question: number;
@@ -23,7 +24,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!result) {
-    return null;
+    return <Skeleton count={4} />;
   }
 
   const docs: CommentDoc[] = result.docs;
