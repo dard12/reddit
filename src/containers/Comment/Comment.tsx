@@ -103,6 +103,7 @@ function Comment(props: CommentProps) {
                   question={question_id}
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
+                  afterSubmit={toggleReplying}
                 />
               </div>
             )}
