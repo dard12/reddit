@@ -14,7 +14,7 @@ router.get('/api/comment', async (req, res) => {
 
 router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user } = req;
-  const { parent_id } = body;
+  const { parent_id, question_id, type } = body;
   const id = getId();
 
   if (!parent_id) {
@@ -33,4 +33,17 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     .into('comments');
 
   res.status(200).send();
+
+  const targetCount = type === 'response' ? 'response_count' : 'meta_count';
+  const questionDoc = await pg
+    .first(targetCount)
+    .from('questions')
+    .where({ id: question_id });
+
+  const newCount = questionDoc[targetCount] + 1;
+
+  await pg
+    .update({ [targetCount]: newCount })
+    .from('questions')
+    .where({ id: question_id });
 });
