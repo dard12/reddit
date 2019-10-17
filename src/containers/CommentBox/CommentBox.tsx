@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import styles from './CommentBox.module.scss';
 import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
+import { userSelector } from '../../redux/selectors';
+import SignUp from '../../components/SignUp/SignUp';
 
 interface CommentBoxProps {
   question: number;
   type: 'response' | 'meta';
+  user?: number;
   parent_id?: number;
   actions?: any;
   afterSubmit?: Function;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question, type, parent_id, actions, afterSubmit } = props;
+  const { question, type, parent_id, user, actions, afterSubmit } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -55,22 +59,32 @@ function CommentBox(props: CommentBoxProps) {
   return (
     <React.Fragment>
       <div className={styles.commentText}>
-        <TextareaAutosize
-          placeholder={placeholder}
-          minRows={2}
-          value={content}
-          onChange={onChange}
-        />
-        <div className={styles.commentAction}>
-          {actions}
+        {!user && (
+          <React.Fragment>
+            To comment please <SignUp />.
+          </React.Fragment>
+        )}
 
-          <Button className="btn" onClick={onClickPublish}>
-            {parent_id ? 'Reply' : 'Comment'}
-          </Button>
-        </div>
+        {user && (
+          <React.Fragment>
+            <TextareaAutosize
+              placeholder={placeholder}
+              minRows={2}
+              value={content}
+              onChange={onChange}
+            />
+            <div className={styles.commentAction}>
+              {actions}
+
+              <Button className="btn" onClick={onClickPublish}>
+                {parent_id ? 'Reply' : 'Comment'}
+              </Button>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </React.Fragment>
   );
 }
 
-export default CommentBox;
+export default connect(userSelector)(CommentBox);
