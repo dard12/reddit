@@ -13,6 +13,7 @@ import CommentVote from '../CommentVote/CommentVote';
 import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
 import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
+import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: number;
@@ -45,6 +46,7 @@ function Comment(props: CommentProps) {
     allComments,
     ({ id, parent_id }) => id !== comment && parent_id === comment,
   );
+  const type = getQueryParams('type');
 
   const afterSubmit = () => {
     toggleReplying();
@@ -108,6 +110,7 @@ function Comment(props: CommentProps) {
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
                   afterSubmit={afterSubmit}
+                  type={type}
                 />
               </div>
             )}

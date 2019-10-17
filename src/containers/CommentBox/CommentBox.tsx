@@ -8,16 +8,16 @@ import { getQueryParams } from '../../history';
 
 interface CommentBoxProps {
   question: number;
+  type: 'response' | 'meta';
   parent_id?: number;
   actions?: any;
   afterSubmit?: Function;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question, parent_id, actions, afterSubmit } = props;
+  const { question, type, parent_id, actions, afterSubmit } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const type = getQueryParams('type');
 
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.currentTarget.value);

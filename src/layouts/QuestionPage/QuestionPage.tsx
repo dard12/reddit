@@ -10,6 +10,7 @@ import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import QuestionComments from '../../containers/QuestionComments/QuestionComments';
 import QuestionTabs from '../../containers/QuestionTabs/QuestionTabs';
+import { getQueryParams } from '../../history';
 
 interface QuestionPageProps {
   question: number;
@@ -33,6 +34,7 @@ function QuestionPage(props: QuestionPageProps) {
     { label: `Answer Discussion (${response_count})`, value: 'response' },
     { label: `Meta Discussion (${meta_count})`, value: 'meta' },
   ];
+  const type = getQueryParams('type');
 
   return (
     <div className={styles.questionPage}>
@@ -40,10 +42,10 @@ function QuestionPage(props: QuestionPageProps) {
 
       <div>
         <QuestionTabs allTypes={allTypes} />
-        <CommentBox question={question} />
+        <CommentBox question={question} type={type} />
       </div>
 
-      <QuestionComments question={question} />
+      <QuestionComments question={question} type={type} />
     </div>
   );
 }

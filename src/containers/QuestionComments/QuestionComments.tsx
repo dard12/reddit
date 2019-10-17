@@ -5,20 +5,20 @@ import Comment from '../../containers/Comment/Comment';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
-import { getQueryParams } from '../../history';
 
 interface QuestionCommentsProps {
   question: number;
+  type: 'response' | 'meta';
   loadDocsAction?: Function;
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, loadDocsAction } = props;
-  const type = getQueryParams('type');
-  const { result } = useAxiosGet('/api/comment', {
-    question_id: question,
-    type,
-  });
+  const { question, type, loadDocsAction } = props;
+  const { result } = useAxiosGet(
+    '/api/comment',
+    { question_id: question, type },
+    { reloadOnChange: true },
+  );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
