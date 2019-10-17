@@ -8,6 +8,11 @@
 .commentContent {
   display: grid;
   grid-gap: $margin-1;
+  width: 100%;
+}
+
+.replyBox {
+  margin: $margin-2 0;
 }
 
 .author {

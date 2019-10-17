@@ -11,6 +11,8 @@ import UserName from '../UserName/UserName';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
 import CommentVote from '../CommentVote/CommentVote';
 import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
+import CommentBox from '../CommentBox/CommentBox';
+import { Button } from '../../components/Button/Button';
 
 interface CommentProps {
   comment: number;
@@ -22,7 +24,9 @@ interface CommentProps {
 function Comment(props: CommentProps) {
   const { comment, allComments, commentDoc, loadDocsAction } = props;
   const [collapsed, setCollapsed] = useState(false);
+  const [replying, setReplying] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
+  const toggleReplying = () => setReplying(!replying);
 
   const { result } = useAxiosGet(
     '/api/comment',
@@ -36,7 +40,7 @@ function Comment(props: CommentProps) {
     return null;
   }
 
-  const { author_id, content, created_at } = commentDoc;
+  const { author_id, content, created_at, question_id } = commentDoc;
   const childrenComments = _.filter(
     allComments,
     ({ id, parent_id }) => id !== comment && parent_id === comment,
@@ -85,11 +89,23 @@ function Comment(props: CommentProps) {
             <div>{content}</div>
 
             <div className={styles.commentFooter}>
-              <div className={styles.reply}> Reply </div>
+              <div className={styles.reply} onClick={toggleReplying}>
+                Reply
+              </div>
               <div className={styles.timestamp}>
                 <TimeAgo timestamp={created_at} />
               </div>
             </div>
+
+            {replying && (
+              <div className={styles.replyBox}>
+                <CommentBox
+                  question={question_id}
+                  parent_id={comment}
+                  actions={<Button onClick={toggleReplying}>Cancel</Button>}
+                />
+              </div>
+            )}
 
             {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
