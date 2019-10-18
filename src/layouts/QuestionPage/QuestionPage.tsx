@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import styles from './QuestionPage.module.scss';
@@ -20,6 +20,9 @@ interface QuestionPageProps {
 
 function QuestionPage(props: QuestionPageProps) {
   const { question, questionDoc, loadDocsAction } = props;
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+  const commentOnSubmit = () => setLastUpdate(new Date());
+
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -42,10 +45,10 @@ function QuestionPage(props: QuestionPageProps) {
 
       <div>
         <QuestionTabs allTypes={allTypes} />
-        <CommentBox question={question} type={type} />
+        <CommentBox question={question} type={type} onSubmit={commentOnSubmit} />
       </div>
 
-      <QuestionComments question={question} type={type} />
+      <QuestionComments question={question} type={type} lastUpdate={lastUpdate} />
     </div>
   );
 }
