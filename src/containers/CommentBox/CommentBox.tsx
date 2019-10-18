@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import styles from './CommentBox.module.scss';
 import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
+import { userSelector } from '../../redux/selectors';
+import SignUp from '../../components/SignUp/SignUp';
 
 interface CommentBoxProps {
   question: number;
+  type: 'response' | 'meta';
+  user?: number;
   parent_id?: number;
   actions?: any;
+  afterSubmit?: Function;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question, parent_id, actions } = props;
+  const { question, type, parent_id, user, actions, afterSubmit } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,33 +31,60 @@ function CommentBox(props: CommentBoxProps) {
       setIsSubmitting(true);
 
       axios
-        .post('/api/comment', { question_id: question, parent_id, content })
+        .post('/api/comment', {
+          question_id: question,
+          parent_id,
+          content,
+          type,
+        })
         .then(() => {
           setIsSubmitting(false);
           setContent('');
+          afterSubmit && afterSubmit();
         });
     }
   };
 
+  let placeholder;
+
+  if (parent_id) {
+    placeholder = 'Write your reply';
+  } else if (type === 'response') {
+    placeholder = 'How would you respond to this question?';
+  } else {
+    placeholder =
+      'Is this a good interview question? What makes this a good or bad question?';
+  }
+
   return (
     <React.Fragment>
       <div className={styles.commentText}>
-        <TextareaAutosize
-          placeholder="Write a comment…"
-          minRows={4}
-          value={content}
-          onChange={onChange}
-        />
-        <div className={styles.commentAction}>
-          {actions}
+        {!user && (
+          <React.Fragment>
+            To comment please <SignUp />.
+          </React.Fragment>
+        )}
 
-          <Button className="btn" onClick={onClickPublish}>
-            Comment
-          </Button>
-        </div>
+        {user && (
+          <React.Fragment>
+            <TextareaAutosize
+              placeholder={placeholder}
+              minRows={2}
+              value={content}
+              onChange={onChange}
+            />
+            <div className={styles.commentAction}>
+              {actions}
+
+              <Button className="btn" onClick={onClickPublish}>
+                {parent_id ? 'Reply' : 'Comment'}
+              </Button>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </React.Fragment>
   );
 }
 
-export default CommentBox;
+export default connect(userSelector)(CommentBox);

@@ -6,8 +6,8 @@
 }
 
 .itemContent {
-  display: grid;
-  grid-gap: $margin-2;
+  display: flex;
+  flex-direction: column;
   min-width: $width-2;
 }
 
@@ -18,12 +18,18 @@
   font-family: $serif;
   display: block;
   padding-right: $margin-3;
+  padding-bottom: $margin-1;
+  margin-bottom: $margin-2;
   text-decoration: none;
 
   a:hover {
     background-color: $primary-5;
     text-decoration: none;
   }
+}
+
+.itemActions {
+  margin-top: auto;
 }
 
 .itemDescription {

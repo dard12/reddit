@@ -81,6 +81,7 @@ comment_rows  = [
 
 question_rows = [
  {'id': 0,
+  'author_id': 0,
   'title': 'What is your preferred method of documenting code?',
   'description': '',
   'tags': ['coordination'],
@@ -90,6 +91,7 @@ question_rows = [
   'down_vote': 4
  },
  {'id': 1,
+    'author_id': 0,
   'title': 'How often do you read about new technologies and paradigms?',
   'description': 'What are some specific technologies you’ve read about and how production-ready do you think they are?',
   'tags': ['technical'],
@@ -99,6 +101,7 @@ question_rows = [
   'down_vote': 420,
  },
  {'id': 2,
+   'author_id': 0,
   'title': 'How do you like to handle technical debt?',
   'description': 'How do you keep yourself productive?',
   'tags': ['technical'],
@@ -108,6 +111,7 @@ question_rows = [
   'down_vote': 1
  },
  {'id': 3,
+   'author_id': 0,
   'title': 'What is your favorite programming language?',
   'description': 'Pick your favorite language, explain why you love it!',
   'tags': ['technical'],
@@ -117,6 +121,7 @@ question_rows = [
   'down_vote': 4
  },
  {'id': 4,
+   'author_id': 0,
   'title': 'How important is consistent code style to you?',
   'description': 'Would you invest in linting tools? Would you block code merges because of style issues?',
   'tags': ['coordination'],
@@ -126,6 +131,7 @@ question_rows = [
   'down_vote': 5
  },
  {'id': 5,
+  'author_id': 0,
   'title': "Take some time to read up on Kotlin's built in nullabilty operators, !! and ?.",
   'description': 'When should you use !! and ?. Give some interesting edge cases',
   'tags': ['technical'],
@@ -161,6 +167,7 @@ def build_and_populate_tables(env='test'):
         return """
                CREATE TABLE IF NOT EXISTS questions
                  (id              bigint PRIMARY KEY,
+                  author_id       bigint REFERENCES users (id),
                   title           varchar,
                   description     varchar,
                   tags            varchar Array,
@@ -176,9 +183,9 @@ def build_and_populate_tables(env='test'):
                  (id              bigint PRIMARY KEY,
                   content         varchar,
                   type            comment_type,
-                  author_id       int REFERENCES users (id),
-                  question_id     int REFERENCES questions (id),
-                  parent_id       int REFERENCES comments (id),
+                  author_id       bigint REFERENCES users (id),
+                  question_id     bigint REFERENCES questions (id),
+                  parent_id       bigint REFERENCES comments (id),
                   created_at      timestamp,
                   up_vote         int,
                   down_vote       int,
@@ -188,24 +195,25 @@ def build_and_populate_tables(env='test'):
         return """ 
                 CREATE TABLE IF NOT EXISTS votes
                 (id           bigint PRIMARY KEY,
-                 user_id      int REFERENCES users (id),
+                 user_id      bigint REFERENCES users (id),
                  action       vote_options_type,
-                 subject_id   int,  
+                 subject_id   bigint,  
                  subject_type allowed_subject_types)
                """
 
     tables = [
-      {'table_name': 'questions',
-       'columns': ['id', 'title', 'description', 'tags', 'response_count', 'meta_count', 'up_vote', 'down_vote'],
-       'pkeys': ['id'],
-       'hard_coded_rows': question_rows
-       },
-
       {'table_name': 'users',
        'columns': ['id', 'user_name', 'full_name', 'email', 'salt_password', 'photo_link', 'summary'],
        'pkeys': ['id'],
        'hard_coded_rows':  users_rows,
        },
+      {'table_name': 'questions',
+       'columns': ['id', 'author_id', 'title', 'description', 'tags', 'response_count', 'meta_count', 'up_vote', 'down_vote'],
+       'pkeys': ['id'],
+       'hard_coded_rows': question_rows
+       },
+
+
       {'table_name': 'comments',
        'columns': ['id','content','type','author_id','question_id','parent_id','created_at','up_vote','down_vote'],
        'pkeys': ['id'],
@@ -249,12 +257,15 @@ def build_and_populate_tables(env='test'):
                         all_cols=tb_control['columns'])
     conn.commit()
 
-    # now do the comment counts
+    recompute_counts(cur, conn)
+
+def recompute_counts(cur, conn):
     cur.execute(""" SELECT question_id, type, SUM(1)
                     FROM comments 
                     GROUP BY question_id, type """)
     cnts = cur.fetchall()
-    cur.execute("CREATE TEMP TABLE temp_cnt (qid int, type varchar, cnt int) ")
+    ps(cnts)
+    cur.execute("CREATE TEMP TABLE temp_cnt (qid bigint, type varchar, cnt int) ")
     ppu.bulk_insert(cur=cur,
                     table_name='temp_cnt',
                     columns=['qid', 'type', 'cnt'],
@@ -272,6 +283,8 @@ def build_and_populate_tables(env='test'):
         AND temp_cnt.type = 'meta'
       """)
     conn.commit()
+
+
 
 def py_interact(f_locals):  
     def clear():

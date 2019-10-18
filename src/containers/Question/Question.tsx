@@ -7,15 +7,17 @@ import { QuestionDoc } from '../../../src-server/models';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface QuestionProps {
   question: number;
+  disableActions?: boolean;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }
 
 function Question(props: QuestionProps) {
-  const { question, questionDoc, loadDocsAction } = props;
+  const { question, disableActions, questionDoc, loadDocsAction } = props;
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -25,7 +27,7 @@ function Question(props: QuestionProps) {
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   if (!questionDoc) {
-    return null;
+    return <Skeleton card count={4} />;
   }
 
   const { title, description, meta_count, response_count } = questionDoc;
@@ -37,22 +39,30 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
+          <Link
+            to={`${questionLink}?type=response`}
+            className={styles.itemMeta}
+          >
             <span>{title}</span>
           </Link>
         </div>
         <div className={styles.itemDescription}>{description}</div>
-        <div className={styles.itemActions}>
-          <Link to={`${questionLink}/responses`} className={styles.itemMeta}>
-            {response_count} responses
-          </Link>
+        {!disableActions && (
+          <div className={styles.itemActions}>
+            <Link
+              to={`${questionLink}?type=response`}
+              className={styles.itemMeta}
+            >
+              {response_count} responses
+            </Link>
 
-          <span>•</span>
+            <span>•</span>
 
-          <Link to={`${questionLink}/meta`} className={styles.itemMeta}>
-            {meta_count} meta-comments
-          </Link>
-        </div>
+            <Link to={`${questionLink}?type=meta`} className={styles.itemMeta}>
+              {meta_count} meta-comments
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
