@@ -21,6 +21,13 @@ router.get('/api/question', async (req, res) => {
     pgQuery.orderBy(sort, 'desc');
   }
 
+  if (search) {
+    const tags = _.pullAll(search.tags, ['all']);
+    if (!_.isEmpty(tags)) {
+      pgQuery.whereRaw('tags && ?', [tags]);
+    }
+  }
+
   const docs = await pgQuery;
 
   res.status(200).send({ docs });

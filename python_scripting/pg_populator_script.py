@@ -283,8 +283,7 @@ def recompute_counts(cur, conn):
         AND temp_cnt.type = 'meta'
       """)
     conn.commit()
-
-
+    cur.execute("DROP TABLE   temp_cnt;")
 
 def py_interact(f_locals):  
     def clear():
