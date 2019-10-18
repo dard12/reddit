@@ -18,13 +18,17 @@ function Home(props: HomeProps) {
   const { loadDocsAction } = props;
   const query = getQueryParams('query');
   const tag = getQueryParams('tag');
-  const { result, isReady } = useAxiosGet('/api/question', {
-    search: {
-      text: query,
-      tags: [tag],
+  const { result, isReady } = useAxiosGet(
+    '/api/question',
+    {
+      search: {
+        text: query,
+        tags: [tag],
+      },
+      sort: 'up_vote',
     },
-    sort: 'up_vote',
-  });
+    { reloadOnChange: true },
+  );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
