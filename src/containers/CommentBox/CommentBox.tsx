@@ -14,11 +14,11 @@ interface CommentBoxProps {
   user?: number;
   parent_id?: number;
   actions?: any;
-  afterSubmit?: Function;
+  onSubmit?: Function;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question, type, parent_id, user, actions, afterSubmit } = props;
+  const { question, type, parent_id, user, actions, onSubmit } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -40,7 +40,7 @@ function CommentBox(props: CommentBoxProps) {
         .then(() => {
           setIsSubmitting(false);
           setContent('');
-          afterSubmit && afterSubmit();
+          onSubmit && onSubmit();
         });
     }
   };

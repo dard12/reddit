@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Comment from '../../containers/Comment/Comment';
@@ -10,16 +10,25 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 interface QuestionCommentsProps {
   question: number;
   type: 'response' | 'meta';
+  lastUpdate: Date;
   loadDocsAction?: Function;
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, type, loadDocsAction } = props;
-  const { result } = useAxiosGet(
-    '/api/comment',
-    { question_id: question, type },
-    { reloadOnChange: true },
-  );
+  const { question, type, lastUpdate, loadDocsAction } = props;
+  const [lastLoad, setLastLoad] = useState(new Date());
+  const params = { question_id: question, type };
+  const { result, setParams } = useAxiosGet('/api/comment', params, {
+    reloadOnChange: true,
+    reloadCallback: () => setLastLoad(new Date()),
+  });
+
+  const hasUpdated = lastUpdate && lastUpdate > lastLoad;
+
+  if (hasUpdated) {
+    setParams(params);
+    setLastLoad(new Date());
+  }
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 

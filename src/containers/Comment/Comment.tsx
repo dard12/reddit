@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -26,14 +26,23 @@ function Comment(props: CommentProps) {
   const { comment, allComments, commentDoc, loadDocsAction } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [replying, setReplying] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [lastLoad, setLastLoad] = useState(new Date());
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
+  const params = { id: comment };
 
-  const { result } = useAxiosGet(
-    '/api/comment',
-    { id: comment },
-    { cachedResult: commentDoc },
-  );
+  const { result, setParams } = useAxiosGet('/api/comment', params, {
+    reloadOnChange: true,
+    reloadCallback: () => setLastLoad(new Date()),
+  });
+
+  const hasUpdated = lastUpdate && lastUpdate > lastLoad;
+
+  if (hasUpdated) {
+    setParams(params);
+    setLastLoad(new Date());
+  }
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
@@ -48,7 +57,8 @@ function Comment(props: CommentProps) {
   );
   const type = getQueryParams('type');
 
-  const afterSubmit = () => {
+  const commentOnSubmit = () => {
+    setLastUpdate(new Date());
     toggleReplying();
   };
 
@@ -109,7 +119,7 @@ function Comment(props: CommentProps) {
                   question={question_id}
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
-                  afterSubmit={afterSubmit}
+                  onSubmit={commentOnSubmit}
                   type={type}
                 />
               </div>
