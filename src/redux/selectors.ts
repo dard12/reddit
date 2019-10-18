@@ -27,3 +27,26 @@ export const createDocSelector = ({
     }),
   );
 };
+
+export const createDocListSelector = ({
+  collection,
+  filter,
+  prop,
+}: {
+  collection: string;
+  filter: string;
+  prop: string;
+}) => {
+  return createSelector(
+    [
+      createCollectionSelector(collection),
+      (state: any, props: any) => props[filter],
+    ],
+    (collections, filterDict) => {
+      const collectionDict = collections[collection];
+      const docList = _.filter(collectionDict, filterDict);
+
+      return { [prop]: docList };
+    },
+  );
+};

@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { createSelector } from 'redux-starter-kit';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
-import { createDocSelector } from '../../redux/selectors';
+import {
+  createDocSelector,
+  createDocListSelector,
+} from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import UserName from '../UserName/UserName';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
@@ -17,7 +21,8 @@ import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: number;
-  allComments: CommentDoc[];
+  allCommentsFilter: any;
+  allComments?: CommentDoc[];
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
 }
@@ -128,7 +133,7 @@ function Comment(props: CommentProps) {
             {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
                 comment={id}
-                allComments={allComments}
+                allCommentsFilter={{ question_id }}
                 key={id}
               />
             ))}
@@ -139,12 +144,24 @@ function Comment(props: CommentProps) {
   );
 }
 
+const mapStateToProps = createSelector(
+  [
+    createDocSelector({
+      collection: 'comments',
+      id: 'comment',
+      prop: 'commentDoc',
+    }),
+    createDocListSelector({
+      collection: 'comments',
+      filter: 'allCommentsFilter',
+      prop: 'allComments',
+    }),
+  ],
+  (a, b) => ({ ...a, ...b }),
+);
+
 const ConnectedComment = connect(
-  createDocSelector({
-    collection: 'comments',
-    id: 'comment',
-    prop: 'commentDoc',
-  }),
+  mapStateToProps,
   { loadDocsAction },
 )(Comment);
 

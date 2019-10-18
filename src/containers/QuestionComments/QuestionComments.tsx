@@ -42,7 +42,11 @@ function QuestionComments(props: QuestionCommentsProps) {
   return (
     <div>
       {_.map(rootComments, ({ id }) => (
-        <Comment comment={id} allComments={docs} key={id} />
+        <Comment
+          comment={id}
+          allCommentsFilter={{ question_id: question }}
+          key={id}
+        />
       ))}
     </div>
   );
