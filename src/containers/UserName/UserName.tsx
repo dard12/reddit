@@ -16,7 +16,7 @@ interface UserNameProps {
 
 function UserName(props: UserNameProps) {
   const { user, userDoc, loadDocsAction, plainName } = props;
-  const { result } = useAxiosGet(
+  const { result, isSuccess } = useAxiosGet(
     '/api/user',
     { id: user },
     { cachedResult: userDoc },
@@ -24,7 +24,7 @@ function UserName(props: UserNameProps) {
 
   useLoadDocs({ collection: 'users', result, loadDocsAction });
 
-  if (!userDoc) {
+  if (!userDoc || !isSuccess) {
     return <Skeleton inline />;
   }
 

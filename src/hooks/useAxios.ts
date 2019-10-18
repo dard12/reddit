@@ -30,7 +30,7 @@ export function useAxiosGet(
   const reloadOnChange = _.get(options, 'reloadOnChange');
   const reloadCallback = _.get(options, 'reloadCallback');
 
-  const [isReady, setIsReady] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [result, setResult] = useState<any>(undefined);
   const [params, setParams] = useState(latestParams);
@@ -45,11 +45,11 @@ export function useAxiosGet(
   useEffect(() => {
     let isMounted = true;
 
-    setIsReady(false);
+    setIsSuccess(false);
 
     if (cache) {
       setResult({ docs: [cache] });
-      setIsReady(true);
+      setIsSuccess(true);
     } else {
       axios(url, { method: 'get', params })
         .then(({ data }) => {
@@ -63,13 +63,12 @@ export function useAxiosGet(
             };
 
             setResult(result);
-            setIsReady(true);
+            setIsSuccess(true);
           }
         })
         .catch(error => {
           if (isMounted) {
             setError(error);
-            setIsReady(true);
           }
         });
     }
@@ -79,5 +78,5 @@ export function useAxiosGet(
     };
   }, [url, params, cache]);
 
-  return { isReady, error, result, setParams };
+  return { isSuccess, error, result, setParams };
 }

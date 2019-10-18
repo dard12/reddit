@@ -32,7 +32,7 @@ function Comment(props: CommentProps) {
   const toggleReplying = () => setReplying(!replying);
   const params = { id: comment };
 
-  const { result, setParams } = useAxiosGet('/api/comment', params, {
+  const { result, isSuccess, setParams } = useAxiosGet('/api/comment', params, {
     reloadOnChange: true,
     reloadCallback: () => setLastLoad(new Date()),
   });
@@ -46,7 +46,7 @@ function Comment(props: CommentProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  if (!commentDoc) {
+  if (!commentDoc || !isSuccess) {
     return null;
   }
 

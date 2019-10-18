@@ -18,7 +18,7 @@ interface QuestionProps {
 
 function Question(props: QuestionProps) {
   const { question, disableActions, questionDoc, loadDocsAction } = props;
-  const { result } = useAxiosGet(
+  const { result, isSuccess } = useAxiosGet(
     '/api/question',
     { id: question },
     { cachedResult: questionDoc },
@@ -26,7 +26,7 @@ function Question(props: QuestionProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  if (!questionDoc) {
+  if (!questionDoc || !isSuccess) {
     return <Skeleton card count={4} />;
   }
 

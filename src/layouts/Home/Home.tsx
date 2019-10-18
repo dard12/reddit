@@ -18,7 +18,7 @@ function Home(props: HomeProps) {
   const { loadDocsAction } = props;
   const query = getQueryParams('query');
   const tag = getQueryParams('tag');
-  const { result, isReady } = useAxiosGet(
+  const { result, isSuccess } = useAxiosGet(
     '/api/question',
     {
       search: {
@@ -39,7 +39,7 @@ function Home(props: HomeProps) {
       <SearchBar />
       <HomeTabs />
 
-      {isReady ? (
+      {isSuccess ? (
         _.map(docs, ({ id }) => <Question question={id} key={id} />)
       ) : (
         <React.Fragment>

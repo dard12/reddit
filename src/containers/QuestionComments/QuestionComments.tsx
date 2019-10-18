@@ -18,7 +18,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   const { question, type, lastUpdate, loadDocsAction } = props;
   const [lastLoad, setLastLoad] = useState(new Date());
   const params = { question_id: question, type };
-  const { result, setParams } = useAxiosGet('/api/comment', params, {
+  const { result, isSuccess, setParams } = useAxiosGet('/api/comment', params, {
     reloadOnChange: true,
     reloadCallback: () => setLastLoad(new Date()),
   });
@@ -32,7 +32,7 @@ function QuestionComments(props: QuestionCommentsProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  if (!result) {
+  if (!isSuccess) {
     return <Skeleton count={4} />;
   }
 
