@@ -1,5 +1,13 @@
 @import '../../template.scss';
 
+.addQuestion {
+  @extend .card;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: $width-3;
+  align-items: flex-start;
+}
+
 .questionRow {
   display: flex;
   justify-content: flex-end;
@@ -10,22 +18,32 @@
   }
 }
 
-.addQuestion {
-  @extend .card;
+.questionContainer {
   display: grid;
   grid-gap: $margin-3;
-  width: $width-2;
+  border-left: 2px solid $dark-9;
+  margin-left: $margin-4;
+  padding-left: $margin-4;
+}
+
+.guidelineContainer {
+  display: grid;
+  grid-gap: $margin-2;
 }
 
 .questionTitle {
   border: 0;
   border-bottom: 2px solid $dark-9;
-  padding: $margin-3 0;
+  padding: $margin-2;
   font-weight: 600;
   font-family: $serif;
   font-size: $text-3;
 
   &::placeholder {
     color: $dark-8;
+  }
+
+  &:focus {
+    background-color: $primary-5;
   }
 }

@@ -35,25 +35,41 @@ function AddQuestion(props: AddQuestionProps) {
 
   return (
     <div className={styles.addQuestion}>
-      <Input
-        className={styles.questionTitle}
-        placeholder="Write a question…"
-        value={title}
-        onChange={createOnChange(setTitle)}
-      />
-      <TextareaAutosize
-        placeholder="Write some details for answering this question…"
-        minRows={3}
-        value={description}
-        onChange={createOnChange(setDescription)}
-      />
+      <div className={styles.guidelineContainer}>
+        <div className="heading-0">Community Guidelines</div>
+        <div>
+          <b>1.</b> Be human.
+        </div>
+        <div>
+          <b>2.</b> Search for duplicates before you post.
+        </div>
+        <div>
+          <b>3.</b> Provide thoughtful details.
+        </div>
+      </div>
 
-      <div className={styles.questionRow}>
-        <Button onClick={closeModal}>Cancel</Button>
+      <div className={styles.questionContainer}>
+        <Input
+          className={styles.questionTitle}
+          placeholder="Write a question…"
+          value={title}
+          onChange={createOnChange(setTitle)}
+          autoFocus
+        />
+        <TextareaAutosize
+          placeholder="Add some details to consider when answering this question…"
+          minRows={4}
+          value={description}
+          onChange={createOnChange(setDescription)}
+        />
 
-        <Button className="btn" onClick={onClickPublish}>
-          Post Question
-        </Button>
+        <div className={styles.questionRow}>
+          <Button onClick={closeModal}>Cancel</Button>
+
+          <Button className="btn" onClick={onClickPublish}>
+            Post Question
+          </Button>
+        </div>
       </div>
     </div>
   );
