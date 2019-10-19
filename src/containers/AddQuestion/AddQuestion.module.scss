@@ -8,6 +8,11 @@
   align-items: flex-start;
 }
 
+.addQuestionSignup {
+  @extend .card;
+  padding: $margin-4;
+}
+
 .questionRow {
   display: flex;
   justify-content: flex-end;
