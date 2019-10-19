@@ -20,7 +20,6 @@ interface QuestionPageProps {
 
 function QuestionPage(props: QuestionPageProps) {
   const { question, questionDoc, loadDocsAction } = props;
-
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },

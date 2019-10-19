@@ -18,10 +18,11 @@ interface QuestionCommentsProps {
 
 function QuestionComments(props: QuestionCommentsProps) {
   const { question, rootComments, type, loadDocsAction } = props;
-  const { result, isSuccess } = useAxiosGet('/api/comment', {
-    question_id: question,
-    type,
-  });
+  const { result, isSuccess } = useAxiosGet(
+    '/api/comment',
+    { question_id: question, type },
+    { reloadOnChange: true },
+  );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
@@ -31,16 +32,20 @@ function QuestionComments(props: QuestionCommentsProps) {
 
   return (
     <div>
-      {_.map(rootComments, ({ id }) => (
-        <Comment
-          comment={id}
-          depth={0}
-          childrenFilter={(commentDoc: CommentDoc) =>
-            commentDoc.parent_id === id && commentDoc.id !== id
-          }
-          key={id}
-        />
-      ))}
+      {_.isEmpty(rootComments) ? (
+        <div className="card">No comments yet.</div>
+      ) : (
+        _.map(rootComments, ({ id }) => (
+          <Comment
+            comment={id}
+            depth={0}
+            childrenFilter={(commentDoc: CommentDoc) =>
+              commentDoc.parent_id === id && commentDoc.id !== id
+            }
+            key={id}
+          />
+        ))
+      )}
     </div>
   );
 }
