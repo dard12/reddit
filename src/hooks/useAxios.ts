@@ -51,7 +51,8 @@ export function useAxiosGet(
       setResult({ docs: [cache] });
       setIsSuccess(true);
     } else {
-      axios(url, { method: 'get', params })
+      axios
+        .get(url, { params })
         .then(({ data }) => {
           if (isMounted) {
             const result = {

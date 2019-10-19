@@ -21,7 +21,7 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     body.parent_id = id;
   }
 
-  await pg
+  const docs = await pg
     .insert({
       ...body,
       id,
@@ -30,9 +30,10 @@ router.post('/api/comment', requireAuth, async (req, res) => {
       down_vote: 0,
       created_at: new Date(),
     })
-    .into('comments');
+    .into('comments')
+    .returning('*');
 
-  res.status(200).send();
+  res.status(200).send({ docs });
 
   const targetCount = type === 'response' ? 'response_count' : 'meta_count';
   const questionDoc = await pg

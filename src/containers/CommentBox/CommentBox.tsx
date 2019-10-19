@@ -7,6 +7,7 @@ import { Button } from '../../components/Button/Button';
 import { axios } from '../../App';
 import { userSelector } from '../../redux/selectors';
 import SignUp from '../../components/SignUp/SignUp';
+import { loadDocsAction } from '../../redux/actions';
 
 interface CommentBoxProps {
   question: number;
@@ -15,10 +16,19 @@ interface CommentBoxProps {
   parent_id?: number;
   actions?: any;
   onSubmit?: Function;
+  loadDocsAction?: Function;
 }
 
 function CommentBox(props: CommentBoxProps) {
-  const { question, type, parent_id, user, actions, onSubmit } = props;
+  const {
+    question,
+    type,
+    parent_id,
+    user,
+    actions,
+    onSubmit,
+    loadDocsAction,
+  } = props;
   const [content, setContent] = useState<string | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,9 +47,11 @@ function CommentBox(props: CommentBoxProps) {
           content,
           type,
         })
-        .then(() => {
+        .then(result => {
+          const { docs } = result.data;
           setIsSubmitting(false);
           setContent('');
+          loadDocsAction && loadDocsAction({ name: 'comments', docs });
           onSubmit && onSubmit();
         });
     }
@@ -87,4 +99,7 @@ function CommentBox(props: CommentBoxProps) {
   );
 }
 
-export default connect(userSelector)(CommentBox);
+export default connect(
+  userSelector,
+  { loadDocsAction },
+)(CommentBox);
