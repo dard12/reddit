@@ -21,6 +21,7 @@ import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: number;
+  depth: number;
   childrenFilter: any;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
@@ -28,8 +29,15 @@ interface CommentProps {
 }
 
 function Comment(props: CommentProps) {
-  const { comment, childrenComments, commentDoc, loadDocsAction } = props;
-  const [collapsed, setCollapsed] = useState(false);
+  const {
+    comment,
+    depth,
+    childrenComments,
+    commentDoc,
+    loadDocsAction,
+  } = props;
+
+  const [collapsed, setCollapsed] = useState(depth === 6 || depth === 12);
   const [replying, setReplying] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
@@ -64,7 +72,7 @@ function Comment(props: CommentProps) {
               <UserName user={author_id} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
-              [ +2 ]
+              [ See More +2 ]
             </span>
           </div>
         </React.Fragment>
@@ -115,6 +123,7 @@ function Comment(props: CommentProps) {
             {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
                 comment={id}
+                depth={depth + 1}
                 childrenFilter={{ parent_id: id }}
                 key={id}
               />
