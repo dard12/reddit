@@ -42,7 +42,13 @@ function QuestionComments(props: QuestionCommentsProps) {
   return (
     <div>
       {_.map(rootComments, ({ id }) => (
-        <Comment comment={id} childrenFilter={{ parent_id: id }} key={id} />
+        <Comment
+          comment={id}
+          childrenFilter={(commentDoc: CommentDoc) =>
+            commentDoc.parent_id === id && commentDoc.id !== id
+          }
+          key={id}
+        />
       ))}
     </div>
   );

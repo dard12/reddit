@@ -56,7 +56,6 @@ function Comment(props: CommentProps) {
   }
 
   const { author_id, content, created_at, question_id } = commentDoc;
-  const validChildren = _.filter(childrenComments, ({ id }) => id !== comment);
   const type = getQueryParams('type');
 
   const commentOnSubmit = () => {
@@ -127,7 +126,7 @@ function Comment(props: CommentProps) {
               </div>
             )}
 
-            {_.map(validChildren, ({ id }) => (
+            {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
                 comment={id}
                 childrenFilter={{ parent_id: id }}

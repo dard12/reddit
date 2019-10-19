@@ -42,9 +42,9 @@ export const createDocListSelector = ({
       createCollectionSelector(collection),
       (state: any, props: any) => props[filter],
     ],
-    (collections, filterDict) => {
+    (collections, filterObj) => {
       const collectionDict = collections[collection];
-      const docList = _.filter(collectionDict, filterDict);
+      const docList = _.filter(collectionDict, filterObj);
 
       return { [prop]: docList };
     },
