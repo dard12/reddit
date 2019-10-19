@@ -21,14 +21,14 @@ import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: number;
-  allCommentsFilter: any;
-  allComments?: CommentDoc[];
+  childrenFilter: any;
+  childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
 }
 
 function Comment(props: CommentProps) {
-  const { comment, allComments, commentDoc, loadDocsAction } = props;
+  const { comment, childrenComments, commentDoc, loadDocsAction } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [replying, setReplying] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
@@ -56,10 +56,7 @@ function Comment(props: CommentProps) {
   }
 
   const { author_id, content, created_at, question_id } = commentDoc;
-  const childrenComments = _.filter(
-    allComments,
-    ({ id, parent_id }) => id !== comment && parent_id === comment,
-  );
+  const validChildren = _.filter(childrenComments, ({ id }) => id !== comment);
   const type = getQueryParams('type');
 
   const commentOnSubmit = () => {
@@ -130,10 +127,10 @@ function Comment(props: CommentProps) {
               </div>
             )}
 
-            {_.map(childrenComments, ({ id }) => (
+            {_.map(validChildren, ({ id }) => (
               <ConnectedComment
                 comment={id}
-                allCommentsFilter={{ question_id }}
+                childrenFilter={{ parent_id: id }}
                 key={id}
               />
             ))}
@@ -153,8 +150,8 @@ const mapStateToProps = createSelector(
     }),
     createDocListSelector({
       collection: 'comments',
-      filter: 'allCommentsFilter',
-      prop: 'allComments',
+      filter: 'childrenFilter',
+      prop: 'childrenComments',
     }),
   ],
   (a, b) => ({ ...a, ...b }),
