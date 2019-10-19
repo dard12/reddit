@@ -49,7 +49,7 @@ function QuestionPage(props: QuestionPageProps) {
       <QuestionComments
         question={question}
         type={type}
-        questionCommentsFilter={(commentDoc: CommentDoc) =>
+        rootFilter={(commentDoc: CommentDoc) =>
           commentDoc.id === commentDoc.parent_id &&
           commentDoc.question_id === question &&
           commentDoc.type === type

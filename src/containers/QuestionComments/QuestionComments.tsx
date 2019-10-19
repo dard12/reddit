@@ -11,13 +11,13 @@ import { createDocListSelector } from '../../redux/selectors';
 interface QuestionCommentsProps {
   question: number;
   type: 'response' | 'meta';
-  questionCommentsFilter: any;
-  questionComments?: CommentDoc[];
+  rootFilter: any;
+  rootComments?: CommentDoc[];
   loadDocsAction?: Function;
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, questionComments, type, loadDocsAction } = props;
+  const { question, rootComments, type, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet('/api/comment', {
     question_id: question,
     type,
@@ -31,7 +31,7 @@ function QuestionComments(props: QuestionCommentsProps) {
 
   return (
     <div>
-      {_.map(questionComments, ({ id }) => (
+      {_.map(rootComments, ({ id }) => (
         <Comment
           comment={id}
           childrenFilter={(commentDoc: CommentDoc) =>
@@ -47,8 +47,8 @@ function QuestionComments(props: QuestionCommentsProps) {
 export default connect(
   createDocListSelector({
     collection: 'comments',
-    filter: 'questionCommentsFilter',
-    prop: 'questionComments',
+    filter: 'rootFilter',
+    prop: 'rootComments',
   }),
   { loadDocsAction },
 )(QuestionComments);
