@@ -88,3 +88,22 @@
   margin-top: $margin-2;
   color: $red;
 }
+
+.loginInput {
+  @extend input;
+  color: $dark-9;
+  border: none;
+  border-bottom: $border-radius-1 solid $dark-9;
+  background-color: $white;
+  padding-left: $margin-1;
+
+  &:focus,
+  &:hover {
+    color: $dark-9;
+  }
+}
+
+.loginFields {
+  display: grid;
+  grid-gap: $margin-3;
+}

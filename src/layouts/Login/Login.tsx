@@ -92,15 +92,7 @@ function Login(props: LoginProps) {
 
   return (
     <form onSubmit={onSubmit} className={styles.loginForm}>
-      <h1 className={styles.loginHeader}>
-        {isLogin ? (
-          <React.Fragment>
-            Hey, <br /> {"It's"} you again
-          </React.Fragment>
-        ) : (
-          "Let's get you set up."
-        )}
-      </h1>
+      <h1 className={styles.loginHeader}>{isLogin ? 'Login' : 'Sign Up'}</h1>
 
       <a
         className={classNames('btn', styles.facebookAuth)}
@@ -113,44 +105,46 @@ function Login(props: LoginProps) {
         {actionText} with Google
       </a>
 
-      <div className={styles.loginDivider}> ~ Or ~ </div>
+      <div className={styles.loginDivider}> Or </div>
 
-      {!isLogin && (
+      <div className={styles.loginFields}>
+        {!isLogin && (
+          <div className="form-field">
+            <span className="text-1">Email</span>
+            <input
+              name="email"
+              type="email"
+              className={styles.loginInput}
+              placeholder="Your Email"
+              value={email}
+              onChange={event => setEmail(event.currentTarget.value)}
+            />
+          </div>
+        )}
+
         <div className="form-field">
-          <span className="text-1">Email</span>
+          <span className="text-1">Username</span>
           <input
-            name="email"
-            type="email"
-            className="input"
-            placeholder="Your Email"
-            value={email}
-            onChange={event => setEmail(event.currentTarget.value)}
+            name="username"
+            type="text"
+            className={styles.loginInput}
+            placeholder="Your Username"
+            value={username}
+            onChange={event => setUsername(event.currentTarget.value)}
           />
         </div>
-      )}
 
-      <div className="form-field">
-        <span className="text-1">Username</span>
-        <input
-          name="username"
-          type="text"
-          className="input"
-          placeholder="Your Username"
-          value={username}
-          onChange={event => setUsername(event.currentTarget.value)}
-        />
-      </div>
-
-      <div className="form-field">
-        <span className="text-1">Password</span>
-        <input
-          name="password"
-          type="password"
-          className="input"
-          placeholder="Your Password"
-          value={password}
-          onChange={event => setPassword(event.currentTarget.value)}
-        />
+        <div className="form-field">
+          <span className="text-1">Password</span>
+          <input
+            name="password"
+            type="password"
+            className={styles.loginInput}
+            placeholder="Your Password"
+            value={password}
+            onChange={event => setPassword(event.currentTarget.value)}
+          />
+        </div>
       </div>
 
       <Evil

@@ -213,19 +213,6 @@ textarea {
   width: 100%;
 }
 
-.input {
-  @extend input;
-  color: $dark-6;
-  border: none;
-  border-bottom: $border-radius-1 solid $dark-4;
-  background-color: $white;
-
-  &:focus,
-  &:hover {
-    border-color: $dark-6;
-  }
-}
-
 .btn {
   color: $white;
   background-color: $dark-9;
