@@ -1,58 +1,19 @@
 import React from 'react';
-import _ from 'lodash';
-import { connect } from 'react-redux';
 import styles from './Home.module.scss';
-import Question from '../../containers/Question/Question';
 import SearchBar from '../../containers/SearchBar/SearchBar';
-import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
-import { loadDocsAction } from '../../redux/actions';
 import HomeTabs from '../../containers/HomeTabs/HomeTabs';
-import { getQueryParams } from '../../history';
-import Skeleton from '../../components/Skeleton/Skeleton';
+import QuestionList from '../../containers/QuestionList/QuestionList';
 
-interface HomeProps {
-  loadDocsAction?: Function;
-}
+interface HomeProps {}
 
 function Home(props: HomeProps) {
-  const { loadDocsAction } = props;
-  const query = getQueryParams('query');
-  const tag = getQueryParams('tag');
-  const { result, isSuccess } = useAxiosGet(
-    '/api/question',
-    {
-      search: {
-        text: query,
-        tags: [tag],
-      },
-      sort: 'up_vote',
-    },
-    { reloadOnChange: true },
-  );
-
-  useLoadDocs({ collection: 'questions', result, loadDocsAction });
-
-  const docs = _.get(result, 'docs');
-
   return (
     <div className={styles.homePage}>
       <SearchBar />
       <HomeTabs />
-
-      {isSuccess ? (
-        _.map(docs, ({ id }) => <Question question={id} key={id} />)
-      ) : (
-        <React.Fragment>
-          {_.times(5, index => (
-            <Skeleton key={index} count={4} />
-          ))}
-        </React.Fragment>
-      )}
+      <QuestionList />
     </div>
   );
 }
 
-export default connect(
-  null,
-  { loadDocsAction },
-)(Home);
+export default Home;

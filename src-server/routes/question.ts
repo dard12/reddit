@@ -2,15 +2,12 @@ import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
+import execute from '../execute';
 
 router.get('/api/question', async (req, res) => {
   const { query } = req;
-  const { sort } = query;
-  let search = null;
-  if (query.search) {
-    search = JSON.parse(query.search);
-  }
-  const where = _.omit(query, ['search', 'sort']);
+  const { sort, search } = query;
+  const where = _.omit(query, ['search', 'sort', 'page', 'pageSize']);
 
   const pgQuery = pg
     .select('*')
@@ -22,15 +19,18 @@ router.get('/api/question', async (req, res) => {
   }
 
   if (search) {
-    const tags = _.pullAll(search.tags, ['all']);
-    if (!_.isEmpty(tags)) {
-      pgQuery.whereRaw('tags && ?', [tags]);
+    const searchDict = JSON.parse(query.search);
+    const { tags } = searchDict;
+    const validTags = _.pullAll(tags, ['all']);
+
+    if (!_.isEmpty(validTags)) {
+      pgQuery.whereRaw('tags && ?', [validTags]);
     }
   }
 
-  const docs = await pgQuery;
+  const result = await execute(pgQuery, query);
 
-  res.status(200).send({ docs });
+  res.status(200).send(result);
 });
 
 router.post('/api/question', requireAuth, async (req, res) => {
