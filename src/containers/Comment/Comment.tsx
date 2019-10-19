@@ -37,7 +37,7 @@ function Comment(props: CommentProps) {
     loadDocsAction,
   } = props;
 
-  const [collapsed, setCollapsed] = useState(depth && depth % 6 === 0);
+  const [collapsed, setCollapsed] = useState(depth % 6 === 5);
   const [replying, setReplying] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
