@@ -31,23 +31,10 @@ function Comment(props: CommentProps) {
   const { comment, childrenComments, commentDoc, loadDocsAction } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [replying, setReplying] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [lastLoad, setLastLoad] = useState(new Date());
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
-  const params = { id: comment };
 
-  const { result, isSuccess, setParams } = useAxiosGet('/api/comment', params, {
-    reloadOnChange: true,
-    reloadCallback: () => setLastLoad(new Date()),
-  });
-
-  const hasUpdated = lastUpdate && lastUpdate > lastLoad;
-
-  if (hasUpdated) {
-    setParams(params);
-    setLastLoad(new Date());
-  }
+  const { result, isSuccess } = useAxiosGet('/api/comment', { id: comment });
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
@@ -59,7 +46,6 @@ function Comment(props: CommentProps) {
   const type = getQueryParams('type');
 
   const commentOnSubmit = () => {
-    setLastUpdate(new Date());
     toggleReplying();
   };
 

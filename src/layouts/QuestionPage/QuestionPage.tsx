@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './QuestionPage.module.scss';
 import Question from '../../containers/Question/Question';
 import CommentBox from '../../containers/CommentBox/CommentBox';
-import { QuestionDoc } from '../../../src-server/models';
+import { QuestionDoc, CommentDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
@@ -20,8 +20,6 @@ interface QuestionPageProps {
 
 function QuestionPage(props: QuestionPageProps) {
   const { question, questionDoc, loadDocsAction } = props;
-  const [lastUpdate, setLastUpdate] = useState(new Date());
-  const commentOnSubmit = () => setLastUpdate(new Date());
 
   const { result } = useAxiosGet(
     '/api/question',
@@ -45,10 +43,18 @@ function QuestionPage(props: QuestionPageProps) {
 
       <div>
         <QuestionTabs allTypes={allTypes} />
-        <CommentBox question={question} type={type} onSubmit={commentOnSubmit} />
+        <CommentBox question={question} type={type} />
       </div>
 
-      <QuestionComments question={question} type={type} lastUpdate={lastUpdate} />
+      <QuestionComments
+        question={question}
+        type={type}
+        questionCommentsFilter={(commentDoc: CommentDoc) =>
+          commentDoc.id === commentDoc.parent_id &&
+          commentDoc.question_id === question &&
+          commentDoc.type === type
+        }
+      />
     </div>
   );
 }

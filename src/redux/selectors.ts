@@ -36,7 +36,7 @@ export const createDocListSelector = ({
   collection: string;
   filter: string;
   prop: string;
-}) => {
+}): any => {
   return createSelector(
     [
       createCollectionSelector(collection),

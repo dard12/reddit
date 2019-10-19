@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Comment from '../../containers/Comment/Comment';
@@ -6,29 +6,22 @@ import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import { createDocListSelector } from '../../redux/selectors';
 
 interface QuestionCommentsProps {
   question: number;
   type: 'response' | 'meta';
-  lastUpdate: Date;
+  questionCommentsFilter: any;
+  questionComments?: CommentDoc[];
   loadDocsAction?: Function;
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, type, lastUpdate, loadDocsAction } = props;
-  const [lastLoad, setLastLoad] = useState(new Date());
-  const params = { question_id: question, type };
-  const { result, isSuccess, setParams } = useAxiosGet('/api/comment', params, {
-    reloadOnChange: true,
-    reloadCallback: () => setLastLoad(new Date()),
+  const { question, questionComments, type, loadDocsAction } = props;
+  const { result, isSuccess } = useAxiosGet('/api/comment', {
+    question_id: question,
+    type,
   });
-
-  const hasUpdated = lastUpdate && lastUpdate > lastLoad;
-
-  if (hasUpdated) {
-    setParams(params);
-    setLastLoad(new Date());
-  }
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
@@ -36,12 +29,9 @@ function QuestionComments(props: QuestionCommentsProps) {
     return <Skeleton count={4} />;
   }
 
-  const docs: CommentDoc[] = result.docs;
-  const rootComments = _.filter(docs, ({ id, parent_id }) => id === parent_id);
-
   return (
     <div>
-      {_.map(rootComments, ({ id }) => (
+      {_.map(questionComments, ({ id }) => (
         <Comment
           comment={id}
           childrenFilter={(commentDoc: CommentDoc) =>
@@ -55,6 +45,10 @@ function QuestionComments(props: QuestionCommentsProps) {
 }
 
 export default connect(
-  null,
+  createDocListSelector({
+    collection: 'comments',
+    filter: 'questionCommentsFilter',
+    prop: 'questionComments',
+  }),
   { loadDocsAction },
 )(QuestionComments);
