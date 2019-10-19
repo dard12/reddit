@@ -21,7 +21,8 @@
     > * {
       @extend .transition;
       padding: $margin-3;
-      display: block;
+      display: flex;
+      align-items: center;
       white-space: nowrap;
       cursor: pointer;
 
@@ -57,6 +58,10 @@
       display: none;
     }
   }
+}
+
+.addQuestionBtn:hover {
+  background-color: $primary-5;
 }
 
 .logoutBtn {

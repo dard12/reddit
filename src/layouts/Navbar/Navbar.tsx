@@ -12,6 +12,7 @@ import { usernameSelector } from '../../redux/selectors';
 import Modal from '../../components/Modal/Modal';
 import AddQuestion from '../../containers/AddQuestion/AddQuestion';
 import { axios } from '../../App';
+import { Button } from '../../components/Button/Button';
 
 interface NavbarProps extends RouteComponentProps {
   username?: string;
@@ -33,12 +34,14 @@ function Navbar(props: NavbarProps) {
             Home
           </NavLink>
 
+          {username && <NavLink to={`/profile/${username}`}>Profile</NavLink>}
+
           <Modal
-            buttonChildren="Add a question"
+            buttonChildren={
+              <Button className={styles.addQuestionBtn}>Add a Question</Button>
+            }
             render={closeModal => <AddQuestion closeModal={closeModal} />}
           />
-
-          {username && <NavLink to="/profile">Profile</NavLink>}
 
           {username ? (
             <NavLink

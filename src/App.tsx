@@ -17,6 +17,7 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
+            <Route exact path="/question" render={props => <Home />} />
             <Route
               path="/question/:question"
               render={props => {
@@ -24,8 +25,13 @@ function App() {
                 return question && <QuestionPage question={question} />;
               }}
             />
-            <Route exact path="/question" render={props => <Home />} />
-            <Route exact path="/profile" render={props => <Profile />} />
+            <Route
+              exact
+              path="/profile/:username"
+              render={props => (
+                <Profile targetUsername={props.match.params.username} />
+              )}
+            />
 
             <Route exact path="/login" render={props => <Login {...props} />} />
             <Route
