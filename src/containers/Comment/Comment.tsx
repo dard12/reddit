@@ -34,11 +34,11 @@ function Comment(props: CommentProps) {
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
 
-  const { result, isSuccess } = useAxiosGet('/api/comment', { id: comment });
+  const { result } = useAxiosGet('/api/comment', { id: comment });
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  if (!commentDoc || !isSuccess) {
+  if (!commentDoc) {
     return null;
   }
 
