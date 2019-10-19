@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 const Home = lazy(() => import('./layouts/Home/Home'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
 const Login = lazy(() => import('./layouts/Login/Login'));
+const Profile = lazy(() => import('./layouts/Profile/Profile'));
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               }}
             />
             <Route exact path="/question" render={props => <Home />} />
+            <Route exact path="/profile" render={props => <Profile />} />
 
             <Route exact path="/login" render={props => <Login {...props} />} />
             <Route
