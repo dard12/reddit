@@ -24,7 +24,7 @@ function Navbar(props: NavbarProps) {
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
-        <Link to={username ? '/question' : '/'} className={styles.brand}>
+        <Link to="/question" className={styles.brand}>
           CoverStory
         </Link>
 
