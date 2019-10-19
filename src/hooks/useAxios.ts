@@ -17,6 +17,26 @@ export function useLoadDocs(params: {
   }, [collection, docs, loadDocsAction]);
 }
 
+export function axiosPost(
+  url: string,
+  params: any,
+  options?: {
+    collection: string;
+    loadDocsAction?: Function;
+  },
+) {
+  return axios.post(url, params).then(result => {
+    const docs = _.get(result, 'data.docs');
+
+    if (options) {
+      const { collection, loadDocsAction } = options;
+      loadDocsAction && loadDocsAction({ docs, name: collection });
+    }
+
+    return { docs };
+  });
+}
+
 export function useAxiosGet(
   url: string,
   latestParams?: any,

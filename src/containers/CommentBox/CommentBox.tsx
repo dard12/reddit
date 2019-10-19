@@ -4,10 +4,10 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import styles from './CommentBox.module.scss';
 import { Button } from '../../components/Button/Button';
-import { axios } from '../../App';
 import { userSelector } from '../../redux/selectors';
 import SignUp from '../../components/SignUp/SignUp';
 import { loadDocsAction } from '../../redux/actions';
+import { axiosPost } from '../../hooks/useAxios';
 
 interface CommentBoxProps {
   question: number;
@@ -40,20 +40,20 @@ function CommentBox(props: CommentBoxProps) {
     if (_.size(_.trim(content)) && !isSubmitting) {
       setIsSubmitting(true);
 
-      axios
-        .post('/api/comment', {
+      axiosPost(
+        '/api/comment',
+        {
           question_id: question,
           parent_id,
           content,
           type,
-        })
-        .then(result => {
-          const { docs } = result.data;
-          setIsSubmitting(false);
-          setContent('');
-          loadDocsAction && loadDocsAction({ name: 'comments', docs });
-          onSubmit && onSubmit();
-        });
+        },
+        { collection: 'comments', loadDocsAction },
+      ).then(({ docs }) => {
+        setIsSubmitting(false);
+        setContent('');
+        onSubmit && onSubmit();
+      });
     }
   };
 
