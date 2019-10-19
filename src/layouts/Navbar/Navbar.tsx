@@ -24,7 +24,7 @@ function Navbar(props: NavbarProps) {
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
-        <Link to={username ? '/home' : '/'} className={styles.brand}>
+        <Link to={username ? '/question' : '/'} className={styles.brand}>
           CoverStory
         </Link>
 
@@ -38,7 +38,7 @@ function Navbar(props: NavbarProps) {
             render={closeModal => <AddQuestion closeModal={closeModal} />}
           />
 
-          <NavLink to="/profile">Profile</NavLink>
+          {username && <NavLink to="/profile">Profile</NavLink>}
 
           {username ? (
             <NavLink
