@@ -28,13 +28,15 @@ function QuestionVote(props: QuestionVoteProps) {
   const up_vote = _.get(questionDoc, 'up_vote') || 0;
   const down_vote = _.get(questionDoc, 'down_vote') || 0;
   const score = up_vote - down_vote + myVote;
+  const scoreDisplay =
+    Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
   const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
 
   return (
     <div className={styles.vote}>
       <IoIosArrowUp onClick={upVote} />
-      <span>{questionDoc && score}</span>
+      <span>{questionDoc && scoreDisplay}</span>
       <IoIosArrowDown onClick={downVote} />
     </div>
   );
