@@ -11,10 +11,7 @@ function QuestionList(props: QuestionListProps) {
   const tag = getQueryParams('tag');
 
   const params = {
-    search: {
-      text: query,
-      tags: [tag],
-    },
+    search: { text: query, tags: [tag] },
     sort: 'up_vote',
   };
 

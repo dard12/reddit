@@ -36,7 +36,7 @@ function QuestionListPage(props: QuestionListPageProps) {
   return (
     <React.Fragment>
       {_.isEmpty(docs) && page === 0 ? (
-        <div className="card faded">No questions found.</div>
+        <div className="card">No questions found.</div>
       ) : (
         _.map(docs, ({ id }) => <Question question={id} key={id} />)
       )}
