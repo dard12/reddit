@@ -71,7 +71,7 @@ function CommentBox(props: CommentBoxProps) {
   return (
     <React.Fragment>
       {!user && (
-        <div className={styles.commentText}>
+        <div className="card">
           To comment please <SignUp />.
         </div>
       )}
