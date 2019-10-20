@@ -11,12 +11,12 @@ import {
   createDocListSelector,
 } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
-import UserName from '../UserName/UserName';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
 import CommentVote from '../CommentVote/CommentVote';
 import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
 import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
+import UserLink from '../../components/UserLink/UserLink';
 import { getQueryParams } from '../../history';
 
 interface CommentProps {
@@ -50,9 +50,9 @@ function Comment(props: CommentProps) {
     return null;
   }
 
-  const { author_id, content, created_at, question_id } = commentDoc;
-  const type = getQueryParams('type');
+  const { author_name, content, created_at, question_id } = commentDoc;
 
+  const type = getQueryParams('type');
   const commentOnSubmit = () => {
     toggleReplying();
   };
@@ -69,7 +69,7 @@ function Comment(props: CommentProps) {
           </div>
           <div className={styles.collapsed}>
             <span className={styles.author}>
-              <UserName user={author_id} />
+              <UserLink user_name={author_name} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
               [ See More +2 ]
@@ -90,7 +90,7 @@ function Comment(props: CommentProps) {
           <div className={styles.commentContent}>
             <div>
               <span className={styles.author}>
-                <UserName user={author_id} />
+                <UserLink user_name={author_name} />
               </span>
               <span className={styles.collapseText} onClick={toggleCollapsed}>
                 [ - ]

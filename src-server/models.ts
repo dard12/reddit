@@ -25,6 +25,7 @@ export interface CommentDoc {
   content: string;
   type: 'response' | 'meta';
   author_id: number;
+  author_name: string;
   question_id: number;
   parent_id?: number;
   created_at: Date;

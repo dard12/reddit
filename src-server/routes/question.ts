@@ -33,6 +33,9 @@ router.get('/api/question', async (req, res) => {
         terms,
         terms,
       ]);
+
+      // TODO - add ordering on full match, then by # of key words
+      // volume is so low, we can do watever the fuc we want
     }
   }
   const result = await execute(pgQuery, query);
