@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import qs from 'qs';
+import _ from 'lodash';
 import { Input } from '../../components/Input/Input';
 import styles from './SearchBar.module.scss';
 import history, { getQueryParams } from '../../history';
@@ -17,16 +18,10 @@ function SearchBar(props: SearchBarProps) {
   }, [initialQuery]);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.currentTarget.value);
+    submit(event.currentTarget.value);
   };
 
-  const onKeyUp = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      submit();
-    }
-  };
-
-  const submit = () => {
+  const submit = (query: string) => {
     const queryParams = getQueryParams();
     queryParams.query = query;
     const search = qs.stringify(queryParams);
@@ -39,7 +34,6 @@ function SearchBar(props: SearchBarProps) {
       className={styles.searchBar}
       placeholder="Search for Interview Questions..."
       onChange={onChange}
-      onKeyUp={onKeyUp}
       value={query}
     />
   );
