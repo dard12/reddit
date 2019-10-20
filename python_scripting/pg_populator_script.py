@@ -4,145 +4,16 @@ import inspect
 from datetime import datetime as dt
 from datetime import timedelta as td
 import code
+import csv
 import os
+import json
+import pprint as pp
+import hard_coded_seed_data as hcsd
 
-users_rows = [
-  {'id': 0,
-   'user_name':' lihsing-lung',
-   'full_name': 'Li-Hsing Lung',
-   'email'    : 'ricky@rick.com',
-   'salt_password': 'pw',
-   'photo_link':       'https://media.licdn.com/dms/image/C4E03AQFZuKnltRJvLw/profile-displayphoto-shrink_200_200/0?e=1575504000&v=beta&t=emev1QeLoHJMtRaJAijqS1VKIhcBC0QlUptC0Ks6psM',
-   'summary': '''Hey, my name is Li-Hsing Lung. I love building products and doing impactful work.
 
-      Below are some of my views on team culture and how I've found myself to be most productive on a team. I hope we're a good match for working together!'''
-   },
-   {'id': 1,
-    'user_name': 'michael-duplessis',
-    'full_name': 'Michael Duplessis',
-    'email'    : 'dupes@dupes.com',
-    'salt_password': 'pw',
-    'photo_link': 'https://lh3.googleusercontent.com/a-/AAuE7mCLZpb1dbmKdKDOmoto2-05ezGG7i4pNnO3p4M=s384-cc',
-    'summary': ''},
-  {'id': 2,
-   'user_name': 'tito-mbagwu',
-   'full_name': 'Tito Mbagwu',
-    'email'    : 'tito@tito.com',
-    'salt_password': 'pw',
-   'photo_link': '',
-   'summary': ''},
-  {'id': 3,
-   'user_name': 'CoverStory',
-   'full_name': 'CoverStory',
-   'email'    : 'cover@story.com',
-    'salt_password': 'pw',
-   'photo_link': '',
-   'summary': ''},
-]
-
-comment_rows  = [ 
-    {'id'         : 0,  
-     'question_id': 0,
-     'content'    : 'comments are fucing dumb, read teh codez',    
-     'type'       : 'meta',
-     'author_id'  : 0,
-     'parent_id'  : 0,   
-     'created_at' : dt.utcnow(), 
-     'up_vote'    : 69,     
-     'down_vote'  : 1},
-         { 'id'         : 1,  
-          'question_id': 0,
-          'content'    : 'is all decurem lost in this world???',    
-          'type'       : 'meta',
-          'author_id'  : 1,
-          'parent_id'  : 0,   
-          'created_at' : dt.utcnow() + td(seconds=500),
-          'up_vote'    : 2,    
-          'down_vote'  : 800},
-             { 'id'         : 2,  
-              'question_id': 0,
-              'content'    : 'bitch stfu, get rich or dy tryin',    
-              'type'       : 'meta',
-              'author_id'  : 2,
-              'parent_id'  : 1,   
-              'created_at' : dt.utcnow() + td(seconds=600),
-              'up_vote'    : 0 ,   
-              'down_vote'  : 1},
-   {'id'         : 3,  
-     'question_id': 0,
-     'content'    : 'i luv comments, but they dont luv me. anyone know any hot singles in the area?',    
-     'type'       : 'meta',
-     'author_id'  : 2,
-     'parent_id'  : 3,   
-     'created_at' : dt.utcnow()+td(seconds=100), 
-     'up_vote'    : 2 ,    
-     'down_vote'  : 50},
-]
-
-question_rows = [
- {'id': 0,
-  'author_id': 0,
-  'title': 'What is your preferred method of documenting code?',
-  'description': '',
-  'tags': ['coordination'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 20,
-  'down_vote': 4
- },
- {'id': 1,
-    'author_id': 0,
-  'title': 'How often do you read about new technologies and paradigms?',
-  'description': 'What are some specific technologies you’ve read about and how production-ready do you think they are?',
-  'tags': ['technical'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 69,
-  'down_vote': 420,
- },
- {'id': 2,
-   'author_id': 0,
-  'title': 'How do you like to handle technical debt?',
-  'description': 'How do you keep yourself productive?',
-  'tags': ['technical'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 0,
-  'down_vote': 1
- },
- {'id': 3,
-   'author_id': 0,
-  'title': 'What is your favorite programming language?',
-  'description': 'Pick your favorite language, explain why you love it!',
-  'tags': ['technical'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 10,
-  'down_vote': 4
- },
- {'id': 4,
-   'author_id': 0,
-  'title': 'How important is consistent code style to you?',
-  'description': 'Would you invest in linting tools? Would you block code merges because of style issues?',
-  'tags': ['coordination'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 90,
-  'down_vote': 5
- },
- {'id': 5,
-  'author_id': 0,
-  'title': "Take some time to read up on Kotlin's built in nullabilty operators, !! and ?.",
-  'description': 'When should you use !! and ?. Give some interesting edge cases',
-  'tags': ['technical'],
-  'response_count': 0,
-  'meta_count': 0, 
-  'up_vote': 30,
-  'down_vote': 2
- },
-]
-vote_rows = []
-
+def pprint(obj):
+    pp.sorted = lambda x, key=None: x
+    pp.pprint(obj, width=100)
 
 def build_and_populate_tables(env='test'):
     conn = ppu.conn_retry(ppu.get_sql_db(env))
@@ -205,19 +76,19 @@ def build_and_populate_tables(env='test'):
       {'table_name': 'users',
        'columns': ['id', 'user_name', 'full_name', 'email', 'salt_password', 'photo_link', 'summary'],
        'pkeys': ['id'],
-       'hard_coded_rows':  users_rows,
+       'hard_coded_rows':  hcsd.users_rows,
        },
       {'table_name': 'questions',
        'columns': ['id', 'author_id', 'title', 'description', 'tags', 'response_count', 'meta_count', 'up_vote', 'down_vote'],
        'pkeys': ['id'],
-       'hard_coded_rows': question_rows
+       'hard_coded_rows': hcsd.question_rows
        },
 
 
       {'table_name': 'comments',
        'columns': ['id','content','type','author_id','question_id','parent_id','created_at','up_vote','down_vote'],
        'pkeys': ['id'],
-       'hard_coded_rows': comment_rows
+       'hard_coded_rows': hcsd.comment_rows
        },
       {'table_name': 'votes',
        'columns': [
@@ -227,7 +98,7 @@ def build_and_populate_tables(env='test'):
                 'subject_id',   
                 'subject_type'], 
        'pkeys': ['id'],
-       'hard_coded_rows': vote_rows
+       'hard_coded_rows': hcsd.vote_rows
        },
     ]
     # Define tables
@@ -258,6 +129,7 @@ def build_and_populate_tables(env='test'):
     conn.commit()
 
     recompute_counts(cur, conn)
+
 
 def recompute_counts(cur, conn):
     cur.execute(""" SELECT question_id, type, SUM(1)
