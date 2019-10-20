@@ -26,8 +26,15 @@ router.get('/api/question', async (req, res) => {
     if (!_.isEmpty(validTags)) {
       pgQuery.whereRaw('tags && ?', [validTags]);
     }
-  }
 
+    if (searchDict.text) {
+      const terms = '%(' + searchDict.text.split(' ').join(' | ') + ')%';
+      pgQuery.whereRaw(`(title similar to ? OR description similar to ?)`, [
+        terms,
+        terms,
+      ]);
+    }
+  }
   const result = await execute(pgQuery, query);
 
   res.status(200).send(result);
