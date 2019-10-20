@@ -60,7 +60,7 @@ function CommentBox(props: CommentBoxProps) {
   let placeholder;
 
   if (parent_id) {
-    placeholder = 'Write your reply';
+    placeholder = 'Write your reply…';
   } else if (type === 'response') {
     placeholder = 'How would you respond to this question?';
   } else {
@@ -70,31 +70,32 @@ function CommentBox(props: CommentBoxProps) {
 
   return (
     <React.Fragment>
-      <div className={styles.commentText}>
-        {!user && (
-          <React.Fragment>
-            To comment please <SignUp />.
-          </React.Fragment>
-        )}
+      {!user && (
+        <div className="card">
+          To comment please <SignUp />.
+        </div>
+      )}
 
-        {user && (
-          <React.Fragment>
+      {user && (
+        <React.Fragment>
+          <div className={styles.commentText}>
             <TextareaAutosize
               placeholder={placeholder}
-              minRows={2}
+              minRows={4}
               value={content}
               onChange={onChange}
             />
-            <div className={styles.commentAction}>
-              {actions}
+          </div>
 
-              <Button className="btn" onClick={onClickPublish}>
-                {parent_id ? 'Reply' : 'Comment'}
-              </Button>
-            </div>
-          </React.Fragment>
-        )}
-      </div>
+          <div className={styles.commentAction}>
+            {actions}
+
+            <Button className="btn" onClick={onClickPublish}>
+              {parent_id ? 'Reply' : 'Comment'}
+            </Button>
+          </div>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 }

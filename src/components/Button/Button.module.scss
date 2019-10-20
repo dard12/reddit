@@ -6,6 +6,10 @@
   cursor: pointer;
   border: 1px solid $dark-9;
 
+  &:hover {
+    text-decoration: underline;
+  }
+
   &[disabled] {
     color: $dark-5;
     background-color: $dark-2;

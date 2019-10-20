@@ -66,17 +66,18 @@ function AddQuestion(props: AddQuestionProps) {
           <div className={styles.questionContainer}>
             <Input
               className={styles.questionTitle}
-              placeholder="Write a question…"
+              placeholder="Write your question…"
               value={title}
               onChange={createOnChange(setTitle)}
-              autoFocus
             />
-            <TextareaAutosize
-              placeholder="Add some details to consider when answering this question…"
-              minRows={4}
-              value={description}
-              onChange={createOnChange(setDescription)}
-            />
+            <div className={styles.questionDescription}>
+              <TextareaAutosize
+                placeholder="Add some details to consider when answering this question…"
+                minRows={4}
+                value={description}
+                onChange={createOnChange(setDescription)}
+              />
+            </div>
             <div className={styles.questionRow}>
               <Button onClick={closeModal}>Cancel</Button>
 
