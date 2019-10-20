@@ -28,14 +28,11 @@ router.get('/api/question', async (req, res) => {
     }
 
     if (searchDict.text) {
-      const terms = '%(' + searchDict.text.split(' ').join(' | ') + ')%';
-      pgQuery.whereRaw(`(title similar to ? OR description similar to ?)`, [
+      const terms = `%(${searchDict.text.split(' ').join(' | ')})%`;
+      pgQuery.whereRaw('(title similar to ? OR description similar to ?)', [
         terms,
         terms,
       ]);
-
-      // TODO - add ordering on full match, then by # of key words
-      // volume is so low, we can do watever the fuc we want
     }
   }
   const result = await execute(pgQuery, query);
