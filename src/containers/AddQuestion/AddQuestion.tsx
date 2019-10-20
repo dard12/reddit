@@ -70,12 +70,14 @@ function AddQuestion(props: AddQuestionProps) {
               value={title}
               onChange={createOnChange(setTitle)}
             />
-            <TextareaAutosize
-              placeholder="Add some details to consider when answering this question…"
-              minRows={4}
-              value={description}
-              onChange={createOnChange(setDescription)}
-            />
+            <div className={styles.questionDescription}>
+              <TextareaAutosize
+                placeholder="Add some details to consider when answering this question…"
+                minRows={4}
+                value={description}
+                onChange={createOnChange(setDescription)}
+              />
+            </div>
             <div className={styles.questionRow}>
               <Button onClick={closeModal}>Cancel</Button>
 

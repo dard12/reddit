@@ -26,9 +26,6 @@
 .questionContainer {
   display: grid;
   grid-gap: $margin-3;
-  border-left: 2px solid $dark-9;
-  margin-left: $margin-3;
-  padding-left: $margin-3;
 }
 
 .guidelineContainer {
@@ -43,7 +40,7 @@
   font-weight: 600;
   font-family: $serif;
   font-size: $text-3;
-  background-color: $dark-1;
+  background-color: $dark-2;
 
   &::placeholder {
     color: $dark-8;
@@ -51,5 +48,18 @@
 
   &:focus {
     background-color: $primary-5;
+  }
+}
+
+.questionDescription {
+  background-color: $dark-2;
+  padding: $margin-2;
+
+  textarea {
+    background-color: $dark-2;
+
+    &::placeholder {
+      color: $dark-8;
+    }
   }
 }
