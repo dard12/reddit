@@ -9,24 +9,22 @@ interface SearchBarProps {
   query?: string;
 }
 
+const submit = _.throttle((newQuery: string) => {
+  const queryParams = getQueryParams();
+  queryParams.query = newQuery;
+  const search = qs.stringify(queryParams);
+
+  history.push({ pathname: '/question', search });
+}, 300);
+
 function SearchBar(props: SearchBarProps) {
   const { query: initialQuery = '' } = props;
   const [query, setQuery] = useState(initialQuery);
 
-  useEffect(() => {
-    setQuery(initialQuery);
-  }, [initialQuery]);
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    submit(event.currentTarget.value);
-  };
-
-  const submit = (query: string) => {
-    const queryParams = getQueryParams();
-    queryParams.query = query;
-    const search = qs.stringify(queryParams);
-
-    history.push({ pathname: '/question', search });
+    const newQuery = event.currentTarget.value;
+    setQuery(newQuery);
+    submit(newQuery);
   };
 
   return (
