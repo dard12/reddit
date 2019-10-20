@@ -81,7 +81,7 @@ function CommentBox(props: CommentBoxProps) {
           <div className={styles.commentText}>
             <TextareaAutosize
               placeholder={placeholder}
-              minRows={3}
+              minRows={4}
               value={content}
               onChange={onChange}
             />
