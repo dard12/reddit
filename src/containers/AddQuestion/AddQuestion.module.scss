@@ -3,7 +3,7 @@
 .addQuestion {
   @extend .card;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 3fr;
   width: $width-3;
   align-items: flex-start;
 }
@@ -27,8 +27,8 @@
   display: grid;
   grid-gap: $margin-3;
   border-left: 2px solid $dark-9;
-  margin-left: $margin-4;
-  padding-left: $margin-4;
+  margin-left: $margin-3;
+  padding-left: $margin-3;
 }
 
 .guidelineContainer {
@@ -43,6 +43,7 @@
   font-weight: 600;
   font-family: $serif;
   font-size: $text-3;
+  background-color: $dark-1;
 
   &::placeholder {
     color: $dark-8;
