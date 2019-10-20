@@ -6,6 +6,7 @@ import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import UserLink from '../../components/UserLink/UserLink';
 
 interface UserNameProps {
   user: number;
@@ -33,9 +34,7 @@ function UserName(props: UserNameProps) {
   return plainName ? (
     <React.Fragment>{user_name}</React.Fragment>
   ) : (
-    <Link className="hoverLink" to={`/profile/${user_name}`}>
-      {user_name}
-    </Link>
+    <UserLink user_name={user_name} />
   );
 }
 

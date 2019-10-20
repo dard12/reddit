@@ -28,8 +28,8 @@ router.get('/api/question', async (req, res) => {
     }
 
     if (searchDict.text) {
-      const terms = '%(' + searchDict.text.split(' ').join(' | ') + ')%';
-      pgQuery.whereRaw(`(title similar to ? OR description similar to ?)`, [
+      const terms = `%(${searchDict.text.split(' ').join(' | ')})%`;
+      pgQuery.whereRaw('(title similar to ? OR description similar to ?)', [
         terms,
         terms,
       ]);

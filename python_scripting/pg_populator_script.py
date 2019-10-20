@@ -55,6 +55,7 @@ def build_and_populate_tables(env='test'):
                   content         varchar,
                   type            comment_type,
                   author_id       bigint REFERENCES users (id),
+                  author_name     varchar, 
                   question_id     bigint REFERENCES questions (id),
                   parent_id       bigint REFERENCES comments (id),
                   created_at      timestamp,
@@ -86,7 +87,7 @@ def build_and_populate_tables(env='test'):
 
 
       {'table_name': 'comments',
-       'columns': ['id','content','type','author_id','question_id','parent_id','created_at','up_vote','down_vote'],
+       'columns': ['id','content','type','author_id','author_name', 'question_id','parent_id','created_at','up_vote','down_vote'],
        'pkeys': ['id'],
        'hard_coded_rows': hcsd.comment_rows
        },
@@ -119,7 +120,7 @@ def build_and_populate_tables(env='test'):
         ppu.bulk_insert(cur=cur,
                         table_name=f'temp_{tb}',
                         columns=tb_control['columns'],
-                        rows=[[row[c] for c in tb_control['columns']]
+                        rows=[[row.get(c) for c in tb_control['columns']]
                                for row in tb_control['hard_coded_rows']])
         ppu.pkey_upsert(cur=cur,
                         perm_table=tb,
@@ -129,7 +130,19 @@ def build_and_populate_tables(env='test'):
     conn.commit()
 
     recompute_counts(cur, conn)
+    
+    # dedundantly storing author name 
+    # in comments to save a query 
+    recompute_author_names(cur, conn)
 
+def recompute_author_names(cur, conn):
+    cur.execute("""
+      UPDATE comments
+      SET author_name = users.user_name
+      FROM users 
+      WHERE comments.author_id = users.id
+      """)
+    conn.commit()
 
 def recompute_counts(cur, conn):
     cur.execute(""" SELECT question_id, type, SUM(1)
