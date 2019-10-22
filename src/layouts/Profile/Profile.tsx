@@ -9,8 +9,8 @@ import { UserDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import UserName from '../../containers/UserName/UserName';
-import CommentList from '../../containers/CommentList/CommentList';
-import QuestionList from '../../containers/QuestionList/QuestionList';
+import Paging from '../../containers/Paging/Paging';
+import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
 interface ProfileProps {
   user?: string;
@@ -81,13 +81,15 @@ function Profile(props: ProfileProps) {
       </div>
 
       <Switch>
-        <Route
-          path={commentsLink}
-          render={() => <CommentList params={{ author_id: targetUser }} />}
-        />
+        <Route path={commentsLink} render={() => null} />
         <Route
           path={questionsLink}
-          render={() => <QuestionList params={{ author_id: targetUser }} />}
+          render={() => (
+            <Paging
+              PageComponent={QuestionListPage}
+              params={{ author_id: targetUser }}
+            />
+          )}
         />
         <Route path={upvotesLink} render={() => null} />
         <Route path={downvotesLink} render={() => null} />

@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './RecentComments.module.scss';
 import Tabs from '../../containers/Tabs/Tabs';
-import CommentList from '../../containers/CommentList/CommentList';
+import Paging from '../../containers/Paging/Paging';
+import FullCommentListPage from '../../containers/FullCommentListPage/FullCommentListPage';
 
 interface RecentCommentsProps {}
 
@@ -22,7 +23,7 @@ function RecentComments(props: RecentCommentsProps) {
   return (
     <div className={styles.recentComments}>
       <Tabs tabs={tabs} queryParamName="tag" initialTab="all" />
-      <CommentList params={params} />
+      <Paging PageComponent={FullCommentListPage} params={params} />
     </div>
   );
 }

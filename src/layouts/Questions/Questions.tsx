@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './Questions.module.scss';
 import SearchBar from '../../containers/SearchBar/SearchBar';
-import QuestionList from '../../containers/QuestionList/QuestionList';
 import { getQueryParams } from '../../history';
 import Tabs from '../../containers/Tabs/Tabs';
+import Paging from '../../containers/Paging/Paging';
+import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
 interface QuestionsProps {}
 
@@ -27,7 +28,7 @@ function Questions(props: QuestionsProps) {
     <div className={styles.questionsPage}>
       <SearchBar query={getQueryParams('query')} />
       <Tabs tabs={tabs} queryParamName="tag" initialTab="all" />
-      <QuestionList params={params} />
+      <Paging PageComponent={QuestionListPage} params={params} />
     </div>
   );
 }
