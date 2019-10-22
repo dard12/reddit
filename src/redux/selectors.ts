@@ -44,7 +44,7 @@ export const createDocListSelector = ({
     ],
     (collections, filterObj) => {
       const collectionDict = collections[collection];
-      const docList = _.filter(collectionDict, filterObj);
+      const docList = filterObj ? _.filter(collectionDict, filterObj) : null;
 
       return { [prop]: docList };
     },

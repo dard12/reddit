@@ -18,11 +18,12 @@ import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import { getQueryParams } from '../../history';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface CommentProps {
   comment: number;
-  depth: number;
-  childrenFilter: any;
+  depth?: number;
+  childrenFilter?: any;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
@@ -37,7 +38,9 @@ function Comment(props: CommentProps) {
     loadDocsAction,
   } = props;
 
-  const [collapsed, setCollapsed] = useState(depth % 6 === 5);
+  const [collapsed, setCollapsed] = useState(
+    _.isNumber(depth) && depth % 6 === 5,
+  );
   const [replying, setReplying] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
@@ -51,15 +54,11 @@ function Comment(props: CommentProps) {
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!commentDoc) {
-    return null;
+    return <Skeleton count={3} />;
   }
 
   const { author_name, content, created_at, question_id } = commentDoc;
-
   const type = getQueryParams('type');
-  const commentOnSubmit = () => {
-    toggleReplying();
-  };
 
   return (
     <div className={styles.comment}>
@@ -87,7 +86,9 @@ function Comment(props: CommentProps) {
           <CommentVote
             comment={comment}
             threadLine={
-              <div className={styles.threadLine} onClick={toggleCollapsed} />
+              _.isNumber(depth) && (
+                <div className={styles.threadLine} onClick={toggleCollapsed} />
+              )
             }
           />
 
@@ -118,20 +119,21 @@ function Comment(props: CommentProps) {
                   question={question_id}
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
-                  onSubmit={commentOnSubmit}
+                  onSubmit={toggleReplying}
                   type={type}
                 />
               </div>
             )}
 
-            {_.map(childrenComments, ({ id }) => (
-              <ConnectedComment
-                comment={id}
-                depth={depth + 1}
-                childrenFilter={{ parent_id: id }}
-                key={id}
-              />
-            ))}
+            {_.isNumber(depth) &&
+              _.map(childrenComments, ({ id }) => (
+                <ConnectedComment
+                  comment={id}
+                  depth={depth + 1}
+                  childrenFilter={{ parent_id: id }}
+                  key={id}
+                />
+              ))}
           </div>
         </React.Fragment>
       )}

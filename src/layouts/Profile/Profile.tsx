@@ -9,6 +9,7 @@ import { UserDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import UserName from '../../containers/UserName/UserName';
+import CommentList from '../../containers/CommentList/CommentList';
 
 interface ProfileProps {
   user?: string;
@@ -58,7 +59,7 @@ function Profile(props: ProfileProps) {
             <div>
               <b>Reputation</b>
             </div>
-            <div>23 points</div>
+            <span className={styles.reputationPoints}>23 points</span>
           </div>
         </div>
 
@@ -79,7 +80,10 @@ function Profile(props: ProfileProps) {
       </div>
 
       <Switch>
-        <Route path={commentsLink} render={() => null} />
+        <Route
+          path={commentsLink}
+          render={() => <CommentList params={{ author_id: targetUser }} />}
+        />
         <Route path={questionsLink} render={() => null} />
         <Route path={upvotesLink} render={() => null} />
         <Route path={downvotesLink} render={() => null} />
