@@ -1,0 +1,14 @@
+@import '../../template.scss';
+
+.commentList {
+  display: grid;
+  grid-gap: $margin-3;
+}
+
+.comment {
+  @extend .card;
+
+  > div {
+    margin-top: 0;
+  }
+}

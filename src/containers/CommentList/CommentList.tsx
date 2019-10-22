@@ -5,6 +5,7 @@ import Comment from '../../containers/Comment/Comment';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import styles from './CommentList.module.scss';
 
 interface CommentListProps {
   params: any;
@@ -31,7 +32,13 @@ function CommentList(props: CommentListProps) {
       {_.isEmpty(docs) ? (
         <div className="card">No comments yet.</div>
       ) : (
-        _.map(docs, ({ id }) => <Comment comment={id} key={id} />)
+        <div className={styles.commentList}>
+          {_.map(docs, ({ id }) => (
+            <div className={styles.comment}>
+              <Comment comment={id} key={id} />
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
