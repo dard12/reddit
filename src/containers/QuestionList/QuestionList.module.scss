@@ -1,0 +1,6 @@
+@import '../../template.scss';
+
+.questionList {
+  display: grid;
+  grid-gap: $margin-3;
+}

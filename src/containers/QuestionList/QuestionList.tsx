@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { getQueryParams } from '../../history';
 import QuestionListPage from '../QuestionListPage/QuestionListPage';
+import styles from './QuestionList.module.scss';
 
-interface QuestionListProps {}
+interface QuestionListProps {
+  params: any;
+}
 
 function QuestionList(props: QuestionListProps) {
+  const { params } = props;
   const [page, setPage] = useState(0);
-  const query = getQueryParams('query');
-  const tag = getQueryParams('tag');
-
-  const params = {
-    search: { text: query, tags: [tag] },
-    sort: 'up_vote',
-  };
 
   return (
-    <React.Fragment>
+    <div className={styles.questionList}>
       {_.map(_.range(page + 1), currPage => (
         <QuestionListPage
           key={currPage}
@@ -24,7 +20,7 @@ function QuestionList(props: QuestionListProps) {
           seeMore={currPage === page ? () => setPage(page + 1) : undefined}
         />
       ))}
-    </React.Fragment>
+    </div>
   );
 }
 

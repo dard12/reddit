@@ -10,6 +10,7 @@ import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import UserName from '../../containers/UserName/UserName';
 import CommentList from '../../containers/CommentList/CommentList';
+import QuestionList from '../../containers/QuestionList/QuestionList';
 
 interface ProfileProps {
   user?: string;
@@ -84,7 +85,10 @@ function Profile(props: ProfileProps) {
           path={commentsLink}
           render={() => <CommentList params={{ author_id: targetUser }} />}
         />
-        <Route path={questionsLink} render={() => null} />
+        <Route
+          path={questionsLink}
+          render={() => <QuestionList params={{ author_id: targetUser }} />}
+        />
         <Route path={upvotesLink} render={() => null} />
         <Route path={downvotesLink} render={() => null} />
 
