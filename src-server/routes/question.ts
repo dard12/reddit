@@ -21,7 +21,7 @@ router.get('/api/question', async (req, res) => {
   if (search) {
     const searchDict = JSON.parse(query.search);
     const { tags } = searchDict;
-    const validTags = _.pullAll(tags, ['all']);
+    const validTags = _.compact(_.pullAll(tags, ['all']));
 
     if (!_.isEmpty(validTags)) {
       pgQuery.whereRaw('tags && ?', [validTags]);
