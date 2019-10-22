@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from './RecentComments.module.scss';
-import SearchBar from '../../containers/SearchBar/SearchBar';
-import { getQueryParams } from '../../history';
 import Tabs from '../../containers/Tabs/Tabs';
 import CommentList from '../../containers/CommentList/CommentList';
 
@@ -23,7 +21,6 @@ function RecentComments(props: RecentCommentsProps) {
 
   return (
     <div className={styles.recentComments}>
-      <SearchBar query={getQueryParams('query')} />
       <Tabs tabs={tabs} queryParamName="tag" initialTab="all" />
       <CommentList params={params} />
     </div>
