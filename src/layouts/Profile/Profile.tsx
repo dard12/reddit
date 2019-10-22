@@ -20,6 +20,7 @@ function Profile(props: ProfileProps) {
   const { user, userDoc, targetUsername, loadDocsAction } = props;
   const params = { username: targetUsername };
   const { result } = useAxiosGet('/api/user', params, {
+    name: 'Profile',
     reloadOnChange: true,
     cachedResult: userDoc,
   });

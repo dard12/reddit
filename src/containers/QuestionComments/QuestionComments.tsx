@@ -21,7 +21,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   const { result, isSuccess } = useAxiosGet(
     '/api/comment',
     { question_id: question, type },
-    { reloadOnChange: true },
+    { reloadOnChange: true, name: 'QuestionComments' },
   );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });

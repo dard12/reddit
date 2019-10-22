@@ -2,7 +2,8 @@ import { QueryBuilder } from 'knex';
 import _ from 'lodash';
 
 export default async function execute(pgQuery: QueryBuilder, options?: any) {
-  const { page = 0, pageSize = 10 } = options || {};
+  const page = _.toNumber(_.get(options, 'page')) || 0;
+  const pageSize = _.toNumber(_.get(options, 'pageSize')) || 5;
   const tempDocs = await pgQuery
     .clone()
     .limit(pageSize + 1)

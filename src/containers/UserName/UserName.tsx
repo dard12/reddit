@@ -20,7 +20,7 @@ function UserName(props: UserNameProps) {
   const { result, isSuccess } = useAxiosGet(
     '/api/user',
     { id: user },
-    { cachedResult: userDoc },
+    { name: 'UserName', cachedResult: userDoc },
   );
 
   useLoadDocs({ collection: 'users', result, loadDocsAction });

@@ -20,7 +20,7 @@ function CommentVote(props: CommentVoteProps) {
   const { result } = useAxiosGet(
     '/api/comment',
     { id: comment },
-    { cachedResult: commentDoc },
+    { cachedResult: commentDoc, name: 'CommentVote' },
   );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });

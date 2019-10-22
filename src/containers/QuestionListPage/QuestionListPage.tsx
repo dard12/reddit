@@ -16,6 +16,7 @@ interface QuestionListPageProps {
 function QuestionListPage(props: QuestionListPageProps) {
   const { params, seeMore, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet('/api/question', params, {
+    name: 'QuestionListPage',
     reloadOnChange: true,
   });
 

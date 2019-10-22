@@ -23,7 +23,7 @@ function QuestionPage(props: QuestionPageProps) {
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
-    { cachedResult: questionDoc },
+    { name: 'QuestionPage', cachedResult: questionDoc },
   );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });

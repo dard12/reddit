@@ -20,7 +20,7 @@ function QuestionVote(props: QuestionVoteProps) {
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
-    { cachedResult: questionDoc },
+    { name: 'QuestionVote', cachedResult: questionDoc },
   );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
