@@ -6,6 +6,7 @@ import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import styles from './CommentList.module.scss';
+import { CommentDoc } from '../../../src-server/models';
 
 interface CommentListProps {
   params: any;
@@ -35,7 +36,14 @@ function CommentList(props: CommentListProps) {
         <div className={styles.commentList}>
           {_.map(docs, ({ id }) => (
             <div className={styles.comment}>
-              <Comment comment={id} key={id} />
+              <Comment
+                comment={id}
+                key={id}
+                depth={4}
+                childrenFilter={(commentDoc: CommentDoc) =>
+                  commentDoc.parent_id === id && commentDoc.id !== id
+                }
+              />
             </div>
           ))}
         </div>

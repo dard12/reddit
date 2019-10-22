@@ -22,8 +22,8 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface CommentProps {
   comment: number;
-  depth?: number;
-  childrenFilter?: any;
+  depth: number;
+  childrenFilter: any;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
@@ -38,9 +38,7 @@ function Comment(props: CommentProps) {
     loadDocsAction,
   } = props;
 
-  const [collapsed, setCollapsed] = useState(
-    _.isNumber(depth) && depth % 6 === 5,
-  );
+  const [collapsed, setCollapsed] = useState(depth % 6 === 5);
   const [replying, setReplying] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
@@ -86,9 +84,7 @@ function Comment(props: CommentProps) {
           <CommentVote
             comment={comment}
             threadLine={
-              _.isNumber(depth) && (
-                <div className={styles.threadLine} onClick={toggleCollapsed} />
-              )
+              <div className={styles.threadLine} onClick={toggleCollapsed} />
             }
           />
 
@@ -125,15 +121,14 @@ function Comment(props: CommentProps) {
               </div>
             )}
 
-            {_.isNumber(depth) &&
-              _.map(childrenComments, ({ id }) => (
-                <ConnectedComment
-                  comment={id}
-                  depth={depth + 1}
-                  childrenFilter={{ parent_id: id }}
-                  key={id}
-                />
-              ))}
+            {_.map(childrenComments, ({ id }) => (
+              <ConnectedComment
+                comment={id}
+                depth={depth + 1}
+                childrenFilter={{ parent_id: id }}
+                key={id}
+              />
+            ))}
           </div>
         </React.Fragment>
       )}
