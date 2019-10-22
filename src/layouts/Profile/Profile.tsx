@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { NavLink, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import styles from './Profile.module.scss';
@@ -8,24 +8,25 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { UserDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import UserName from '../../containers/UserName/UserName';
 
 interface ProfileProps {
-  user?: number;
+  user?: string;
   userDoc?: UserDoc;
-  targetUsername?: number;
+  targetUsername?: string;
   loadDocsAction?: Function;
 }
 
 function Profile(props: ProfileProps) {
-  const { user, userDoc, targetUsername, loadDocsAction } = props;
-  const params = { username: targetUsername };
+  const { userDoc, targetUsername, loadDocsAction } = props;
+  const params = { user_name: targetUsername };
   const { result } = useAxiosGet('/api/user', params, {
     name: 'Profile',
     reloadOnChange: true,
     cachedResult: userDoc,
   });
 
-  useLoadDocs({ collection: 'user', result, loadDocsAction });
+  useLoadDocs({ collection: 'users', result, loadDocsAction });
 
   if (!userDoc) {
     return (
@@ -36,13 +37,28 @@ function Profile(props: ProfileProps) {
   }
 
   const targetUser = userDoc.id;
-  const isMyProfile = user === targetUser;
+  const reviewsLink = `/profile/${targetUsername}`;
 
   return (
     <div className={styles.profilePage}>
+      <div>
+        <div className={styles.profileCard}>
+          <UserName user={targetUser} />
+        </div>
+
+        <div className="tabs">
+          <NavLink to={reviewsLink} activeClassName="active">
+            Latest Reviews
+          </NavLink>
+          <NavLink to={reviewsLink} activeClassName="active">
+            Favorite Songs
+          </NavLink>
+        </div>
+      </div>
+
       <Switch>
-        <Route path="/profile" render={() => null} />
-        <Route render={() => <Redirect to="/profile" />} />
+        <Route path={reviewsLink} render={() => null} />
+        <Route render={() => <Redirect to={reviewsLink} />} />
       </Switch>
     </div>
   );
@@ -52,7 +68,7 @@ const mapStateToProps = createSelector(
   [
     userSelector,
     createDocSelector({
-      collection: 'user',
+      collection: 'users',
       id: 'targetUsername',
       prop: 'userDoc',
     }),
