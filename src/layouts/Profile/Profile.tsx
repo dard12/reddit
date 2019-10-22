@@ -13,6 +13,7 @@ import UserName from '../../containers/UserName/UserName';
 interface ProfileProps {
   user?: string;
   userDoc?: UserDoc;
+  page?: string;
   targetUsername?: string;
   loadDocsAction?: Function;
 }
@@ -37,7 +38,10 @@ function Profile(props: ProfileProps) {
   }
 
   const targetUser = userDoc.id;
-  const reviewsLink = `/profile/${targetUsername}`;
+  const commentsLink = `/profile/${targetUsername}/comments`;
+  const questionsLink = `/profile/${targetUsername}/questions`;
+  const upvotesLink = `/profile/${targetUsername}/upvotes`;
+  const downvotesLink = `/profile/${targetUsername}/downvotes`;
 
   return (
     <div className={styles.profilePage}>
@@ -47,18 +51,28 @@ function Profile(props: ProfileProps) {
         </div>
 
         <div className="tabs">
-          <NavLink to={reviewsLink} activeClassName="active">
-            Latest Reviews
+          <NavLink to={commentsLink} activeClassName="active">
+            Comments
           </NavLink>
-          <NavLink to={reviewsLink} activeClassName="active">
-            Favorite Songs
+          <NavLink to={questionsLink} activeClassName="active">
+            Questions
+          </NavLink>
+          <NavLink to={upvotesLink} activeClassName="active">
+            Upvotes
+          </NavLink>
+          <NavLink to={downvotesLink} activeClassName="active">
+            Downvotes
           </NavLink>
         </div>
       </div>
 
       <Switch>
-        <Route path={reviewsLink} render={() => null} />
-        <Route render={() => <Redirect to={reviewsLink} />} />
+        <Route path={commentsLink} render={() => null} />
+        <Route path={questionsLink} render={() => null} />
+        <Route path={upvotesLink} render={() => null} />
+        <Route path={downvotesLink} render={() => null} />
+
+        <Route render={() => <Redirect to={commentsLink} />} />
       </Switch>
     </div>
   );

@@ -33,6 +33,16 @@ function App() {
               )}
             />
 
+            <Route
+              path="/profile/:username/:page"
+              render={props => (
+                <Profile
+                  targetUsername={props.match.params.username}
+                  page={props.match.params.page}
+                />
+              )}
+            />
+
             <Route exact path="/login" render={props => <Login {...props} />} />
             <Route
               exact
