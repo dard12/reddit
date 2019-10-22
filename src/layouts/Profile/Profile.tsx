@@ -47,15 +47,27 @@ function Profile(props: ProfileProps) {
     <div className={styles.profilePage}>
       <div>
         <div className={styles.profileCard}>
-          <UserName user={targetUser} />
+          <div>
+            <div className={styles.profileName}>
+              <UserName user={targetUser} plainName />
+            </div>
+            <div>Joined October 2019</div>
+          </div>
+
+          <div className={styles.reputation}>
+            <div>
+              <b>Reputation</b>
+            </div>
+            <div>23 points</div>
+          </div>
         </div>
 
         <div className="tabs">
           <NavLink to={commentsLink} activeClassName="active">
-            Comments
+            Comments (23)
           </NavLink>
           <NavLink to={questionsLink} activeClassName="active">
-            Questions
+            Questions (4)
           </NavLink>
           <NavLink to={upvotesLink} activeClassName="active">
             Upvotes
