@@ -6,11 +6,18 @@ import { getQueryParams, setQueryParams } from '../../history';
 interface PagingProps {
   params: any;
   PageComponent: any;
+  pageProps?: any;
   className?: string;
 }
 
 function Paging(props: PagingProps) {
-  const { params = {}, PageComponent, className = styles.pageGrid } = props;
+  const {
+    params = {},
+    PageComponent,
+    pageProps,
+    className = styles.pageGrid,
+  } = props;
+
   const initialPage = _.toNumber(getQueryParams('page')) || 0;
   const [page, setPage] = useState(initialPage);
 
@@ -27,6 +34,7 @@ function Paging(props: PagingProps) {
           key={currPage}
           params={{ ...params, page: currPage }}
           seeMore={currPage === page ? seeMore : undefined}
+          {...pageProps}
         />
       ))}
     </div>
