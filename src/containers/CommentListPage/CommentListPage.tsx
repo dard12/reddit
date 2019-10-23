@@ -55,6 +55,7 @@ function CommentListPage(props: CommentListPageProps) {
               type={type}
               depth={0}
               key={id}
+              hideChildren
             />
           </div>
         ))

@@ -25,6 +25,7 @@ interface CommentProps {
   depth: number;
   question: number;
   type: 'response' | 'meta';
+  hideChildren?: boolean;
   subTreeCount?: number;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
@@ -35,6 +36,7 @@ function Comment(props: CommentProps) {
   const {
     comment,
     depth,
+    hideChildren,
     subTreeCount,
     childrenComments,
     commentDoc,
@@ -123,15 +125,16 @@ function Comment(props: CommentProps) {
               </div>
             )}
 
-            {_.map(childrenComments, ({ id }) => (
-              <ConnectedComment
-                question={question_id}
-                type={type}
-                comment={id}
-                depth={depth + 1}
-                key={id}
-              />
-            ))}
+            {!hideChildren &&
+              _.map(childrenComments, ({ id }) => (
+                <ConnectedComment
+                  question={question_id}
+                  type={type}
+                  comment={id}
+                  depth={depth + 1}
+                  key={id}
+                />
+              ))}
           </div>
         </React.Fragment>
       )}
