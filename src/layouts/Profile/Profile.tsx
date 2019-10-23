@@ -11,6 +11,7 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 import UserName from '../../containers/UserName/UserName';
 import Paging from '../../containers/Paging/Paging';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
+import CommentListPage from '../../containers/CommentListPage/CommentListPage';
 
 interface ProfileProps {
   user?: string;
@@ -81,7 +82,15 @@ function Profile(props: ProfileProps) {
       </div>
 
       <Switch>
-        <Route path={commentsLink} render={() => null} />
+        <Route
+          path={commentsLink}
+          render={() => (
+            <Paging
+              PageComponent={CommentListPage}
+              params={{ author_id: targetUser }}
+            />
+          )}
+        />
         <Route
           path={questionsLink}
           render={() => (

@@ -1,0 +1,9 @@
+@import '../../template.scss';
+
+.comment {
+  @extend .card;
+
+  > div {
+    margin-top: 0;
+  }
+}
