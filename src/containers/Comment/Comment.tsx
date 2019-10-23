@@ -8,7 +8,8 @@ import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import {
   createDocSelector,
-  createDocListSelector,
+  createTreeChildSelector,
+  createTreeCountSelector,
 } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
@@ -17,12 +18,14 @@ import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
 import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
-import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: number;
   depth: number;
-  childrenFilter: any;
+  question: number;
+  type: 'response' | 'meta';
+  parent: number;
+  subTreeCount?: number;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
@@ -32,6 +35,7 @@ function Comment(props: CommentProps) {
   const {
     comment,
     depth,
+    subTreeCount,
     childrenComments,
     commentDoc,
     loadDocsAction,
@@ -50,9 +54,8 @@ function Comment(props: CommentProps) {
     return null;
   }
 
-  const { author_name, content, created_at, question_id } = commentDoc;
+  const { author_name, content, created_at, type, question_id } = commentDoc;
 
-  const type = getQueryParams('type');
   const commentOnSubmit = () => {
     toggleReplying();
   };
@@ -72,7 +75,7 @@ function Comment(props: CommentProps) {
               <UserLink user_name={author_name} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
-              [ See More +2 ]
+              [ See More +{(subTreeCount || 0) + 1} ]
             </span>
           </div>
         </React.Fragment>
@@ -122,9 +125,11 @@ function Comment(props: CommentProps) {
 
             {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
+                parent={id}
+                question={question_id}
+                type={type}
                 comment={id}
                 depth={depth + 1}
-                childrenFilter={{ parent_id: id }}
                 key={id}
               />
             ))}
@@ -142,13 +147,10 @@ const mapStateToProps = createSelector(
       id: 'comment',
       prop: 'commentDoc',
     }),
-    createDocListSelector({
-      collection: 'comments',
-      filter: 'childrenFilter',
-      prop: 'childrenComments',
-    }),
+    createTreeChildSelector(),
+    createTreeCountSelector(),
   ],
-  (a, b) => ({ ...a, ...b }),
+  (a, b, c) => ({ ...a, ...b, ...c }),
 );
 
 const ConnectedComment = connect(

@@ -45,15 +45,7 @@ function QuestionPage(props: QuestionPageProps) {
         <CommentBox question={question} type={type} />
       </div>
 
-      <QuestionComments
-        question={question}
-        type={type}
-        rootFilter={(commentDoc: CommentDoc) =>
-          commentDoc.id === commentDoc.parent_id &&
-          commentDoc.question_id === question &&
-          commentDoc.type === type
-        }
-      />
+      <QuestionComments question={question} type={type} parent={question} />
     </div>
   );
 }

@@ -50,3 +50,36 @@ export const createDocListSelector = ({
     },
   );
 };
+
+export const createTreeChildSelector = () => {
+  return createSelector(
+    [
+      (state: any, props: any) => props,
+      (state: any, props: any) => {
+        const { question, parent } = props;
+        return _.get(state, `commentTree.${question}.${parent}.children`);
+      },
+      createCollectionSelector('comments'),
+    ],
+    (props, children, collections) => {
+      const childrenComments = _.map(
+        children,
+        cid => collections.comments[cid],
+      );
+      const type = props.type;
+      return { childrenComments: _.filter(childrenComments, { type }) };
+    },
+  );
+};
+
+export const createTreeCountSelector = () => {
+  return createSelector(
+    [
+      (state: any, props: any) => {
+        const { question, comment } = props;
+        return _.get(state, `commentTree.${question}.${comment}.subTreeCount`);
+      },
+    ],
+    subTreeCount => ({ subTreeCount }),
+  );
+};
