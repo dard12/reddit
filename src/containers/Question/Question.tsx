@@ -8,6 +8,7 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import QuestionName from '../QuestionName/QuestionName';
 
 interface QuestionProps {
   question: number;
@@ -30,7 +31,7 @@ function Question(props: QuestionProps) {
     return <Skeleton card count={4} />;
   }
 
-  const { title, description, meta_count, response_count } = questionDoc;
+  const { description, meta_count, response_count } = questionDoc;
   const questionLink = `/question/${question}`;
 
   return (
@@ -39,12 +40,7 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <Link
-            to={`${questionLink}?type=response`}
-            className={styles.itemMeta}
-          >
-            <span>{title}</span>
-          </Link>
+          <QuestionName question={question} className={styles.itemMeta} />
         </div>
         <div className={styles.itemDescription}>{description}</div>
         {!disableActions && (

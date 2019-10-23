@@ -7,6 +7,7 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 import { Button } from '../../components/Button/Button';
 import Comment from '../Comment/Comment';
 import styles from './CommentListPage.module.scss';
+import QuestionName from '../QuestionName/QuestionName';
 
 interface CommentListPageProps {
   params: any;
@@ -40,8 +41,14 @@ function CommentListPage(props: CommentListPageProps) {
       {_.isEmpty(docs) && page === 0 ? (
         <div className="card">No comments found.</div>
       ) : (
-        _.map(docs, ({ id }) => (
+        _.map(docs, ({ id, question_id }) => (
           <div className={styles.comment}>
+            <div>
+              <QuestionName
+                question={question_id}
+                className={styles.question}
+              />
+            </div>
             <Comment comment={id} depth={0} childrenFilter={false} key={id} />
           </div>
         ))
