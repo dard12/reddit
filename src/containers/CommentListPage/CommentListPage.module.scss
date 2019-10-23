@@ -1,0 +1,17 @@
+@import '../../template.scss';
+
+.comment {
+  @extend .card;
+  display: grid;
+  grid-gap: $margin-3;
+
+  > div {
+    margin-top: 0;
+  }
+}
+
+.question {
+  @extend .hoverLink;
+  font-weight: 600;
+  font-family: $serif;
+}
