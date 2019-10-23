@@ -41,7 +41,7 @@ function CommentListPage(props: CommentListPageProps) {
       {_.isEmpty(docs) && page === 0 ? (
         <div className="card">No comments found.</div>
       ) : (
-        _.map(docs, ({ id, question_id }) => (
+        _.map(docs, ({ id, question_id, type }) => (
           <div className={styles.comment}>
             <div>
               <QuestionName
@@ -49,7 +49,14 @@ function CommentListPage(props: CommentListPageProps) {
                 className={styles.question}
               />
             </div>
-            <Comment comment={id} depth={0} childrenFilter={false} key={id} />
+            <Comment
+              comment={id}
+              question={question_id}
+              parent={question_id}
+              type={type}
+              depth={0}
+              key={id}
+            />
           </div>
         ))
       )}

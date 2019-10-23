@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { createReducer } from 'redux-starter-kit';
 import { loginAction, logoutAction, loadDocsAction } from './actions';
+
 interface LoginInterface {
   token: string | null;
   id: string | null;
