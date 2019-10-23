@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './QuestionPage.module.scss';
 import Question from '../../containers/Question/Question';
 import CommentBox from '../../containers/CommentBox/CommentBox';
-import { QuestionDoc, CommentDoc } from '../../../src-server/models';
+import { QuestionDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
@@ -45,15 +45,7 @@ function QuestionPage(props: QuestionPageProps) {
         <CommentBox question={question} type={type} />
       </div>
 
-      <QuestionComments
-        question={question}
-        type={type}
-        rootFilter={(commentDoc: CommentDoc) =>
-          commentDoc.id === commentDoc.parent_id &&
-          commentDoc.question_id === question &&
-          commentDoc.type === type
-        }
-      />
+      <QuestionComments question={question} type={type} />
     </div>
   );
 }

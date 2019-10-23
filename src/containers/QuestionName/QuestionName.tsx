@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styles from './Question.module.scss';
 import { QuestionDoc } from '../../../src-server/models';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';

@@ -18,7 +18,7 @@ interface FullCommentProps {
 
 function FullComment(props: FullCommentProps) {
   const { commentDoc, question, questionDoc, loadDocsAction } = props;
-  const { id: comment, parent_id } = commentDoc;
+  const { id: comment, parent_id, type } = commentDoc;
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -40,17 +40,19 @@ function FullComment(props: FullCommentProps) {
 
         {parent_id ? (
           <Comment
+            question={question}
             comment={parent_id}
             key={parent_id}
             depth={3}
-            childrenFilter={{ id: comment }}
+            type={type}
           />
         ) : (
           <Comment
+            question={question}
             comment={comment}
             key={comment}
             depth={0}
-            childrenFilter={false}
+            type={type}
           />
         )}
       </div>

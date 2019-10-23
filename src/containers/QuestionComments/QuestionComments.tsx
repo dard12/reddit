@@ -6,18 +6,17 @@ import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import { createDocListSelector } from '../../redux/selectors';
+import { createTreeChildSelector } from '../../redux/selectors';
 
 interface QuestionCommentsProps {
   question: number;
   type: 'response' | 'meta';
-  rootFilter: any;
-  rootComments?: CommentDoc[];
+  childrenComments?: CommentDoc[];
   loadDocsAction?: Function;
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, rootComments, type, loadDocsAction } = props;
+  const { question, childrenComments, type, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet(
     '/api/comment',
     { question_id: question, type, pageSize: 1000 },
@@ -32,16 +31,15 @@ function QuestionComments(props: QuestionCommentsProps) {
 
   return (
     <div>
-      {_.isEmpty(rootComments) ? (
+      {_.isEmpty(childrenComments) ? (
         <div className="card">No comments yet.</div>
       ) : (
-        _.map(rootComments, ({ id }) => (
+        _.map(childrenComments, ({ id }) => (
           <Comment
+            question={question}
+            type={type}
             comment={id}
             depth={0}
-            childrenFilter={(commentDoc: CommentDoc) =>
-              commentDoc.parent_id === id && commentDoc.id !== id
-            }
             key={id}
           />
         ))
@@ -51,10 +49,6 @@ function QuestionComments(props: QuestionCommentsProps) {
 }
 
 export default connect(
-  createDocListSelector({
-    collection: 'comments',
-    filter: 'rootFilter',
-    prop: 'rootComments',
-  }),
+  createTreeChildSelector(),
   { loadDocsAction },
 )(QuestionComments);

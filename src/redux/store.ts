@@ -1,9 +1,17 @@
 import Axios from 'axios';
 import { configureStore } from 'redux-starter-kit';
-import { loginReducer, collectionsReducer } from './reducers';
+import {
+  loginReducer,
+  collectionsReducer,
+  commentTreeReducer,
+} from './reducers';
 
 export const store = configureStore({
-  reducer: { login: loginReducer, collections: collectionsReducer },
+  reducer: {
+    login: loginReducer,
+    collections: collectionsReducer,
+    commentTree: commentTreeReducer,
+  },
 });
 
 function persistLogin() {
