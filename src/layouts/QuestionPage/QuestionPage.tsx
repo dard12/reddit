@@ -45,7 +45,7 @@ function QuestionPage(props: QuestionPageProps) {
         <CommentBox question={question} type={type} />
       </div>
 
-      <QuestionComments question={question} type={type} parent={question} />
+      <QuestionComments question={question} type={type} />
     </div>
   );
 }

@@ -77,7 +77,7 @@ export const commentTreeReducer = createReducer<CollectionsInterface>(
             subTreeCount: 0,
           };
 
-          const newTree: Tree = { questionId: rootNode };
+          const newTree: Tree = { [questionId]: rootNode };
           state[questionId] = newTree;
         }
         const newComments = _.filter(docs, d => !state[questionId][d.id]);

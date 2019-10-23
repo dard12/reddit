@@ -25,7 +25,6 @@ interface CommentProps {
   depth: number;
   question: number;
   type: 'response' | 'meta';
-  parent: number;
   subTreeCount?: number;
   childrenComments?: CommentDoc[];
   commentDoc?: CommentDoc;
@@ -126,7 +125,6 @@ function Comment(props: CommentProps) {
 
             {_.map(childrenComments, ({ id }) => (
               <ConnectedComment
-                parent={id}
                 question={question_id}
                 type={type}
                 comment={id}

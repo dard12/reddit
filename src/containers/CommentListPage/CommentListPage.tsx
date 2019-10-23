@@ -52,7 +52,6 @@ function CommentListPage(props: CommentListPageProps) {
             <Comment
               comment={id}
               question={question_id}
-              parent={question_id}
               type={type}
               depth={0}
               key={id}

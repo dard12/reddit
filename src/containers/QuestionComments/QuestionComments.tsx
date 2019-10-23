@@ -11,7 +11,6 @@ import { createTreeChildSelector } from '../../redux/selectors';
 interface QuestionCommentsProps {
   question: number;
   type: 'response' | 'meta';
-  parent: number;
   childrenComments?: CommentDoc[];
   loadDocsAction?: Function;
 }
@@ -39,7 +38,6 @@ function QuestionComments(props: QuestionCommentsProps) {
           <Comment
             question={question}
             type={type}
-            parent={id}
             comment={id}
             depth={0}
             key={id}

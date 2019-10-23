@@ -56,7 +56,9 @@ export const createTreeChildSelector = () => {
     [
       (state: any, props: any) => props,
       (state: any, props: any) => {
-        const { question, parent } = props;
+        const { question, comment } = props;
+        const parent = comment || question;
+
         return _.get(state, `commentTree.${question}.${parent}.children`);
       },
       createCollectionSelector('comments'),
