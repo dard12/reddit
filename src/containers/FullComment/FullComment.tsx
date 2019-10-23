@@ -32,26 +32,28 @@ function FullComment(props: FullCommentProps) {
   }
 
   return (
-    <div className={styles.fullComment}>
+    <div>
       <Question question={question} />
 
-      {/* <div className={styles.recentComments}>
+      <div className={styles.recentComments}>
+        <div className={styles.recentTitle}>Recent Comments</div>
+
         {parent_id ? (
           <Comment
             comment={parent_id}
             key={parent_id}
-            depth={4}
+            depth={3}
             childrenFilter={{ id: comment }}
           />
         ) : (
           <Comment
             comment={comment}
             key={comment}
-            depth={4}
+            depth={0}
             childrenFilter={false}
           />
         )}
-      </div> */}
+      </div>
     </div>
   );
 }

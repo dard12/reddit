@@ -1,5 +1,16 @@
 @import '../../template.scss';
 
 .recentComments {
-  background-color: $dark-1;
+  @extend .card;
+  border-top: 0;
+
+  > div {
+    margin-top: 0;
+  }
+}
+
+.recentTitle {
+  font-weight: 600;
+  margin-bottom: $margin-3;
+  font-family: $serif;
 }

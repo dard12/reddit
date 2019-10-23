@@ -43,7 +43,7 @@ function FullCommentListPage(props: FullCommentListPageProps) {
           <FullComment
             commentDoc={commentDoc}
             question={commentDoc.question_id}
-            key={commentDoc.question_id}
+            key={commentDoc.id}
           />
         ))
       )}
