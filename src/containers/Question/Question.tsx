@@ -21,7 +21,7 @@ function Question(props: QuestionProps) {
   const { result, isSuccess } = useAxiosGet(
     '/api/question',
     { id: question },
-    { cachedResult: questionDoc },
+    { cachedResult: questionDoc, name: 'Question' },
   );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });

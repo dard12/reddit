@@ -18,6 +18,7 @@ import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
 import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
+import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface CommentProps {
   comment: number;
@@ -46,19 +47,19 @@ function Comment(props: CommentProps) {
   const toggleCollapsed = () => setCollapsed(!collapsed);
   const toggleReplying = () => setReplying(!replying);
 
-  const { result } = useAxiosGet('/api/comment', { id: comment });
+  const { result } = useAxiosGet(
+    '/api/comment',
+    { id: comment },
+    { name: 'Comment' },
+  );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!commentDoc) {
-    return null;
+    return <Skeleton count={3} />;
   }
 
-  const { author_name, content, created_at, type, question_id } = commentDoc;
-
-  const commentOnSubmit = () => {
-    toggleReplying();
-  };
+  const { author_name, content, created_at, question_id, type } = commentDoc;
 
   return (
     <div className={styles.comment}>
@@ -117,7 +118,7 @@ function Comment(props: CommentProps) {
                   question={question_id}
                   parent_id={comment}
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
-                  onSubmit={commentOnSubmit}
+                  onSubmit={toggleReplying}
                   type={type}
                 />
               </div>

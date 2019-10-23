@@ -39,8 +39,9 @@ export function axiosPost(
 
 export function useAxiosGet(
   url: string,
-  latestParams?: any,
-  options?: {
+  latestParams: any,
+  options: {
+    name: string;
     reloadOnChange?: boolean;
     reloadCallback?: Function;
     cachedResult?: any;
@@ -49,6 +50,7 @@ export function useAxiosGet(
   const cachedResult = _.get(options, 'cachedResult');
   const reloadOnChange = _.get(options, 'reloadOnChange');
   const reloadCallback = _.get(options, 'reloadCallback');
+  const name = _.get(options, 'name');
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -75,6 +77,8 @@ export function useAxiosGet(
         .get(url, { params })
         .then(({ data }) => {
           if (isMounted) {
+            // console.log({ name, url, params, data });
+
             const result = {
               docs: data.docs,
               count: _.toInteger(_.get(data, '[0].count')),
@@ -97,7 +101,7 @@ export function useAxiosGet(
     return () => {
       isMounted = false;
     };
-  }, [url, params, cache]);
+  }, [url, params, cache, name]);
 
   return { isSuccess, error, result, setParams };
 }

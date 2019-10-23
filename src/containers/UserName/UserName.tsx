@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { UserDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
@@ -20,7 +19,7 @@ function UserName(props: UserNameProps) {
   const { result, isSuccess } = useAxiosGet(
     '/api/user',
     { id: user },
-    { cachedResult: userDoc },
+    { name: 'UserName', cachedResult: userDoc },
   );
 
   useLoadDocs({ collection: 'users', result, loadDocsAction });

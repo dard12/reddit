@@ -1,15 +1,20 @@
+import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
+import execute from '../execute';
 
 router.get('/api/comment', async (req, res) => {
   const { query } = req;
-  const docs = await pg
+  const where = _.omit(query, ['page', 'pageSize']);
+  const pgQuery = pg
     .select('*')
     .from('comments')
-    .where(query);
+    .where(where);
 
-  res.status(200).send({ docs });
+  const result = await execute(pgQuery, query);
+
+  res.status(200).send(result);
 });
 
 router.post('/api/comment', requireAuth, async (req, res) => {

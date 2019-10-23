@@ -30,11 +30,22 @@ function Navbar(props: NavbarProps) {
         </Link>
 
         <div className={styles.navActions}>
-          <NavLink to="/question" activeClassName={styles.active}>
+          <NavLink to="/home" activeClassName={styles.active}>
             Home
           </NavLink>
 
-          {username && <NavLink to={`/profile/${username}`}>Profile</NavLink>}
+          <NavLink to="/question" activeClassName={styles.active}>
+            Questions
+          </NavLink>
+
+          {username && (
+            <NavLink
+              to={`/profile/${username}`}
+              activeClassName={styles.active}
+            >
+              Profile
+            </NavLink>
+          )}
 
           <Modal
             buttonChildren={

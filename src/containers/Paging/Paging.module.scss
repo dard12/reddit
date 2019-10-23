@@ -1,8 +1,6 @@
 @import '../../template.scss';
 
-.homePage {
-  width: $width-3;
-  margin: 0 auto;
+.pageGrid {
   display: grid;
   grid-gap: $margin-3;
 }

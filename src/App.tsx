@@ -4,10 +4,13 @@ import Axios from 'axios';
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 
-const Home = lazy(() => import('./layouts/Home/Home'));
+const Questions = lazy(() => import('./layouts/Questions/Questions'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
 const Login = lazy(() => import('./layouts/Login/Login'));
 const Profile = lazy(() => import('./layouts/Profile/Profile'));
+const RecentComments = lazy(() =>
+  import('./layouts/RecentComments/RecentComments'),
+);
 
 function App() {
   return (
@@ -17,7 +20,9 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
-            <Route exact path="/question" render={props => <Home />} />
+            <Route exact path="/" render={props => <RecentComments />} />
+            <Route exact path="/home" render={props => <RecentComments />} />
+            <Route exact path="/question" render={props => <Questions />} />
             <Route
               path="/question/:question"
               render={props => {
@@ -30,6 +35,16 @@ function App() {
               path="/profile/:username"
               render={props => (
                 <Profile targetUsername={props.match.params.username} />
+              )}
+            />
+
+            <Route
+              path="/profile/:username/:page"
+              render={props => (
+                <Profile
+                  targetUsername={props.match.params.username}
+                  page={props.match.params.page}
+                />
               )}
             />
 

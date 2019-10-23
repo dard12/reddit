@@ -1,13 +1,9 @@
 @import '../../template.scss';
 
-.questionPage {
+.recentComments {
   width: $width-3;
   margin: 0 auto;
-  display: grid;
-  grid-gap: $margin-4;
-}
-
-.commentSection {
+  margin-top: $margin-3;
   display: grid;
   grid-gap: $margin-3;
 }

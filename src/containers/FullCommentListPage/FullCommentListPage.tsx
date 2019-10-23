@@ -1,26 +1,26 @@
 import React from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import Question from '../../containers/Question/Question';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { Button } from '../../components/Button/Button';
+import FullComment from '../FullComment/FullComment';
 
-interface QuestionListPageProps {
+interface FullCommentListPageProps {
   params: any;
   seeMore?: Function;
   loadDocsAction?: Function;
 }
 
-function QuestionListPage(props: QuestionListPageProps) {
+function FullCommentListPage(props: FullCommentListPageProps) {
   const { params, seeMore, loadDocsAction } = props;
-  const { result, isSuccess } = useAxiosGet('/api/question', params, {
-    name: 'QuestionListPage',
+  const { result, isSuccess } = useAxiosGet('/api/comment', params, {
     reloadOnChange: true,
+    name: 'FullCommentListPage',
   });
 
-  useLoadDocs({ collection: 'questions', result, loadDocsAction });
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   if (!isSuccess) {
     return (
@@ -37,9 +37,15 @@ function QuestionListPage(props: QuestionListPageProps) {
   return (
     <React.Fragment>
       {_.isEmpty(docs) && page === 0 ? (
-        <div className="card">No questions found.</div>
+        <div className="card">No comments found.</div>
       ) : (
-        _.map(docs, ({ id }) => <Question question={id} key={id} />)
+        _.map(docs, commentDoc => (
+          <FullComment
+            commentDoc={commentDoc}
+            question={commentDoc.question_id}
+            key={commentDoc.id}
+          />
+        ))
       )}
 
       {seeMore && next && (
@@ -56,4 +62,4 @@ function QuestionListPage(props: QuestionListPageProps) {
 export default connect(
   null,
   { loadDocsAction },
-)(QuestionListPage);
+)(FullCommentListPage);

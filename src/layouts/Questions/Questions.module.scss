@@ -1,13 +1,8 @@
 @import '../../template.scss';
 
-.questionPage {
+.questionsPage {
   width: $width-3;
   margin: 0 auto;
-  display: grid;
-  grid-gap: $margin-4;
-}
-
-.commentSection {
   display: grid;
   grid-gap: $margin-3;
 }

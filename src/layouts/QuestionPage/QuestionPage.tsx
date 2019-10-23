@@ -9,8 +9,8 @@ import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import QuestionComments from '../../containers/QuestionComments/QuestionComments';
-import QuestionTabs from '../../containers/QuestionTabs/QuestionTabs';
 import { getQueryParams } from '../../history';
+import Tabs from '../../containers/Tabs/Tabs';
 
 interface QuestionPageProps {
   question: number;
@@ -23,14 +23,14 @@ function QuestionPage(props: QuestionPageProps) {
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
-    { cachedResult: questionDoc },
+    { name: 'QuestionPage', cachedResult: questionDoc },
   );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   const response_count = _.get(questionDoc, 'response_count');
   const meta_count = _.get(questionDoc, 'meta_count');
-  const allTypes = [
+  const tabs = [
     { label: `Answer Discussion (${response_count})`, value: 'response' },
     { label: `Meta Discussion (${meta_count})`, value: 'meta' },
   ];
@@ -40,8 +40,8 @@ function QuestionPage(props: QuestionPageProps) {
     <div className={styles.questionPage}>
       <Question question={question} disableActions />
 
-      <div>
-        <QuestionTabs allTypes={allTypes} />
+      <div className={styles.commentSection}>
+        <Tabs tabs={tabs} queryParamName="type" initialTab="response" />
         <CommentBox question={question} type={type} />
       </div>
 
