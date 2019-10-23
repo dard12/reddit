@@ -75,7 +75,7 @@ function Comment(props: CommentProps) {
               <UserLink user_name={author_name} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
-              [ See More +{(subTreeCount || 0) + 1} ]
+              See More [ +{(subTreeCount || 0) + 1} ]
             </span>
           </div>
         </React.Fragment>
