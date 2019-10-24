@@ -35,10 +35,9 @@ function Question(props: QuestionProps) {
   const { description, meta_count, response_count } = questionDoc;
   const questionResponseLink = `/question/${question}?type=response`;
   const questionMetaLink = `/question/${question}?type=meta`;
-  const questionRedirect = () => history.push(questionResponseLink);
 
   return (
-    <div className={styles.item} onClick={questionRedirect}>
+    <div className={styles.item}>
       <QuestionVote question={question} />
 
       <div className={styles.itemContent}>

@@ -42,21 +42,24 @@ function CommentListPage(props: CommentListPageProps) {
         <div className="card">No comments found.</div>
       ) : (
         _.map(docs, ({ id, question_id, type }) => (
-          <div className={styles.comment}>
-            <div>
+          <div>
+            <div className="card">
               <QuestionName
                 question={question_id}
                 className={styles.question}
               />
             </div>
-            <Comment
-              comment={id}
-              question={question_id}
-              type={type}
-              depth={0}
-              key={id}
-              hideChildren
-            />
+
+            <div className={styles.comment}>
+              <Comment
+                comment={id}
+                question={question_id}
+                type={type}
+                depth={0}
+                key={id}
+                hideChildren
+              />
+            </div>
           </div>
         ))
       )}

@@ -1,9 +1,12 @@
 @import '../../template.scss';
 
+.label {
+  font-size: $text-1;
+}
+
 .comment {
   @extend .card;
-  display: grid;
-  grid-gap: $margin-3;
+  border-top: 0;
 
   > div {
     margin-top: 0;
@@ -14,4 +17,10 @@
   @extend .hoverLink;
   font-weight: 600;
   font-family: $serif;
+  text-transform: uppercase;
+  border-bottom: 1px dotted $dark-8;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
