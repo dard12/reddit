@@ -155,18 +155,30 @@ def recompute_author_names(cur, conn):
     conn.commit()
 
 def recompute_counts(cur, conn):
+
+    cur.execute("SELECT id FROM questions")
+    all_q_ids = set(qid for (qid,) in cur)
+    all_tups = {}
+    for q in all_q_ids:
+        all_tups[(q, 'meta_count')] = 0
+        all_tups[(q, 'response_count')] = 0
+
     cur.execute(""" SELECT question_id, type, SUM(1)
                     FROM comments 
                     GROUP BY question_id, type """)
     cnts = cur.fetchall()
-    if len(cnts) == 0:
-      return
-    ps(cnts)
-    cur.execute("CREATE TEMP TABLE temp_cnt (qid bigint, type varchar, cnt int) ")
+
+    for q, t, cnt in cnts:
+        all_tups[(q,t)] = cnt
+
+    rows = [(q,t,c) for (q,t), c in all_tups.items()]
+    ps([r for r in rows if r[2] > 0])
+
+    cur.execute("CREATE TEMP TABLE temp_cnt (qid varchar, type varchar, cnt int) ")
     ppu.bulk_insert(cur=cur,
                     table_name='temp_cnt',
                     columns=['qid', 'type', 'cnt'],
-                    rows=cnts)
+                    rows=rows)
     cur.execute(""" 
       UPDATE questions
       SET response_count = cnt
@@ -181,6 +193,48 @@ def recompute_counts(cur, conn):
       """)
     conn.commit()
     cur.execute("DROP TABLE   temp_cnt;")
+
+
+def temp_map_to_tags(cur, conn):
+    tb_tags = {
+        'technical'     :   ['technical'], 
+        'Misc': ['fun'], 
+        'coordination': ['fit'], 
+        'SWE - Technical': ['technical'], 
+        'Team Coordination': ['fit'], 
+        'Misc - Technical': ['technical'], 
+        'SWE - Team Process': ['technical', 'fut'], 
+        'Personal Motivations': ['motivation']}
+    
+    cur.execute(" SELECT id, tags FROM questions ")
+    temp = []
+    for qid, tags in cur:
+        if not tags:
+          continue
+        all_t = set(tags)
+        for t in tags:
+          for nt in tb_tags.get(t, []):
+            all_t.add(nt)
+        temp.append((qid, list(all_t)))
+    if temp:
+      cur.execute("CREATE TEMP TABLE temp_tags (qid varchar, new_tags varchar[]) ")
+      ppu.bulk_insert(cur=cur,
+                      table_name='temp_tags',
+                      columns=['qid', 'new_tags'],
+                      rows=temp)
+      cur.execute(""" 
+        UPDATE questions
+        SET tags = new_tags
+        FROM temp_tags
+        WHERE temp_tags.qid = questions.id
+        """)
+      conn.commit()
+      cur.execute("DROP TABLE temp_tags;")
+
+
+
+
+
 
 def py_interact(f_locals):  
     def clear():
@@ -206,8 +260,9 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    build_and_populate_tables('dev')
+    # build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
+    cur = conn.cursor()
     py_interact(locals())
 
 

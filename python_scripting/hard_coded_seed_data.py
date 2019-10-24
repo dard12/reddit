@@ -30,8 +30,8 @@ question_rows= [{'id': 'izy4w0llxjak',
  {'id': 'hvf2199o9hrb',
   'author_id': rick_id,
   'title': 'How often do you read about new technologies and paradigms?',
-  'description': 'What are some specific technologies you’ve read about and how production-ready '
-                 'do you think they are?',
+  'description': 'What is your process for determining when to incorporate new tech into production?\n'
+                 'How do you try to get a more balanced & complete understanding of the systems/tools you are investigating?',
   'tags': ['technical'],
   'response_count': 0,
   'meta_count': 0,
