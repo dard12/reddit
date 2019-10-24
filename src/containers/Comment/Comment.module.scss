@@ -79,3 +79,10 @@
     text-decoration: underline;
   }
 }
+
+.answerLabel {
+  font-weight: 600;
+  font-size: $text-1;
+  margin-right: $margin-2;
+  color: $secondary-5;
+}

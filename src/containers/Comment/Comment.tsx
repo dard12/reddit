@@ -61,6 +61,7 @@ function Comment(props: CommentProps) {
   }
 
   const { author_name, content, created_at, question_id, type } = commentDoc;
+  const isAnswer = type === 'response' && depth === 0;
 
   return (
     <div className={styles.comment}>
@@ -73,6 +74,8 @@ function Comment(props: CommentProps) {
             />
           </div>
           <div className={styles.collapsed}>
+            {isAnswer && <span className={styles.answerLabel}>Answer by</span>}
+
             <span className={styles.author}>
               <UserLink user_name={author_name} />
             </span>
@@ -99,6 +102,9 @@ function Comment(props: CommentProps) {
 
           <div className={styles.commentContent}>
             <div>
+              {isAnswer && (
+                <span className={styles.answerLabel}>Answer by</span>
+              )}
               <span className={styles.author}>
                 <UserLink user_name={author_name} />
               </span>
