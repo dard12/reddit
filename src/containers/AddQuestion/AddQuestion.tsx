@@ -6,6 +6,7 @@ import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 import history from '../../history';
 import { axiosPost } from '../../hooks/useAxios';
+import Tooltip from '../../components/Tooltip/Tooltip';
 
 interface AddQuestionProps {
   closeModal: any;
@@ -23,8 +24,10 @@ function AddQuestion(props: AddQuestionProps) {
     setContent(event.currentTarget.value);
   };
 
+  const isFilled = _.size(_.trim(title)) && _.size(_.trim(description));
+
   const onClickPublish = () => {
-    if (_.size(_.trim(title)) && _.size(_.trim(description)) && !isSubmitting) {
+    if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
       axiosPost('/api/question', { title, description }).then(({ docs }) => {
@@ -69,9 +72,18 @@ function AddQuestion(props: AddQuestionProps) {
         <div className={styles.questionRow}>
           <Button onClick={closeModal}>Cancel</Button>
 
-          <Button className="btn" onClick={onClickPublish}>
-            Post Question
-          </Button>
+          <Tooltip
+            content="Please fill out question and details."
+            enabled={!isFilled}
+          >
+            <Button
+              className="btn"
+              disabled={isSubmitting || !isFilled}
+              onClick={onClickPublish}
+            >
+              Post Question
+            </Button>
+          </Tooltip>
         </div>
       </div>
     </div>
