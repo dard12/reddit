@@ -6,7 +6,7 @@
   cursor: pointer;
   border: 1px solid $dark-9;
 
-  &:hover {
+  &:hover:not([disabled]) {
     text-decoration: underline;
   }
 
