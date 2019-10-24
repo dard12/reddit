@@ -3,6 +3,7 @@ import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { createSelector } from 'redux-starter-kit';
+import { Link } from 'react-router-dom';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
@@ -26,6 +27,7 @@ interface CommentProps {
   depth: number;
   question: string;
   type: 'response' | 'meta';
+  showLink?: boolean;
   hideChildren?: boolean;
   subTreeCount?: number;
   childrenComments?: CommentDoc[];
@@ -37,6 +39,7 @@ function Comment(props: CommentProps) {
   const {
     comment,
     depth,
+    showLink,
     hideChildren,
     subTreeCount,
     childrenComments,
@@ -127,12 +130,20 @@ function Comment(props: CommentProps) {
             <div className={styles.commentBody}>{content}</div>
 
             <div className={styles.commentFooter}>
-              <div className={styles.reply} onClick={toggleReplying}>
+              <div className={styles.footerAction} onClick={toggleReplying}>
                 Reply
               </div>
-              <div className={styles.timestamp}>
-                <TimeAgo timestamp={created_at} />
-              </div>
+
+              {showLink && (
+                <Link
+                  to={`/question/${question_id}?type=${type}&anchor=${comment}`}
+                  className={styles.footerAction}
+                >
+                  Link
+                </Link>
+              )}
+
+              <TimeAgo timestamp={created_at} />
             </div>
 
             {replying && (

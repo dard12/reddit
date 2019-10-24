@@ -30,18 +30,15 @@
   }
 }
 
-.reply {
+.footerAction {
   font-weight: 600;
   cursor: pointer;
+  margin-right: $margin-2;
 
   &:hover {
     background-color: $primary-5;
     text-decoration: underline;
   }
-}
-
-.timestamp {
-  margin-left: $margin-2;
 }
 
 .commentFooter {
