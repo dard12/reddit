@@ -75,7 +75,7 @@ export const commentTreeReducer = createReducer<CollectionsInterface>(
         if (!state[questionId]) {
           const rootNode: treeNode = {
             children: [],
-            parentId: -1,
+            parentId: '',
             subTreeCount: 0,
           };
 
