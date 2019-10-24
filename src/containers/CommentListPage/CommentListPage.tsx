@@ -39,7 +39,7 @@ function CommentListPage(props: CommentListPageProps) {
   return (
     <React.Fragment>
       {_.isEmpty(docs) && page === 0 ? (
-        <div className="card">No comments found.</div>
+        <div className="card">No comments yet.</div>
       ) : (
         _.map(docs, ({ id, question_id, type }) => (
           <div>

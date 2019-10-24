@@ -5,7 +5,6 @@
   margin: 0 auto;
   display: grid;
   grid-gap: $margin-3;
-  min-height: 60vh;
 }
 
 .profileCard {
@@ -24,8 +23,4 @@
 
 .profileRight {
   text-align: right;
-}
-
-.reputationPoints {
-  background-color: $primary-5;
 }
