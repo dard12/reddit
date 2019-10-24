@@ -84,7 +84,7 @@ $line-height-1: 1.2;
 }
 
 .card {
-  border: 2px solid $dark-9;
+  border: 1px solid $dark-9;
   padding: calc(20rem / 14);
   background-color: $white;
 }
@@ -128,7 +128,7 @@ $line-height-1: 1.2;
 .tabs {
   display: flex;
   justify-content: space-around;
-  border: 2px solid $dark-9;
+  border: 1px solid $dark-9;
   padding: 0 $margin-3;
 
   > * {

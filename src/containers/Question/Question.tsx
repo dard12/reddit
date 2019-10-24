@@ -9,6 +9,7 @@ import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import QuestionName from '../QuestionName/QuestionName';
+import history from '../../history';
 
 interface QuestionProps {
   question: number;
@@ -32,10 +33,14 @@ function Question(props: QuestionProps) {
   }
 
   const { description, meta_count, response_count } = questionDoc;
-  const questionLink = `/question/${question}`;
+  const questionResponseLink = `/question/${question}?type=response`;
+  const questionMetaLink = `/question/${question}?type=meta`;
+  const questionRedirect = disableActions
+    ? undefined
+    : () => history.push(questionResponseLink);
 
   return (
-    <div className={styles.item}>
+    <div className={styles.item} onClick={questionRedirect}>
       <QuestionVote question={question} />
 
       <div className={styles.itemContent}>
@@ -45,16 +50,13 @@ function Question(props: QuestionProps) {
         <div className={styles.itemDescription}>{description}</div>
         {!disableActions && (
           <div className={styles.itemActions}>
-            <Link
-              to={`${questionLink}?type=response`}
-              className={styles.itemMeta}
-            >
+            <Link to={questionResponseLink} className={styles.itemMeta}>
               {response_count} responses
             </Link>
 
             <span>•</span>
 
-            <Link to={`${questionLink}?type=meta`} className={styles.itemMeta}>
+            <Link to={questionMetaLink} className={styles.itemMeta}>
               {meta_count} meta-comments
             </Link>
           </div>

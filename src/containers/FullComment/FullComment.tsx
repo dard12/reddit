@@ -36,7 +36,7 @@ function FullComment(props: FullCommentProps) {
       <Question question={question} />
 
       <div className={styles.recentComments}>
-        <div className={styles.recentTitle}>Recent Comments</div>
+        <div className={styles.recentTitle}>Recent Posts</div>
 
         {parent_id ? (
           <Comment

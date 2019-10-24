@@ -3,22 +3,25 @@
 .item {
   @extend .card;
   display: flex;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px $dark-9;
+  }
 }
 
 .itemContent {
   display: flex;
   flex-direction: column;
-  min-width: $width-2;
 }
 
 .itemHeader {
   font-weight: 600;
-  border-bottom: 2px solid $dark-8;
+  border-bottom: 1px dotted $dark-8;
   text-transform: uppercase;
   font-family: $serif;
   display: block;
   padding-right: $margin-3;
-  padding-bottom: $margin-1;
   margin-bottom: $margin-2;
   text-decoration: none;
 
