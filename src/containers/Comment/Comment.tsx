@@ -21,9 +21,9 @@ import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface CommentProps {
-  comment: number;
+  comment: string;
   depth: number;
-  question: number;
+  question: string;
   type: 'response' | 'meta';
   hideChildren?: boolean;
   subTreeCount?: number;

@@ -13,7 +13,7 @@ import { getQueryParams } from '../../history';
 import Tabs from '../../containers/Tabs/Tabs';
 
 interface QuestionPageProps {
-  question: number;
+  question: string;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }

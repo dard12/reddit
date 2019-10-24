@@ -11,7 +11,7 @@ import Comment from '../../containers/Comment/Comment';
 
 interface FullCommentProps {
   commentDoc: CommentDoc;
-  question: number;
+  question: string;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }

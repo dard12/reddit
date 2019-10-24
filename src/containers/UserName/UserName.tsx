@@ -8,7 +8,7 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 import UserLink from '../../components/UserLink/UserLink';
 
 interface UserNameProps {
-  user: number;
+  user: string;
   userDoc?: UserDoc;
   loadDocsAction?: Function;
   plainName?: boolean;

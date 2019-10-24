@@ -8,7 +8,7 @@ import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 
 interface QuestionNameProps {
-  question: number;
+  question: string;
   className?: string;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
