@@ -25,7 +25,7 @@ function Navbar(props: NavbarProps) {
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
-        <Link to="/question" className={styles.brand}>
+        <Link to="/home" className={styles.brand}>
           CoverStory
         </Link>
 
