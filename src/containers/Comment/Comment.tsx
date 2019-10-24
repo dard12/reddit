@@ -88,7 +88,12 @@ function Comment(props: CommentProps) {
           <CommentVote
             comment={comment}
             threadLine={
-              <div className={styles.threadLine} onClick={toggleCollapsed} />
+              <div
+                className={styles.threadLineContainer}
+                onClick={toggleCollapsed}
+              >
+                <div className={styles.threadLine} />
+              </div>
             }
           />
 

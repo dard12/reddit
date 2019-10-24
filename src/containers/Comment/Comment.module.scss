@@ -46,16 +46,22 @@
   display: flex;
 }
 
+.threadLineContainer {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  height: 100%;
+
+  &:hover {
+    background-color: $primary-5;
+  }
+}
+
 .threadLine {
   width: 2px;
   background-color: $dark-8;
-  border: 5px solid $white;
   height: 100%;
-  cursor: pointer;
-
-  &:hover {
-    border-color: $primary-5;
-  }
 }
 
 .collapseIcon {

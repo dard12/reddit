@@ -3,6 +3,7 @@
 .recentComments {
   @extend .card;
   border-top: 0;
+  background-color: $dark-1;
 
   > div {
     margin-top: 0;
