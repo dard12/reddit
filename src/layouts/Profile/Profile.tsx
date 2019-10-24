@@ -54,14 +54,14 @@ function Profile(props: ProfileProps) {
             <div className={styles.profileName}>
               <UserName user={targetUser} plainName />
             </div>
-            <div>Joined October 2019</div>
+            @dard12
           </div>
 
-          <div className={styles.reputation}>
+          <div className={styles.profileRight}>
             <div>
-              <b>Reputation</b>
+              <b>Joined</b>
             </div>
-            <span className={styles.reputationPoints}>23 points</span>
+            <div>October 2019</div>
           </div>
         </div>
 
