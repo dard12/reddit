@@ -16,7 +16,7 @@ interface QuestionCommentsProps {
 }
 
 function QuestionComments(props: QuestionCommentsProps) {
-  const { question, childrenComments, type, loadDocsAction } = props;
+  const { question, type, childrenComments, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet(
     '/api/comment',
     { question_id: question, type, pageSize: 1000 },

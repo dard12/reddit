@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.commentBody {
+  white-space: pre-line;
+}
+
 .replyBox {
   margin: $margin-2 0;
 }

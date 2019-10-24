@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -19,6 +19,7 @@ import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: string;
@@ -56,6 +57,16 @@ function Comment(props: CommentProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
+  const isTarget = getQueryParams('anchor') === comment;
+  const anchor = `id_${comment}`;
+  const targetOffset = isTarget
+    ? _.get(document.querySelector(`[data-anchor="${anchor}"]`), 'offsetTop')
+    : false;
+
+  useEffect(() => {
+    targetOffset && window.scrollTo(0, targetOffset);
+  }, [targetOffset]);
+
   if (!commentDoc) {
     return <Skeleton count={3} />;
   }
@@ -73,7 +84,7 @@ function Comment(props: CommentProps) {
               onClick={toggleCollapsed}
             />
           </div>
-          <div className={styles.collapsed}>
+          <div className={styles.collapsed} data-anchor={anchor}>
             {isAnswer && <span className={styles.answerLabel}>Answer by</span>}
 
             <span className={styles.author}>
@@ -100,7 +111,7 @@ function Comment(props: CommentProps) {
             }
           />
 
-          <div className={styles.commentContent}>
+          <div className={styles.commentContent} data-anchor={anchor}>
             <div>
               {isAnswer && (
                 <span className={styles.answerLabel}>Answer by</span>
