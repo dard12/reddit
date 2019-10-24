@@ -124,7 +124,7 @@ function Comment(props: CommentProps) {
               </span>
             </div>
 
-            <div>{content}</div>
+            <div className={styles.commentBody}>{content}</div>
 
             <div className={styles.commentFooter}>
               <div className={styles.reply} onClick={toggleReplying}>
