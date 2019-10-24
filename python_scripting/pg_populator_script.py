@@ -9,7 +9,14 @@ import os
 import json
 import pprint as pp
 import hard_coded_seed_data as hcsd
+import random
 
+"""
+source venv/bin/activate
+"""
+id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
+def id_gen():
+    return ''.join(random.choice(id_alphabet) for _ in range(12))
 
 def pprint(obj):
     pp.sorted = lambda x, key=None: x
@@ -23,13 +30,14 @@ def build_and_populate_tables(env='test'):
     def get_user_tb_req():
         return """
             CREATE TABLE IF NOT EXISTS users
-              (id              bigint PRIMARY KEY,
+              (id              varchar(12) PRIMARY KEY,
                user_name       varchar UNIQUE,
                full_name       varchar,
                email           varchar,
                salt_password   varchar,
                photo_link      varchar,
                summary         varchar,
+               created_at      timestamp default current_timestamp,
                is_deleted      boolean
                )
             """
@@ -37,8 +45,8 @@ def build_and_populate_tables(env='test'):
     def get_question_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS questions
-                 (id              bigint PRIMARY KEY,
-                  author_id       bigint REFERENCES users (id),
+                 (id              varchar(12) PRIMARY KEY,
+                  author_id       varchar(12) REFERENCES users (id),
                   title           varchar,
                   description     varchar,
                   tags            varchar Array,
@@ -46,31 +54,33 @@ def build_and_populate_tables(env='test'):
                   meta_count      int,
                   up_vote         int,
                   down_vote       int,
+                  created_at      timestamp default current_timestamp,
                   is_deleted      boolean)
                """
     def get_comment_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS comments
-                 (id              bigint PRIMARY KEY,
+                 (id              varchar(12) PRIMARY KEY,
                   content         varchar,
                   type            comment_type,
-                  author_id       bigint REFERENCES users (id),
+                  author_id       varchar(12) REFERENCES users (id),
                   author_name     varchar, 
-                  question_id     bigint REFERENCES questions (id),
-                  parent_id       bigint REFERENCES comments (id),
-                  created_at      timestamp,
+                  question_id     varchar(12) REFERENCES questions (id),
+                  parent_id       varchar(12) REFERENCES comments (id),
                   up_vote         int,
                   down_vote       int,
+                  created_at      timestamp default current_timestamp,
                   is_deleted      boolean)
                """
     def get_votes_tb_req():
         return """ 
                 CREATE TABLE IF NOT EXISTS votes
-                (id           bigint PRIMARY KEY,
-                 user_id      bigint REFERENCES users (id),
+                (id           varchar(12) PRIMARY KEY,
+                 user_id      varchar(12) REFERENCES users (id),
                  action       vote_options_type,
                  subject_id   bigint,  
-                 subject_type allowed_subject_types)
+                 subject_type allowed_subject_types,
+                 created_at  timestamp default current_timestamp)
                """
 
     tables = [
@@ -149,6 +159,8 @@ def recompute_counts(cur, conn):
                     FROM comments 
                     GROUP BY question_id, type """)
     cnts = cur.fetchall()
+    if len(cnts) == 0:
+      return
     ps(cnts)
     cur.execute("CREATE TEMP TABLE temp_cnt (qid bigint, type varchar, cnt int) ")
     ppu.bulk_insert(cur=cur,
@@ -194,7 +206,7 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    # build_and_populate_tables('dev')
+    build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     py_interact(locals())
 

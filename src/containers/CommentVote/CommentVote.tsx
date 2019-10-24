@@ -10,8 +10,8 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 
 interface CommentVoteProps {
-  comment: number;
-  user?: number;
+  comment: string;
+  user?: string;
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
   threadLine?: any;

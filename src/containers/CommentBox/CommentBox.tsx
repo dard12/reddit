@@ -10,10 +10,10 @@ import { loadDocsAction } from '../../redux/actions';
 import { axiosPost } from '../../hooks/useAxios';
 
 interface CommentBoxProps {
-  question: number;
+  question: string;
   type: 'response' | 'meta';
-  user?: number;
-  parent_id?: number;
+  user?: string;
+  parent_id?: string;
   actions?: any;
   onSubmit?: Function;
   loadDocsAction?: Function;

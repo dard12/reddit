@@ -9,9 +9,11 @@ interface LoginInterface {
 }
 
 interface treeNode {
-  children: number[];
-  parentId?: number;
+  children: string[];
+  parentId?: string;
   subTreeCount: number;
+  responseTotal?: number;
+  metaTotal?: number;
 }
 interface Tree {
   [nodeId: string]: treeNode;
@@ -73,7 +75,7 @@ export const commentTreeReducer = createReducer<CollectionsInterface>(
         if (!state[questionId]) {
           const rootNode: treeNode = {
             children: [],
-            parentId: -1,
+            parentId: '',
             subTreeCount: 0,
           };
 
@@ -92,7 +94,7 @@ export const commentTreeReducer = createReducer<CollectionsInterface>(
   },
 );
 
-function buildTree(treeStore: { [nodeId: number]: treeNode }, docs: any) {
+function buildTree(treeStore: { [nodeId: string]: treeNode }, docs: any) {
   _.each(docs, commentDoc => {
     const id = commentDoc.id;
     let parentId = commentDoc.parent_id;
@@ -122,7 +124,7 @@ function buildTree(treeStore: { [nodeId: number]: treeNode }, docs: any) {
 }
 
 function updateTreeCounts(
-  treeStore: { [nodeId: number]: treeNode },
+  treeStore: { [nodeId: string]: treeNode },
   docs: any,
 ) {
   if (docs.length === 1) {
@@ -138,8 +140,8 @@ function updateTreeCounts(
       return;
     }
   }
-  const rootId: number = docs[0].question_id;
-  const handled: { [nodeId: number]: boolean } = { [rootId]: false };
+  const rootId: string = docs[0].question_id;
+  const handled: { [nodeId: string]: boolean } = { [rootId]: false };
   const stack = [rootId];
   let prevNode = null;
   while (stack.length > 0) {

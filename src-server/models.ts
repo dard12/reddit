@@ -1,42 +1,44 @@
 export interface UserDoc {
-  id: number;
+  id: string;
   user_name: string;
   email: string;
   salt_password: string;
   full_name?: string;
   photo_link?: string;
   summary?: string;
+  created_at: Date;
 }
 
 export interface QuestionDoc {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tags: string[];
-  author_id: number;
+  author_id: string;
   response_count: number;
   meta_count: number;
   up_vote: number;
   down_vote: number;
+  created_at: Date;
 }
 
 export interface CommentDoc {
-  id: number;
+  id: string;
   content: string;
   type: 'response' | 'meta';
-  author_id: number;
+  author_id: string;
   author_name: string;
-  question_id: number;
-  parent_id?: number;
+  question_id: string;
+  parent_id?: string;
   created_at: Date;
   up_vote: number;
   down_vote: number;
 }
 
 export interface VoteDoc {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   action: 'up_vote' | 'down_vote';
-  subject_id: number;
+  subject_id: string;
   subject_type: 'comments' | 'questions';
 }

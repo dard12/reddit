@@ -12,7 +12,7 @@ import QuestionName from '../QuestionName/QuestionName';
 import history from '../../history';
 
 interface QuestionProps {
-  question: number;
+  question: string;
   disableActions?: boolean;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;

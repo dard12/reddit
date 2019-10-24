@@ -11,9 +11,9 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 
 interface QuestionVoteProps {
-  question: number;
+  question: string;
   questionDoc?: QuestionDoc;
-  user?: number;
+  user?: string;
   loadDocsAction?: Function;
 }
 

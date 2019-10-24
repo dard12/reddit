@@ -9,7 +9,7 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 import { createTreeChildSelector } from '../../redux/selectors';
 
 interface QuestionCommentsProps {
-  question: number;
+  question: string;
   type: 'response' | 'meta';
   childrenComments?: CommentDoc[];
   loadDocsAction?: Function;
