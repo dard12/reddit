@@ -125,6 +125,19 @@ function updateTreeCounts(
   treeStore: { [nodeId: number]: treeNode },
   docs: any,
 ) {
+  if (docs.length === 1) {
+    let curId = docs[0].id;
+    const leaf = treeStore[curId];
+    if (leaf.children.length === 0) {
+      treeStore[curId].subTreeCount = 0;
+      curId = leaf.parentId;
+      while (treeStore[curId] && curId !== treeStore[curId].parentId) {
+        treeStore[curId].subTreeCount += 1;
+        curId = treeStore[curId].parentId;
+      }
+      return;
+    }
+  }
   const rootId: number = docs[0].question_id;
   const handled: { [nodeId: number]: boolean } = { [rootId]: false };
   const stack = [rootId];
