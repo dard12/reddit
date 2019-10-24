@@ -30,9 +30,10 @@
   }
 }
 
-.reply {
+.footerAction {
   font-weight: 600;
   cursor: pointer;
+  margin-right: $margin-2;
 
   &:hover {
     background-color: $primary-5;
@@ -40,8 +41,12 @@
   }
 }
 
-.timestamp {
-  margin-left: $margin-2;
+.flagged {
+  color: $dark-6;
+}
+
+.strongFlagged {
+  color: $dark-4;
 }
 
 .commentFooter {

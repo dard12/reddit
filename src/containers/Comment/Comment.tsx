@@ -3,6 +3,8 @@ import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { createSelector } from 'redux-starter-kit';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
@@ -26,6 +28,7 @@ interface CommentProps {
   depth: number;
   question: string;
   type: 'response' | 'meta';
+  showLink?: boolean;
   hideChildren?: boolean;
   subTreeCount?: number;
   childrenComments?: CommentDoc[];
@@ -37,6 +40,7 @@ function Comment(props: CommentProps) {
   const {
     comment,
     depth,
+    showLink,
     hideChildren,
     subTreeCount,
     childrenComments,
@@ -64,14 +68,21 @@ function Comment(props: CommentProps) {
     : false;
 
   useEffect(() => {
-    targetOffset && window.scrollTo(0, targetOffset);
+    targetOffset && window.scrollTo(0, targetOffset - 10);
   }, [targetOffset]);
 
   if (!commentDoc) {
     return <Skeleton count={3} />;
   }
 
-  const { author_name, content, created_at, question_id, type } = commentDoc;
+  const {
+    author_name,
+    content,
+    created_at,
+    question_id,
+    type,
+    down_vote,
+  } = commentDoc;
   const isAnswer = type === 'response' && depth === 0;
 
   return (
@@ -91,7 +102,7 @@ function Comment(props: CommentProps) {
               <UserLink user_name={author_name} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
-              See More [ +{(subTreeCount || 0) + 1} ]
+              [ +{(subTreeCount || 0) + 1} ] See More
             </span>
           </div>
         </React.Fragment>
@@ -124,15 +135,30 @@ function Comment(props: CommentProps) {
               </span>
             </div>
 
-            <div className={styles.commentBody}>{content}</div>
+            <div
+              className={classNames(styles.commentBody, {
+                [styles.flagged]: down_vote > 5,
+                [styles.strongFlagged]: down_vote > 20,
+              })}
+            >
+              {content}
+            </div>
 
             <div className={styles.commentFooter}>
-              <div className={styles.reply} onClick={toggleReplying}>
+              <div className={styles.footerAction} onClick={toggleReplying}>
                 Reply
               </div>
-              <div className={styles.timestamp}>
-                <TimeAgo timestamp={created_at} />
-              </div>
+
+              {showLink && (
+                <Link
+                  to={`/question/${question_id}?type=${type}&anchor=${comment}`}
+                  className={styles.footerAction}
+                >
+                  Link
+                </Link>
+              )}
+
+              <TimeAgo timestamp={created_at} />
             </div>
 
             {replying && (
@@ -155,6 +181,7 @@ function Comment(props: CommentProps) {
                   comment={id}
                   depth={depth + 1}
                   key={id}
+                  showLink={showLink}
                 />
               ))}
           </div>

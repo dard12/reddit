@@ -45,6 +45,7 @@ function FullComment(props: FullCommentProps) {
             key={parent_id}
             depth={3}
             type={type}
+            showLink
           />
         ) : (
           <Comment
@@ -53,6 +54,7 @@ function FullComment(props: FullCommentProps) {
             key={comment}
             depth={0}
             type={type}
+            showLink
           />
         )}
       </div>
