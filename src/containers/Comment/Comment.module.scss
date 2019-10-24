@@ -41,6 +41,14 @@
   }
 }
 
+.flagged {
+  color: $dark-6;
+}
+
+.strongFlagged {
+  color: $dark-4;
+}
+
 .commentFooter {
   margin-top: $margin-1;
   font-size: $text-1;

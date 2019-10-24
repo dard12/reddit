@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { createSelector } from 'redux-starter-kit';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
@@ -67,14 +68,21 @@ function Comment(props: CommentProps) {
     : false;
 
   useEffect(() => {
-    targetOffset && window.scrollTo(0, targetOffset);
+    targetOffset && window.scrollTo(0, targetOffset - 10);
   }, [targetOffset]);
 
   if (!commentDoc) {
     return <Skeleton count={3} />;
   }
 
-  const { author_name, content, created_at, question_id, type } = commentDoc;
+  const {
+    author_name,
+    content,
+    created_at,
+    question_id,
+    type,
+    down_vote,
+  } = commentDoc;
   const isAnswer = type === 'response' && depth === 0;
 
   return (
@@ -94,7 +102,7 @@ function Comment(props: CommentProps) {
               <UserLink user_name={author_name} />
             </span>
             <span className={styles.collapseText} onClick={toggleCollapsed}>
-              See More [ +{(subTreeCount || 0) + 1} ]
+              [ +{(subTreeCount || 0) + 1} ] See More
             </span>
           </div>
         </React.Fragment>
@@ -127,7 +135,14 @@ function Comment(props: CommentProps) {
               </span>
             </div>
 
-            <div className={styles.commentBody}>{content}</div>
+            <div
+              className={classNames(styles.commentBody, {
+                [styles.flagged]: down_vote > 5,
+                [styles.strongFlagged]: down_vote > 20,
+              })}
+            >
+              {content}
+            </div>
 
             <div className={styles.commentFooter}>
               <div className={styles.footerAction} onClick={toggleReplying}>
