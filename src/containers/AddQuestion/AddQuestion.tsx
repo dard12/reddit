@@ -24,7 +24,7 @@ function AddQuestion(props: AddQuestionProps) {
   };
 
   const onClickPublish = () => {
-    if (_.size(_.trim(title)) && !isSubmitting) {
+    if (_.size(_.trim(title)) && _.size(_.trim(description)) && !isSubmitting) {
       setIsSubmitting(true);
 
       axiosPost('/api/question', { title, description }).then(({ docs }) => {
