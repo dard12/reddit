@@ -166,6 +166,7 @@ function Comment(props: CommentProps) {
                   comment={id}
                   depth={depth + 1}
                   key={id}
+                  showLink={showLink}
                 />
               ))}
           </div>
