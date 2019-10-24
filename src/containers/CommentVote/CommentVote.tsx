@@ -7,6 +7,7 @@ import { CommentDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
+import SignUpModal from '../../components/SignUpModal/SignUpModal';
 
 interface CommentVoteProps {
   comment: number;
@@ -32,8 +33,24 @@ function CommentVote(props: CommentVoteProps) {
 
   return (
     <div className={styles.vote}>
-      <IoIosArrowUp onClick={upVote} />
-      <IoIosArrowDown onClick={downVote} />
+      {user ? (
+        <React.Fragment>
+          <IoIosArrowUp onClick={upVote} />
+          <IoIosArrowDown onClick={downVote} />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <SignUpModal
+            buttonChildren={<IoIosArrowUp />}
+            prompt="To vote please "
+          />
+          <SignUpModal
+            buttonChildren={<IoIosArrowDown />}
+            prompt="To vote please "
+          />
+        </React.Fragment>
+      )}
+
       {threadLine}
     </div>
   );
