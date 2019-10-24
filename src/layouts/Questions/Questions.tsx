@@ -28,7 +28,7 @@ function Questions(props: QuestionsProps) {
     <div className={styles.questionsPage}>
       <SearchBar query={getQueryParams('query')} />
       <Tabs tabs={tabs} queryParamName="tag" initialTab="all" />
-      <Paging PageComponent={QuestionListPage} params={params} />
+      <Paging component={QuestionListPage} params={params} />
     </div>
   );
 }

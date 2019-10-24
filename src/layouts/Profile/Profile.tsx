@@ -86,7 +86,7 @@ function Profile(props: ProfileProps) {
           path={commentsLink}
           render={() => (
             <Paging
-              PageComponent={CommentListPage}
+              component={CommentListPage}
               params={{ author_id: targetUser }}
             />
           )}
@@ -95,7 +95,7 @@ function Profile(props: ProfileProps) {
           path={questionsLink}
           render={() => (
             <Paging
-              PageComponent={QuestionListPage}
+              component={QuestionListPage}
               params={{ author_id: targetUser }}
             />
           )}

@@ -23,7 +23,7 @@ function RecentComments(props: RecentCommentsProps) {
   return (
     <div className={styles.recentComments}>
       <Tabs tabs={tabs} queryParamName="tag" initialTab="all" />
-      <Paging PageComponent={FullCommentListPage} params={params} />
+      <Paging component={FullCommentListPage} params={params} />
     </div>
   );
 }

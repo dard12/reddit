@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 import styles from './Paging.module.scss';
 import { getQueryParams, setQueryParams } from '../../history';
 
 interface PagingProps {
-  params: any;
-  PageComponent: any;
-  pageProps?: any;
+  component: any;
+  props?: any;
+  params?: any;
   className?: string;
+  gridGap?: '3' | '4';
+  seeMore?: boolean;
 }
 
 function Paging(props: PagingProps) {
   const {
+    component: PageComponent,
     params = {},
-    PageComponent,
-    pageProps,
+    props: pageProps,
     className = styles.pageGrid,
+    gridGap = '3',
+    seeMore: showSeeMore = true,
   } = props;
 
   const initialPage = _.toNumber(getQueryParams('page')) || 0;
@@ -27,13 +32,15 @@ function Paging(props: PagingProps) {
     setQueryParams({ page: nextPage });
   };
 
+  const gapClass = gridGap === '3' ? styles.gridGap3 : styles.gridGap4;
+
   return (
-    <div className={className}>
+    <div className={classNames(className, gapClass)}>
       {_.map(_.range(page + 1), currPage => (
         <PageComponent
           key={currPage}
           params={{ ...params, page: currPage }}
-          seeMore={currPage === page ? seeMore : undefined}
+          seeMore={showSeeMore && currPage === page ? seeMore : undefined}
           {...pageProps}
         />
       ))}
