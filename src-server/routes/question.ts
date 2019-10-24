@@ -15,7 +15,7 @@ router.get('/api/question', async (req, res) => {
     .where(where);
 
   if (sort) {
-    pgQuery.orderBy(sort, 'desc');
+    pgQuery.orderBy(sort, 'desc').orderBy('response_count', 'desc');
   }
 
   if (search) {
