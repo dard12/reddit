@@ -13,6 +13,7 @@ import Modal from '../../components/Modal/Modal';
 import AddQuestion from '../../containers/AddQuestion/AddQuestion';
 import { axios } from '../../App';
 import { Button } from '../../components/Button/Button';
+import SignUpModal from '../../components/SignUpModal/SignUpModal';
 
 interface NavbarProps extends RouteComponentProps {
   username?: string;
@@ -21,6 +22,10 @@ interface NavbarProps extends RouteComponentProps {
 
 function Navbar(props: NavbarProps) {
   const { username, logoutAction } = props;
+
+  const addQuestionBtn = (
+    <Button className={styles.addQuestionBtn}>Add a Question</Button>
+  );
 
   return (
     <div className={styles.navbarContainer}>
@@ -47,12 +52,17 @@ function Navbar(props: NavbarProps) {
             </NavLink>
           )}
 
-          <Modal
-            buttonChildren={
-              <Button className={styles.addQuestionBtn}>Add a Question</Button>
-            }
-            render={closeModal => <AddQuestion closeModal={closeModal} />}
-          />
+          {username ? (
+            <Modal
+              buttonChildren={addQuestionBtn}
+              render={closeModal => <AddQuestion closeModal={closeModal} />}
+            />
+          ) : (
+            <SignUpModal
+              buttonChildren={addQuestionBtn}
+              prompt="To add a question please "
+            />
+          )}
 
           {username ? (
             <NavLink

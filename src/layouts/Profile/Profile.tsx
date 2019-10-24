@@ -67,10 +67,10 @@ function Profile(props: ProfileProps) {
 
         <div className="tabs">
           <NavLink to={commentsLink} activeClassName="active">
-            Comments (23)
+            Comments
           </NavLink>
           <NavLink to={questionsLink} activeClassName="active">
-            Questions (4)
+            Questions
           </NavLink>
           <NavLink to={upvotesLink} activeClassName="active">
             Upvotes

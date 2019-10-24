@@ -1,0 +1,6 @@
+@import '../../template.scss';
+
+.signUpModal {
+  @extend .card;
+  padding: $margin-3;
+}
