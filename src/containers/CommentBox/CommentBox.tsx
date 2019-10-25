@@ -12,6 +12,7 @@ import { axiosPost } from '../../hooks/useAxios';
 interface CommentBoxProps {
   question: string;
   type: 'response' | 'meta';
+  edit?: boolean;
   user?: string;
   parent_id?: string;
   actions?: any;
@@ -23,6 +24,7 @@ function CommentBox(props: CommentBoxProps) {
   const {
     question,
     type,
+    edit,
     parent_id,
     user,
     actions,
@@ -36,8 +38,10 @@ function CommentBox(props: CommentBoxProps) {
     setContent(event.currentTarget.value);
   };
 
+  const isFilled = _.size(_.trim(content));
+
   const onClickPublish = () => {
-    if (_.size(_.trim(content)) && !isSubmitting) {
+    if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
       axiosPost(
@@ -47,9 +51,10 @@ function CommentBox(props: CommentBoxProps) {
           parent_id,
           content,
           type,
+          edit,
         },
         { collection: 'comments', loadDocsAction },
-      ).then(({ docs }) => {
+      ).then(() => {
         setIsSubmitting(false);
         setContent('');
         onSubmit && onSubmit();
@@ -58,14 +63,21 @@ function CommentBox(props: CommentBoxProps) {
   };
 
   let placeholder;
+  let submit;
 
-  if (parent_id) {
+  if (edit) {
+    placeholder = 'Add an edit to your comment…';
+    submit = 'Add Edit';
+  } else if (parent_id) {
     placeholder = 'Write your reply…';
+    submit = 'Reply';
   } else if (type === 'response') {
     placeholder = 'How would you respond to this question?';
+    submit = 'Comment';
   } else {
     placeholder =
       'Is this a good interview question? What makes this a good or bad question?';
+    submit = 'Comment';
   }
 
   return (
@@ -91,7 +103,7 @@ function CommentBox(props: CommentBoxProps) {
             {actions}
 
             <Button className="btn" onClick={onClickPublish}>
-              {parent_id ? 'Reply' : 'Comment'}
+              {submit}
             </Button>
           </div>
         </React.Fragment>

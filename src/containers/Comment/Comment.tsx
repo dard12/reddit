@@ -80,6 +80,7 @@ function Comment(props: CommentProps) {
   }
 
   const {
+    author_id,
     author_name,
     content,
     created_at,
@@ -89,6 +90,7 @@ function Comment(props: CommentProps) {
   } = commentDoc;
   const isAnswer = type === 'response' && depth === 0;
   const sortedComments = getSortedComments(user, childrenComments);
+  const isMyComment = user === author_id;
 
   return (
     <div className={styles.comment}>
@@ -150,9 +152,15 @@ function Comment(props: CommentProps) {
             </div>
 
             <div className={styles.commentFooter}>
-              <div className={styles.footerAction} onClick={toggleReplying}>
-                Reply
-              </div>
+              {isMyComment ? (
+                <div className={styles.footerAction} onClick={toggleReplying}>
+                  Edit
+                </div>
+              ) : (
+                <div className={styles.footerAction} onClick={toggleReplying}>
+                  Reply
+                </div>
+              )}
 
               {showLink && (
                 <Link
@@ -174,6 +182,7 @@ function Comment(props: CommentProps) {
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
                   onSubmit={toggleReplying}
                   type={type}
+                  edit={isMyComment}
                 />
               </div>
             )}

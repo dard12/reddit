@@ -45,27 +45,33 @@ router.get('/api/comment', async (req, res) => {
 
 router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user } = req;
-  const { parent_id, question_id, type } = body;
+  const { parent_id, question_id, type, edit } = body;
   const id = getId();
 
   if (!parent_id) {
     body.parent_id = id;
   }
 
-  const docs = await pg
-    .insert({
-      ...body,
-      id,
-      author_id: user.id,
-      author_name: user.user_name,
-      up_vote: 0,
-      down_vote: 0,
-      created_at: new Date(),
-    })
-    .into('comments')
-    .returning('*');
+  const comment = _.omit(body, 'edit');
 
-  res.status(200).send({ docs });
+  if (edit) {
+    // EDIT
+  } else {
+    const docs = await pg
+      .insert({
+        ...comment,
+        id,
+        author_id: user.id,
+        author_name: user.user_name,
+        up_vote: 0,
+        down_vote: 0,
+        created_at: new Date(),
+      })
+      .into('comments')
+      .returning('*');
+
+    res.status(200).send({ docs });
+  }
 
   const targetCount = type === 'response' ? 'response_count' : 'meta_count';
   const questionDoc = await pg
