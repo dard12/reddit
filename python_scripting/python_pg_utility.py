@@ -8,6 +8,7 @@ import getpass
 import boto3
 import time
 import sys
+from  decimal import Decimal
 import os
 import io
 
@@ -340,6 +341,7 @@ def print_order_sql_rows(rows, cols_to_sort=[0], siz=45, sort_lambda=None):
             typ_cnt[type(r[idx])] += 1
         maj_type = sorted([(t,c) for t,c in typ_cnt.items()], key=lambda x:-x[1])[0][0]
         swap = {int: -1,
+                Decimal: -1,
                 float: -1,
                 str: '',
                 bool: False,

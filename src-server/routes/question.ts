@@ -39,22 +39,24 @@ router.get('/api/question', async (req, res) => {
       );
       if (words) {
         const terms = `%(${words.join(' | ')})%`;
+        const likeSearch = '%' + searchDict.text + '%';
         pgQuery.whereRaw(
           '(lower(title) similar to ? OR lower(description) similar to ?)',
           [terms, terms],
         );
         pgQuery.clearOrder();
         pgQuery.orderByRaw(
-          ` lower(title) LIKE '%${searchDict.text}%' DESC,
-            lower(description) LIKE '%${searchDict.text}%' DESC,
+          ` coalesce(lower(title) LIKE ?, FALSE) DESC,
+            coalesce(lower(description) LIKE ?, FALSE) DESC,
             like_count(lower(title), ?::varchar array) DESC,
-            like_count(lower(description), ?::varchar array) DESC`,
-          [words, words],
+            like_count(lower(description), ?::varchar array) DESC
+           `,
+          [likeSearch, likeSearch, words, words],
         );
       }
     }
   }
-
+  console.log(pgQuery.toSQL());
   const result = await execute(pgQuery, query);
 
   res.status(200).send(result);

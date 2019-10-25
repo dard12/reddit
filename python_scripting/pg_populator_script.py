@@ -89,6 +89,7 @@ def build_and_populate_tables(env='test'):
                   up_vote         int,
                   down_vote       int,
                   is_edited       boolean   DEFAULT false,
+                  is_answer
                   created_at      timestamp DEFAULT current_timestamp,
                   updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
@@ -301,7 +302,6 @@ def create_multi_word_like_sum_function(conn):
     cur = conn.cursor()
     cur.execute(req)
     conn.commit()
-
 
 
 
