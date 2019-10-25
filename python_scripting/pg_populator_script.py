@@ -13,6 +13,8 @@ import random
 
 """
 source venv/bin/activate
+psql -h minidb.cpoebeflfeyk.us-east-1.rds.amazonaws.com -d postgres  -U postgres -p 5432
+
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
 def id_gen():
@@ -160,8 +162,8 @@ def recompute_counts(cur, conn):
     all_q_ids = set(qid for (qid,) in cur)
     all_tups = {}
     for q in all_q_ids:
-        all_tups[(q, 'meta_count')] = 0
-        all_tups[(q, 'response_count')] = 0
+        all_tups[(q, 'meta')] = 0
+        all_tups[(q, 'response')] = 0
 
     cur.execute(""" SELECT question_id, type, SUM(1)
                     FROM comments 
