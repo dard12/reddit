@@ -41,6 +41,7 @@ function Profile(props: ProfileProps) {
   }
 
   const targetUser = userDoc.id;
+  const answersLink = `/profile/${targetUsername}/answers`;
   const commentsLink = `/profile/${targetUsername}/comments`;
   const questionsLink = `/profile/${targetUsername}/questions`;
   const upvotesLink = `/profile/${targetUsername}/upvotes`;
@@ -66,6 +67,9 @@ function Profile(props: ProfileProps) {
         </div>
 
         <div className="tabs">
+          <NavLink to={answersLink} activeClassName="active">
+            Answers
+          </NavLink>
           <NavLink to={commentsLink} activeClassName="active">
             Comments
           </NavLink>
@@ -83,11 +87,20 @@ function Profile(props: ProfileProps) {
 
       <Switch>
         <Route
+          path={answersLink}
+          render={() => (
+            <Paging
+              component={CommentListPage}
+              params={{ author_id: targetUser, is_answer: true }}
+            />
+          )}
+        />
+        <Route
           path={commentsLink}
           render={() => (
             <Paging
               component={CommentListPage}
-              params={{ author_id: targetUser }}
+              params={{ author_id: targetUser, is_answer: false }}
             />
           )}
         />
@@ -103,7 +116,7 @@ function Profile(props: ProfileProps) {
         <Route path={upvotesLink} render={() => null} />
         <Route path={downvotesLink} render={() => null} />
 
-        <Route render={() => <Redirect to={commentsLink} />} />
+        <Route render={() => <Redirect to={answersLink} />} />
       </Switch>
     </div>
   );

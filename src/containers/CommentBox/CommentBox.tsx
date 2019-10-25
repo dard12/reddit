@@ -8,11 +8,12 @@ import { userSelector } from '../../redux/selectors';
 import SignUp from '../../components/SignUp/SignUp';
 import { loadDocsAction } from '../../redux/actions';
 import { axiosPost } from '../../hooks/useAxios';
+import { CommentDoc } from '../../../src-server/models';
 
 interface CommentBoxProps {
   question: string;
   type: 'response' | 'meta';
-  is_edited?: boolean;
+  editingComment?: CommentDoc;
   user?: string;
   parent_id?: string;
   actions?: any;
@@ -24,14 +25,16 @@ function CommentBox(props: CommentBoxProps) {
   const {
     question,
     type,
-    is_edited,
+    editingComment,
     parent_id,
     user,
     actions,
     onSubmit,
     loadDocsAction,
   } = props;
-  const [content, setContent] = useState<string | undefined>(undefined);
+  const [content, setContent] = useState<string | undefined>(
+    editingComment ? editingComment.content : undefined,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -47,11 +50,12 @@ function CommentBox(props: CommentBoxProps) {
       axiosPost(
         '/api/comment',
         {
+          id: editingComment ? editingComment.id : undefined,
           question_id: question,
           parent_id,
           content,
           type,
-          is_edited,
+          is_edited: Boolean(editingComment),
         },
         { collection: 'comments', loadDocsAction },
       ).then(() => {
@@ -65,9 +69,9 @@ function CommentBox(props: CommentBoxProps) {
   let placeholder;
   let submit;
 
-  if (is_edited) {
-    placeholder = 'Add an edit to your comment…';
-    submit = 'Add Edit';
+  if (editingComment) {
+    placeholder = 'Edit your comment…';
+    submit = 'Edit';
   } else if (parent_id) {
     placeholder = 'Write your reply…';
     submit = 'Reply';

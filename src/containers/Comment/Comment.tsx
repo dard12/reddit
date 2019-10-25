@@ -87,8 +87,8 @@ function Comment(props: CommentProps) {
     question_id,
     type,
     down_vote,
+    is_answer,
   } = commentDoc;
-  const isAnswer = type === 'response' && depth === 0;
   const sortedComments = getSortedComments(user, childrenComments);
   const isMyComment = user === author_id;
 
@@ -103,7 +103,7 @@ function Comment(props: CommentProps) {
             />
           </div>
           <div className={styles.collapsed} data-anchor={anchor}>
-            {isAnswer && <span className={styles.answerLabel}>Answer by</span>}
+            {is_answer && <span className={styles.answerLabel}>Answer by</span>}
 
             <span className={styles.author}>
               <UserLink user_name={author_name} />
@@ -131,7 +131,7 @@ function Comment(props: CommentProps) {
 
           <div className={styles.commentContent} data-anchor={anchor}>
             <div>
-              {isAnswer && (
+              {is_answer && (
                 <span className={styles.answerLabel}>Answer by</span>
               )}
               <span className={styles.author}>
@@ -182,7 +182,7 @@ function Comment(props: CommentProps) {
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
                   onSubmit={toggleReplying}
                   type={type}
-                  is_edited={isMyComment}
+                  editingComment={commentDoc}
                 />
               </div>
             )}
