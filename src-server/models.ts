@@ -21,6 +21,7 @@ export interface QuestionDoc {
   meta_count: number;
   up_vote: number;
   down_vote: number;
+  last_comment_id: string;
   created_at: Date;
   updated_at: Date;
 }
