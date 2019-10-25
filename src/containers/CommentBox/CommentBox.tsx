@@ -32,7 +32,9 @@ function CommentBox(props: CommentBoxProps) {
     onSubmit,
     loadDocsAction,
   } = props;
-  const [content, setContent] = useState<string | undefined>(undefined);
+  const [content, setContent] = useState<string | undefined>(
+    editingComment ? editingComment.content : undefined,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,18 +47,13 @@ function CommentBox(props: CommentBoxProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
-      const id = editingComment ? editingComment.id : undefined;
-      const fullContent = editingComment
-        ? `${editingComment.content}\n\n[edit]: ${content}`
-        : content;
-
       axiosPost(
         '/api/comment',
         {
-          id,
+          id: editingComment ? editingComment.id : undefined,
           question_id: question,
           parent_id,
-          content: fullContent,
+          content,
           type,
           is_edited: Boolean(editingComment),
         },
@@ -73,8 +70,8 @@ function CommentBox(props: CommentBoxProps) {
   let submit;
 
   if (editingComment) {
-    placeholder = 'Add an edit to your comment…';
-    submit = 'Add Edit';
+    placeholder = 'Edit your comment…';
+    submit = 'Edit';
   } else if (parent_id) {
     placeholder = 'Write your reply…';
     submit = 'Reply';
