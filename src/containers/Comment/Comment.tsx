@@ -60,7 +60,7 @@ function Comment(props: CommentProps) {
   const { result } = useAxiosGet(
     '/api/comment',
     { id: comment },
-    { name: 'Comment' },
+    { name: 'Comment', cachedResult: commentDoc },
   );
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
