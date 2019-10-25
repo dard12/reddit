@@ -9,7 +9,7 @@ import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import QuestionName from '../QuestionName/QuestionName';
-import history from '../../history';
+import Highlight from '../Highlight/Highlight';
 
 interface QuestionProps {
   question: string;
@@ -44,7 +44,9 @@ function Question(props: QuestionProps) {
         <div className={styles.itemHeader}>
           <QuestionName question={question} />
         </div>
-        <div className={styles.itemDescription}>{description}</div>
+        <div className={styles.itemDescription}>
+          <Highlight textToHighlight={description} />
+        </div>
         {!disableActions && (
           <div className={styles.itemActions}>
             <Link to={questionResponseLink} className={styles.itemMeta}>

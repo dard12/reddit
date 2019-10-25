@@ -20,7 +20,7 @@ $dark-2: hsl(230, 35%, 95%);
 $dark-1: hsl(230, 35%, 98%);
 
 $pink: hsl(349, 100%, 77%);
-
+$yellow: #fff9a2;
 $white: #ffffff;
 $red: #c50818;
 
@@ -133,9 +133,20 @@ $line-height-1: 1.2;
   border: 1px solid $dark-9;
   padding: 0 $margin-3;
 
+  @media (max-device-width: 768px) {
+    display: block;
+    text-align: center;
+  }
+
   > * {
     margin: $margin-3 $margin-4;
     cursor: pointer;
+
+    @media (max-device-width: 768px) {
+      display: inline-block;
+      margin: $margin-1 $margin-2;
+      text-transform: none;
+    }
   }
 
   > *:hover {
@@ -147,6 +158,10 @@ $line-height-1: 1.2;
     font-weight: 600;
     text-decoration: underline;
   }
+}
+
+.highlight {
+  background-color: $yellow;
 }
 
 .badge {

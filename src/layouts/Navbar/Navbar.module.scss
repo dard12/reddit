@@ -15,10 +15,6 @@
   height: $margin-5;
   border-bottom: 3px solid $dark-9;
 
-  @media (max-device-width: 768px) {
-    max-width: none;
-  }
-
   .navActions {
     display: flex;
 

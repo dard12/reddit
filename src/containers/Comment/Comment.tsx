@@ -152,15 +152,9 @@ function Comment(props: CommentProps) {
             </div>
 
             <div className={styles.commentFooter}>
-              {isMyComment ? (
-                <div className={styles.footerAction} onClick={toggleReplying}>
-                  Edit
-                </div>
-              ) : (
-                <div className={styles.footerAction} onClick={toggleReplying}>
-                  Reply
-                </div>
-              )}
+              <div className={styles.footerAction} onClick={toggleReplying}>
+                {isMyComment ? 'Edit' : 'Reply'}
+              </div>
 
               {showLink && (
                 <Link

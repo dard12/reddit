@@ -6,6 +6,7 @@ import {
   NavLink,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
 import styles from './Navbar.module.scss';
 import { logoutAction } from '../../redux/actions';
 import { usernameSelector } from '../../redux/selectors';
@@ -52,17 +53,19 @@ function Navbar(props: NavbarProps) {
             </NavLink>
           )}
 
-          {username ? (
-            <Modal
-              buttonChildren={addQuestionBtn}
-              render={closeModal => <AddQuestion closeModal={closeModal} />}
-            />
-          ) : (
-            <SignUpModal
-              buttonChildren={addQuestionBtn}
-              prompt="To add a question please "
-            />
-          )}
+          <MediaQuery minDeviceWidth={768}>
+            {username ? (
+              <Modal
+                buttonChildren={addQuestionBtn}
+                render={closeModal => <AddQuestion closeModal={closeModal} />}
+              />
+            ) : (
+              <SignUpModal
+                buttonChildren={addQuestionBtn}
+                prompt="To add a question please "
+              />
+            )}
+          </MediaQuery>
 
           {username ? (
             <NavLink

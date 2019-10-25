@@ -6,6 +6,7 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import Highlight from '../Highlight/Highlight';
 
 interface QuestionNameProps {
   question: string;
@@ -33,7 +34,7 @@ function QuestionName(props: QuestionNameProps) {
 
   return (
     <Link to={`${questionLink}?type=response`} className={className}>
-      <span>{title}</span>
+      <Highlight textToHighlight={title} />
     </Link>
   );
 }
