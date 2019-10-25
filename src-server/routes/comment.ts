@@ -25,6 +25,7 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     ...body,
     id: id || newId,
     parent_id: parent_id || newId,
+    is_answer: !parent_id,
   };
 
   const row = {
