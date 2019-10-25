@@ -17,7 +17,7 @@ function WithReputation(props: WithReputationProps) {
   const { result } = useAxiosGet(
     '/api/user',
     { id: user },
-    { cachedResult: userDoc, name: 'WithUser' },
+    { cachedResult: userDoc, name: 'WithReputation' },
   );
 
   useLoadDocs({ collection: 'users', result, loadDocsAction });

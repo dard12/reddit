@@ -10,6 +10,11 @@ interface HighlightProps {
 
 function Highlight(props: HighlightProps) {
   const { textToHighlight, paramName = 'query' } = props;
+
+  if (!textToHighlight) {
+    return null;
+  }
+
   const query = getQueryParams(paramName);
   const searchWords = _.split(query, ' ');
 
