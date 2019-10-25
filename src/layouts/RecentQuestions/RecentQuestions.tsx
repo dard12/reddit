@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './RecentComments.module.scss';
+import styles from './RecentQuestions.module.scss';
 import Paging from '../../containers/Paging/Paging';
 import FullQuestionListPage from '../../containers/FullQuestionListPage/FullQuestionListPage';
 

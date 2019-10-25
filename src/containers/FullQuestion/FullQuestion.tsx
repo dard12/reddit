@@ -36,7 +36,7 @@ function FullQuestion(props: FullQuestionProps) {
     <div>
       <Question question={question} />
 
-      <div className={styles.recentComments}>
+      <div className={styles.recent}>
         <div className={styles.recentTitle}>Recent Post</div>
 
         <Comment

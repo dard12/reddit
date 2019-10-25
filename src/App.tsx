@@ -8,8 +8,8 @@ const Questions = lazy(() => import('./layouts/Questions/Questions'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
 const Login = lazy(() => import('./layouts/Login/Login'));
 const Profile = lazy(() => import('./layouts/Profile/Profile'));
-const RecentComments = lazy(() =>
-  import('./layouts/RecentComments/RecentComments'),
+const RecentQuestions = lazy(() =>
+  import('./layouts/RecentQuestions/RecentQuestions'),
 );
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
-            <Route exact path="/home" render={props => <RecentComments />} />
+            <Route exact path="/home" render={props => <RecentQuestions />} />
             <Route exact path="/question" render={props => <Questions />} />
             <Route
               path="/question/:question"
