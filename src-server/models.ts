@@ -7,6 +7,7 @@ export interface UserDoc {
   photo_link?: string;
   summary?: string;
   created_at: Date;
+  updated_at: Date;
   reputation: number;
 }
 
@@ -21,6 +22,7 @@ export interface QuestionDoc {
   up_vote: number;
   down_vote: number;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface CommentDoc {
@@ -32,6 +34,7 @@ export interface CommentDoc {
   question_id: string;
   parent_id?: string;
   created_at: Date;
+  updated_at: Date;
   up_vote: number;
   down_vote: number;
 }
@@ -42,4 +45,6 @@ export interface VoteDoc {
   action: 'up_vote' | 'down_vote';
   subject_id: string;
   subject_type: 'comments' | 'questions';
+  created_at: Date;
+  updated_at: Date;
 }

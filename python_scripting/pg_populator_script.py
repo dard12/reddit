@@ -8,12 +8,23 @@ import csv
 import os
 import json
 import pprint as pp
-import hard_coded_seed_data as hcsd
+
 import random
 
 """
 source venv/bin/activate
 psql -h minidb.cpoebeflfeyk.us-east-1.rds.amazonaws.com -d postgres  -U postgres -p 5432
+
+
+ALTER TABLE users     ADD COLUMN updated_at timestamp DEFAULT current_timestamp;
+ALTER TABLE questions ADD COLUMN updated_at timestamp DEFAULT current_timestamp;
+ALTER TABLE comments  ADD COLUMN updated_at timestamp DEFAULT current_timestamp;
+ALTER TABLE votes     ADD COLUMN updated_at timestamp DEFAULT current_timestamp;
+
+CREATE TRIGGER update_at_users     BEFORE UPDATE ON users     FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
+CREATE TRIGGER update_at_questions BEFORE UPDATE ON questions FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
+CREATE TRIGGER update_at_comments  BEFORE UPDATE ON comments  FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
+CREATE TRIGGER update_at_votes     BEFORE UPDATE ON votes     FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
 
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
@@ -39,7 +50,8 @@ def build_and_populate_tables(env='test'):
                salt_password   varchar,
                photo_link      varchar,
                summary         varchar,
-               created_at      timestamp default current_timestamp,
+               created_at      timestamp DEFAULT current_timestamp,
+               updated_at      timestamp DEFAULT current_timestamp,
                is_deleted      boolean
                )
             """
@@ -56,8 +68,10 @@ def build_and_populate_tables(env='test'):
                   meta_count      int,
                   up_vote         int,
                   down_vote       int,
-                  created_at      timestamp default current_timestamp,
+                  created_at      timestamp DEFAULT current_timestamp,
+                  updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
+                  
                """
     def get_comment_tb_req():
         return """
@@ -71,7 +85,8 @@ def build_and_populate_tables(env='test'):
                   parent_id       varchar(12) REFERENCES comments (id),
                   up_vote         int,
                   down_vote       int,
-                  created_at      timestamp default current_timestamp,
+                  created_at      timestamp DEFAULT current_timestamp,
+                  updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
                """
     def get_votes_tb_req():
@@ -82,38 +97,39 @@ def build_and_populate_tables(env='test'):
                  action       vote_options_type,
                  subject_id   bigint,  
                  subject_type allowed_subject_types,
-                 created_at  timestamp default current_timestamp)
+                 created_at   timestamp DEFAULT current_timestamp,
+                 updated_at   timestamp DEFAULT current_timestamp,)
                """
 
-    tables = [
-      {'table_name': 'users',
-       'columns': ['id', 'user_name', 'full_name', 'email', 'salt_password', 'photo_link', 'summary'],
-       'pkeys': ['id'],
-       'hard_coded_rows':  hcsd.users_rows,
-       },
-      {'table_name': 'questions',
-       'columns': ['id', 'author_id', 'title', 'description', 'tags', 'response_count', 'meta_count', 'up_vote', 'down_vote'],
-       'pkeys': ['id'],
-       'hard_coded_rows': hcsd.question_rows
-       },
+    # tables = [
+    #   {'table_name': 'users',
+    #    'columns': ['id', 'user_name', 'full_name', 'email', 'salt_password', 'photo_link', 'summary'],
+    #    'pkeys': ['id'],
+    #    'hard_coded_rows':  hcsd.users_rows,
+    #    },
+    #   {'table_name': 'questions',
+    #    'columns': ['id', 'author_id', 'title', 'description', 'tags', 'response_count', 'meta_count', 'up_vote', 'down_vote'],
+    #    'pkeys': ['id'],
+    #    'hard_coded_rows': hcsd.question_rows
+    #    },
 
 
-      {'table_name': 'comments',
-       'columns': ['id','content','type','author_id','author_name', 'question_id','parent_id','created_at','up_vote','down_vote'],
-       'pkeys': ['id'],
-       'hard_coded_rows': hcsd.comment_rows
-       },
-      {'table_name': 'votes',
-       'columns': [
-                'id',           
-                'user_id',      
-                'action',       
-                'subject_id',   
-                'subject_type'], 
-       'pkeys': ['id'],
-       'hard_coded_rows': hcsd.vote_rows
-       },
-    ]
+    #   {'table_name': 'comments',
+    #    'columns': ['id','content','type','author_id','author_name', 'question_id','parent_id','created_at','up_vote','down_vote'],
+    #    'pkeys': ['id'],
+    #    'hard_coded_rows': hcsd.comment_rows
+    #    },
+    #   {'table_name': 'votes',
+    #    'columns': [
+    #             'id',           
+    #             'user_id',      
+    #             'action',       
+    #             'subject_id',   
+    #             'subject_type'], 
+    #    'pkeys': ['id'],
+    #    'hard_coded_rows': hcsd.vote_rows
+    #    },
+    # ]
     # Define tables
     enum_map = {
         'comment_type'         : {'response', 'meta'},
@@ -124,21 +140,31 @@ def build_and_populate_tables(env='test'):
     for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_votes_tb_req()]:
         cur.execute(req)
     conn.commit()
+    create_updated_at_trigger(conn)
 
     # build temp tables for upsert
     for tb_control in tables:
         tb = tb_control['table_name']
-        cur.execute("CREATE TEMP TABLE temp_%s AS SELECT * FROM %s WHERE False" % (tb,tb))
-        ppu.bulk_insert(cur=cur,
-                        table_name=f'temp_{tb}',
-                        columns=tb_control['columns'],
-                        rows=[[row.get(c) for c in tb_control['columns']]
-                               for row in tb_control['hard_coded_rows']])
-        ppu.pkey_upsert(cur=cur,
-                        perm_table=tb,
-                        temp_table=f'temp_{tb}',
-                        pkeys=tb_control['pkeys'],
-                        all_cols=tb_control['columns'])
+        # cur.execute("CREATE TEMP TABLE temp_%s AS SELECT * FROM %s WHERE False" % (tb,tb))
+        # ppu.bulk_insert(cur=cur,
+        #                 table_name=f'temp_{tb}',
+        #                 columns=tb_control['columns'],
+        #                 rows=[[row.get(c) for c in tb_control['columns']]
+        #                        for row in tb_control['hard_coded_rows']])
+        # ppu.pkey_upsert(cur=cur,
+        #                 perm_table=tb,
+        #                 temp_table=f'temp_{tb}',
+        #                 pkeys=tb_control['pkeys'],
+        #                 all_cols=tb_control['columns'])
+        # add updated_at trigger
+        updated_at_trigger_req = f"""
+          CREATE TRIGGER update_at_{tb} BEFORE UPDATE ON {tb} FOR EACH ROW EXECUTE PROCEDURE  update_at_trigger();
+        """
+        cur.execute(updated_at_trigger_req)
+        conn.commit()
+        
+
+
     conn.commit()
 
     recompute_counts(cur, conn)
@@ -205,7 +231,7 @@ def temp_map_to_tags(cur, conn):
         'SWE - Technical': ['technical'], 
         'Team Coordination': ['fit'], 
         'Misc - Technical': ['technical'], 
-        'SWE - Team Process': ['technical', 'fut'], 
+        'SWE - Team Process': ['technical', 'fit'], 
         'Personal Motivations': ['motivation']}
     
     cur.execute(" SELECT id, tags FROM questions ")
@@ -232,6 +258,20 @@ def temp_map_to_tags(cur, conn):
         """)
       conn.commit()
       cur.execute("DROP TABLE temp_tags;")
+
+def create_updated_at_trigger(conn):
+  req = """
+    CREATE OR REPLACE FUNCTION update_at_trigger() 
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.updated_at = now();
+        RETURN NEW; 
+    END;
+    $$ language 'plpgsql';
+    """
+  cur = conn.cursor()
+  cur.execute(req)
+  conn.commit()
 
 
 
@@ -262,7 +302,7 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    # build_and_populate_tables('dev')
+    # build_and_populate_tables('test')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     cur = conn.cursor()
     py_interact(locals())
