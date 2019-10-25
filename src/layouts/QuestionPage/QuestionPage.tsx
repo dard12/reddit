@@ -28,8 +28,8 @@ function QuestionPage(props: QuestionPageProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  const response_count = _.get(questionDoc, 'response_count');
-  const meta_count = _.get(questionDoc, 'meta_count');
+  const response_count = _.get(questionDoc, 'response_count') || 0;
+  const meta_count = _.get(questionDoc, 'meta_count') || 0;
   const tabs = [
     { label: `Answer Discussion (${response_count})`, value: 'response' },
     { label: `Meta Discussion (${meta_count})`, value: 'meta' },

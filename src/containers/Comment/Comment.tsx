@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { createSelector } from 'redux-starter-kit';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { differenceInMinutes } from 'date-fns';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
@@ -12,6 +13,7 @@ import {
   createDocSelector,
   createTreeChildSelector,
   createTreeCountSelector,
+  userSelector,
 } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
@@ -28,6 +30,7 @@ interface CommentProps {
   depth: number;
   question: string;
   type: 'response' | 'meta';
+  user?: string;
   showLink?: boolean;
   hideChildren?: boolean;
   subTreeCount?: number;
@@ -40,6 +43,7 @@ function Comment(props: CommentProps) {
   const {
     comment,
     depth,
+    user,
     showLink,
     hideChildren,
     subTreeCount,
@@ -84,6 +88,7 @@ function Comment(props: CommentProps) {
     down_vote,
   } = commentDoc;
   const isAnswer = type === 'response' && depth === 0;
+  const sortedComments = getSortedComments(user, childrenComments);
 
   return (
     <div className={styles.comment}>
@@ -174,7 +179,7 @@ function Comment(props: CommentProps) {
             )}
 
             {!hideChildren &&
-              _.map(childrenComments, ({ id }) => (
+              _.map(sortedComments, ({ id }) => (
                 <ConnectedComment
                   question={question_id}
                   type={type}
@@ -200,8 +205,9 @@ const mapStateToProps = createSelector(
     }),
     createTreeChildSelector(),
     createTreeCountSelector(),
+    userSelector,
   ],
-  (a, b, c) => ({ ...a, ...b, ...c }),
+  (a, b, c, d) => ({ ...a, ...b, ...c, ...d }),
 );
 
 const ConnectedComment = connect(
@@ -210,3 +216,21 @@ const ConnectedComment = connect(
 )(Comment);
 
 export default ConnectedComment;
+
+export function getSortedComments(user?: string, comments?: CommentDoc[]) {
+  const sortedChildren = _.orderBy(comments, 'up_vote', 'desc');
+  const allMyComments = _.filter(sortedChildren, { author_id: user });
+  const myComment = _.first(_.orderBy(allMyComments, 'created_at', 'desc'));
+
+  if (myComment) {
+    const { id, created_at } = myComment;
+    const isRecent = differenceInMinutes(new Date(), created_at) <= 1;
+
+    if (isRecent) {
+      _.remove(sortedChildren, { id });
+      sortedChildren.unshift(myComment);
+    }
+  }
+
+  return sortedChildren;
+}
