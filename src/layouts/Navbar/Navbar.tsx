@@ -40,7 +40,7 @@ function Navbar(props: NavbarProps) {
           </NavLink>
 
           <NavLink to="/question" activeClassName={styles.active}>
-            Questions
+            Top Questions
           </NavLink>
 
           {username && (
