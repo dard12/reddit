@@ -8,7 +8,7 @@ interface RecentCommentsProps {}
 function RecentComments(props: RecentCommentsProps) {
   return (
     <div className={styles.recentComments}>
-      <Paging component={FullCommentListPage} />
+      <Paging component={FullCommentListPage} params={{ groupBy: true }} />
     </div>
   );
 }
