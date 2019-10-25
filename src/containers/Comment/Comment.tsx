@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -16,6 +16,7 @@ import {
   userSelector,
 } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
+import useAnchor from '../../hooks/useAnchor';
 import TimeAgo from '../../components/TimeAgo/TimeAgo';
 import CommentVote from '../CommentVote/CommentVote';
 import commentVoteStyles from '../CommentVote/CommentVote.module.scss';
@@ -23,7 +24,6 @@ import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import { getQueryParams } from '../../history';
 
 interface CommentProps {
   comment: string;
@@ -65,15 +65,7 @@ function Comment(props: CommentProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  const isTarget = getQueryParams('anchor') === comment;
-  const anchor = `id_${comment}`;
-  const targetOffset = isTarget
-    ? _.get(document.querySelector(`[data-anchor="${anchor}"]`), 'offsetTop')
-    : false;
-
-  useEffect(() => {
-    targetOffset && window.scrollTo(0, targetOffset - 10);
-  }, [targetOffset]);
+  const anchor = useAnchor(comment);
 
   if (!commentDoc) {
     return <Skeleton count={3} />;
