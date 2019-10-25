@@ -15,7 +15,7 @@ const submit = _.throttle((newQuery: string) => {
   const search = qs.stringify(queryParams);
 
   history.push({ pathname: '/question', search });
-}, 1000);
+}, 300);
 
 function SearchBar(props: SearchBarProps) {
   const { query: initialQuery = '' } = props;

@@ -5,6 +5,10 @@
   margin: 0 auto;
   display: grid;
   grid-gap: $margin-4;
+
+  @media (max-device-width: 768px) {
+    width: 100%;
+  }
 }
 
 .commentSection {
