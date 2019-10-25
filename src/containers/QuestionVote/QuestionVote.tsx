@@ -36,8 +36,8 @@ function QuestionVote(props: QuestionVoteProps) {
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
-  const upVote = () => setMyVote(1);
-  const downVote = () => setMyVote(-1);
+  const upVote = () => setMyVote(Math.min(myVote + 1, 1));
+  const downVote = () => setMyVote(Math.max(myVote - 1, -1));
 
   return (
     <div className={styles.vote}>
@@ -47,11 +47,15 @@ function QuestionVote(props: QuestionVoteProps) {
           <span>{questionDoc && scoreDisplay}</span>
           <WithReputation
             user={user}
-            render={(reputation: number) => (
-              <Tooltip content="You can't downvote yet." enabled={!reputation}>
-                <IoIosArrowDown onClick={reputation ? downVote : undefined} />
-              </Tooltip>
-            )}
+            render={(reputation: number) => {
+              const canVote = reputation || myVote === 1;
+
+              return (
+                <Tooltip content="You can't downvote yet." enabled={!canVote}>
+                  <IoIosArrowDown onClick={canVote ? downVote : undefined} />
+                </Tooltip>
+              );
+            }}
           />
         </React.Fragment>
       ) : (
