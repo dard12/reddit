@@ -116,7 +116,7 @@ function Profile(props: ProfileProps) {
         <Route path={upvotesLink} render={() => null} />
         <Route path={downvotesLink} render={() => null} />
 
-        <Route render={() => <Redirect to={commentsLink} />} />
+        <Route render={() => <Redirect to={answersLink} />} />
       </Switch>
     </div>
   );
