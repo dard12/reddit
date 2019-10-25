@@ -5,22 +5,22 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { Button } from '../../components/Button/Button';
-import FullComment from '../FullComment/FullComment';
+import FullQuestion from '../FullQuestion/FullQuestion';
 
-interface FullCommentListPageProps {
+interface FullQuestionListPageProps {
   params: any;
   seeMore?: Function;
   loadDocsAction?: Function;
 }
 
-function FullCommentListPage(props: FullCommentListPageProps) {
+function FullQuestionListPage(props: FullQuestionListPageProps) {
   const { params, seeMore, loadDocsAction } = props;
-  const { result, isSuccess } = useAxiosGet('/api/comment', params, {
+  const { result, isSuccess } = useAxiosGet('/api/question', params, {
     reloadOnChange: true,
-    name: 'FullCommentListPage',
+    name: 'FullQuestionListPage',
   });
 
-  useLoadDocs({ collection: 'comments', result, loadDocsAction });
+  useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
   if (!isSuccess) {
     return (
@@ -37,14 +37,10 @@ function FullCommentListPage(props: FullCommentListPageProps) {
   return (
     <React.Fragment>
       {_.isEmpty(docs) && page === 0 ? (
-        <div className="card">No comments yet.</div>
+        <div className="card">No posts yet.</div>
       ) : (
-        _.map(docs, commentDoc => (
-          <FullComment
-            commentDoc={commentDoc}
-            question={commentDoc.question_id}
-            key={commentDoc.id}
-          />
+        _.map(docs, ({ id, last_comment }) => (
+          <FullQuestion question={id} comment={last_comment} key={id} />
         ))
       )}
 
@@ -62,4 +58,4 @@ function FullCommentListPage(props: FullCommentListPageProps) {
 export default connect(
   null,
   { loadDocsAction },
-)(FullCommentListPage);
+)(FullQuestionListPage);
