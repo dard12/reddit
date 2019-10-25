@@ -13,12 +13,12 @@
 .itemHeader {
   font-weight: 600;
   border-bottom: 1px dotted $dark-8;
-  text-transform: uppercase;
   font-family: $serif;
   display: block;
   padding-right: $margin-3;
   margin-bottom: $margin-2;
   text-decoration: none;
+  font-size: $text-3;
 
   a:hover {
     background-color: $primary-5;

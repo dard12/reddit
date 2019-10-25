@@ -42,7 +42,7 @@ function Question(props: QuestionProps) {
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
-          <QuestionName question={question} className={styles.itemMeta} />
+          <QuestionName question={question} />
         </div>
         <div className={styles.itemDescription}>{description}</div>
         {!disableActions && (
