@@ -45,13 +45,15 @@ function CommentBox(props: CommentBoxProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
+      const id = editingComment ? editingComment.id : undefined;
       const fullContent = editingComment
-        ? `${editingComment.content}\n[EDIT]: \n${content}`
+        ? `${editingComment.content}\n\n[edit]: \n${content}`
         : content;
 
       axiosPost(
         '/api/comment',
         {
+          id,
           question_id: question,
           parent_id,
           content: fullContent,
