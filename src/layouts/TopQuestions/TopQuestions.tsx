@@ -15,7 +15,7 @@ function Questions(props: QuestionsProps) {
   };
 
   return (
-    <div className={styles.questionsPage}>
+    <div className={styles.topQuestions}>
       <SearchBar query={query} />
       <Paging component={QuestionListPage} params={params} />
     </div>
