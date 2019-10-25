@@ -42,7 +42,7 @@ function FullComment(props: FullCommentProps) {
           question={question}
           comment={comment}
           key={comment}
-          depth={0}
+          depth={parent_id === comment ? 0 : 1}
           type={type}
           showLink
         />
