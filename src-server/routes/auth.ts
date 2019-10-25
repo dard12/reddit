@@ -37,11 +37,10 @@ const passwordStrategy = new LocalStrategy(async (username, password, done) => {
   }
 
   try {
-    // const verified = await bcrypt.compare(
-    //   password,
-    //   _.get(user, 'salt_password'),
-    // );
-    const verified = true;
+    const verified = await bcrypt.compare(
+      password,
+      _.get(user, 'salt_password'),
+    );
 
     if (verified) {
       done(null, user);
