@@ -39,6 +39,7 @@ export interface CommentDoc {
   up_vote: number;
   down_vote: number;
   is_edited: boolean;
+  is_answer: boolean;
 }
 
 export interface VoteDoc {
