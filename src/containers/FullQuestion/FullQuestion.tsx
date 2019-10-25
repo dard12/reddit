@@ -42,7 +42,7 @@ function FullQuestion(props: FullQuestionProps) {
             question={question}
             comment={comment}
             key={comment}
-            depth={commentDoc.parent_id === comment ? 0 : 1}
+            depth={commentDoc.is_answer ? 0 : 1}
             type={commentDoc.type}
             showLink
           />
