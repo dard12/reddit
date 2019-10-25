@@ -47,7 +47,7 @@ function CommentBox(props: CommentBoxProps) {
 
       const id = editingComment ? editingComment.id : undefined;
       const fullContent = editingComment
-        ? `${editingComment.content}\n\n[edit]\n${content}`
+        ? `${editingComment.content}\n\n[edit]: ${content}`
         : content;
 
       axiosPost(
