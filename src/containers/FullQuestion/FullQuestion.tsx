@@ -34,10 +34,10 @@ function FullQuestion(props: FullQuestionProps) {
     <div>
       <Question question={question} />
 
-      <div className={styles.recent}>
-        <div className={styles.recentTitle}>Recent Post</div>
+      {comment && commentDoc && (
+        <div className={styles.recent}>
+          <div className={styles.recentTitle}>Recent Post</div>
 
-        {comment && commentDoc && (
           <Comment
             question={question}
             comment={comment}
@@ -46,8 +46,8 @@ function FullQuestion(props: FullQuestionProps) {
             type={commentDoc.type}
             showLink
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
