@@ -21,10 +21,6 @@ router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user } = req;
   const { parent_id, question_id, type, is_edited } = body;
 
-  if (!parent_id) {
-    body.parent_id = id;
-  }
-
   const row = {
     ...body,
     author_id: user.id,
@@ -34,6 +30,10 @@ router.post('/api/comment', requireAuth, async (req, res) => {
   };
   if (!row.id) {
     row.id = getId();
+  }
+
+  if (!parent_id) {
+    body.parent_id = row.id;
   }
 
   if (is_edited) {

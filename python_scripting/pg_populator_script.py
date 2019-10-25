@@ -27,6 +27,7 @@ CREATE TRIGGER update_at_comments  BEFORE UPDATE ON comments  FOR EACH ROW EXECU
 CREATE TRIGGER update_at_votes     BEFORE UPDATE ON votes     FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
 
 ALTER TABLE comments ADD COLUMN is_edited boolean   DEFAULT false;
+ALTER TABLE comments ADD COLUMN is_answer boolean GENERATED ALWAYS AS (id = parent_id) STORED;
 
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
@@ -143,7 +144,8 @@ def build_and_populate_tables(env='test'):
     for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_votes_tb_req()]:
         cur.execute(req)
     conn.commit()
-    create_updated_at_trigger(conn)
+    create_updated_at_trigger_function(conn)
+    create_multi_word_like_sum_function(conn)
 
     # build temp tables for upsert
     for tb_control in tables:
@@ -262,7 +264,7 @@ def temp_map_to_tags(cur, conn):
       conn.commit()
       cur.execute("DROP TABLE temp_tags;")
 
-def create_updated_at_trigger(conn):
+def create_updated_at_trigger_function(conn):
   req = """
     CREATE OR REPLACE FUNCTION update_at_trigger() 
     RETURNS TRIGGER AS $$
@@ -276,6 +278,29 @@ def create_updated_at_trigger(conn):
   cur.execute(req)
   conn.commit()
 
+def create_multi_word_like_sum_function(conn):
+    req = """
+    CREATE OR REPLACE FUNCTION like_count(
+      varchar_col varchar,
+      words varchar array
+    ) 
+    RETURNS NUMERIC AS $$
+    DECLARE
+        num_words INTEGER := array_length(words, 1);
+        match_cnt INTEGER := 0 ; 
+    BEGIN   
+        FOR counter IN 1..num_words LOOP
+            IF (position(words[counter] in varchar_col) > 0) THEN
+               match_cnt := match_cnt + 1;
+            END IF;
+        END LOOP ; 
+        RETURN match_cnt; 
+    END;
+    $$ language 'plpgsql';
+    """
+    cur = conn.cursor()
+    cur.execute(req)
+    conn.commit()
 
 
 
