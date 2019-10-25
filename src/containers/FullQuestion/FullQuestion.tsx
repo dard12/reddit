@@ -11,14 +11,14 @@ import Comment from '../Comment/Comment';
 
 interface FullQuestionProps {
   question: string;
-  comment: string;
+  comment?: string;
   commentDoc?: CommentDoc;
   loadDocsAction?: Function;
 }
 
 function FullQuestion(props: FullQuestionProps) {
   const { question, comment, commentDoc, loadDocsAction } = props;
-  const { result } = useAxiosGet(
+  const { result, isSuccess } = useAxiosGet(
     '/api/comment',
     { id: comment },
     { name: 'FullQuestion', cachedResult: commentDoc },
@@ -26,28 +26,28 @@ function FullQuestion(props: FullQuestionProps) {
 
   useLoadDocs({ collection: 'comment', result, loadDocsAction });
 
-  if (!commentDoc) {
+  if (!isSuccess) {
     return <Skeleton count={3} />;
   }
-
-  const { parent_id, type } = commentDoc as CommentDoc;
 
   return (
     <div>
       <Question question={question} />
 
-      <div className={styles.recentComments}>
-        <div className={styles.recentTitle}>Recent Post</div>
+      {comment && commentDoc && (
+        <div className={styles.recent}>
+          <div className={styles.recentTitle}>Recent Post</div>
 
-        <Comment
-          question={question}
-          comment={comment}
-          key={comment}
-          depth={parent_id === comment ? 0 : 1}
-          type={type}
-          showLink
-        />
-      </div>
+          <Comment
+            question={question}
+            comment={comment}
+            key={comment}
+            depth={commentDoc.parent_id === comment ? 0 : 1}
+            type={commentDoc.type}
+            showLink
+          />
+        </div>
+      )}
     </div>
   );
 }

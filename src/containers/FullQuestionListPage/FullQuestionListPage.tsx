@@ -39,8 +39,8 @@ function FullQuestionListPage(props: FullQuestionListPageProps) {
       {_.isEmpty(docs) && page === 0 ? (
         <div className="card">No posts yet.</div>
       ) : (
-        _.map(docs, ({ id, last_comment }) => (
-          <FullQuestion question={id} comment={last_comment} key={id} />
+        _.map(docs, ({ id, last_comment_id }) => (
+          <FullQuestion question={id} comment={last_comment_id} key={id} />
         ))
       )}
 

@@ -14,7 +14,12 @@ router.get('/api/question', async (req, res) => {
     .from('questions')
     .where(where);
 
-  if (sort) {
+  if (sort === 'recent') {
+    pgQuery
+      .orderBy('updated_at', 'desc')
+      .orderBy('created_at', 'desc')
+      .orderBy('response_count', 'desc');
+  } else if (sort) {
     pgQuery.orderBy(sort, 'desc').orderBy('response_count', 'desc');
   }
 
