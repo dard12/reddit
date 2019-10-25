@@ -1,35 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styles from './FullComment.module.scss';
-import { CommentDoc, QuestionDoc } from '../../../src-server/models';
+import styles from './FullQuestion.module.scss';
+import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import Question from '../Question/Question';
-import Comment from '../../containers/Comment/Comment';
+import Comment from '../Comment/Comment';
 
-interface FullCommentProps {
-  commentDoc: CommentDoc;
+interface FullQuestionProps {
   question: string;
-  questionDoc?: QuestionDoc;
+  comment: string;
+  commentDoc?: CommentDoc;
   loadDocsAction?: Function;
 }
 
-function FullComment(props: FullCommentProps) {
-  const { commentDoc, question, questionDoc, loadDocsAction } = props;
-  const { id: comment, parent_id, type } = commentDoc;
+function FullQuestion(props: FullQuestionProps) {
+  const { question, comment, commentDoc, loadDocsAction } = props;
   const { result } = useAxiosGet(
-    '/api/question',
-    { id: question },
-    { name: 'FullComment', cachedResult: questionDoc },
+    '/api/comment',
+    { id: comment },
+    { name: 'FullQuestion', cachedResult: commentDoc },
   );
 
-  useLoadDocs({ collection: 'questions', result, loadDocsAction });
+  useLoadDocs({ collection: 'comment', result, loadDocsAction });
 
-  if (!questionDoc) {
+  if (!commentDoc) {
     return <Skeleton count={3} />;
   }
+
+  const { parent_id, type } = commentDoc as CommentDoc;
 
   return (
     <div>
@@ -53,9 +54,9 @@ function FullComment(props: FullCommentProps) {
 
 export default connect(
   createDocSelector({
-    collection: 'questions',
-    id: 'question',
-    prop: 'questionDoc',
+    collection: 'comments',
+    id: 'comment',
+    prop: 'commentDoc',
   }),
   { loadDocsAction },
-)(FullComment);
+)(FullQuestion);

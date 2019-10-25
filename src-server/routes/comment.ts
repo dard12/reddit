@@ -6,39 +6,13 @@ import execute from '../execute';
 
 router.get('/api/comment', async (req, res) => {
   const { query } = req;
-  const { groupBy } = query;
-  const where = _.omit(query, ['page', 'pageSize', 'groupBy']);
-  const pgQuery = pg.from('comments').where(where);
+  const where = _.omit(query, ['page', 'pageSize']);
+  const pgQuery = pg
+    .select('*')
+    .from('comments')
+    .where(where);
 
-  let result;
-
-  if (groupBy) {
-    pgQuery
-      .select(
-        pg.raw(
-          `
-          (array_agg(id ORDER BY created_at DESC))[1] as id,
-          MAX(created_at) as created_at
-          `,
-        ),
-      )
-      .groupBy('question_id')
-      .orderByRaw('created_at DESC');
-
-    const commentResult = await execute(pgQuery, query);
-    const commentIds = _.map(commentResult.docs, 'id');
-
-    const docs = await pg
-      .select('*')
-      .from('comments')
-      .whereIn('id', commentIds)
-      .orderByRaw('created_at DESC');
-
-    result = { ...commentResult, docs };
-  } else {
-    pgQuery.select('*');
-    result = await execute(pgQuery, query);
-  }
+  const result = await execute(pgQuery, query);
 
   res.status(200).send(result);
 });
