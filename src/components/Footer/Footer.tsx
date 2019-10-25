@@ -15,6 +15,18 @@ export default function Footer() {
         </div>
       </div>
       <div>
+        <div className={styles.footerLabel}>Legal</div>
+        <div>
+          <Link to="/legal/privacy-policy">Privacy Policy</Link>
+        </div>
+        <div>
+          <Link to="/legal/terms-of-use">Terms of Service</Link>
+        </div>
+        <div>
+          <Link to="/legal/user-guidelines">User Guidelines</Link>
+        </div>
+      </div>
+      <div>
         <div className={styles.footerLabel}>Contact</div>
         <a
           href="mailto:lihsing.lung@gmail.com"

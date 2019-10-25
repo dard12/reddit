@@ -10,6 +10,9 @@ import history from './history';
 import { withTracker } from './components/WithTracker/WithTracker';
 // import * as Sentry from '@sentry/browser';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import LegalPrivacy from './layouts/LegalPrivacy/LegalPrivacy';
+import LegalTerms from './layouts/LegalTerms/LegalTerms';
+import LegalGuidelines from './layouts/LegalGuidelines/LegalGuidelines';
 
 // Sentry.init({
 //   dsn: 'https://ec90141dbd46419ca6a2cf8d0a0a29cd@sentry.io/1524308',
@@ -23,6 +26,13 @@ init(
     <Router history={history}>
       <ScrollToTop>
         <Switch>
+          <Route exact path="/legal/privacy-policy" component={LegalPrivacy} />
+          <Route exact path="/legal/terms-of-use" component={LegalTerms} />
+          <Route
+            exact
+            path="/legal/user-guidelines"
+            component={LegalGuidelines}
+          />
           <Route
             component={withTracker(App, {
               userId: localStorage.getItem('id'),

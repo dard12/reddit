@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Questions.module.scss';
 import SearchBar from '../../containers/SearchBar/SearchBar';
 import { getQueryParams } from '../../history';
-import Tabs from '../../containers/Tabs/Tabs';
 import Paging from '../../containers/Paging/Paging';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
