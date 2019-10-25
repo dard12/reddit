@@ -20,7 +20,7 @@ $dark-2: hsl(230, 35%, 95%);
 $dark-1: hsl(230, 35%, 98%);
 
 $pink: hsl(349, 100%, 77%);
-
+$yellow: #fff9a2;
 $white: #ffffff;
 $red: #c50818;
 
@@ -161,7 +161,7 @@ $line-height-1: 1.2;
 }
 
 .highlight {
-  background-color: $primary-5;
+  background-color: $yellow;
 }
 
 .badge {
