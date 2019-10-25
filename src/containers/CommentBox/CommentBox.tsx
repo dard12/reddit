@@ -8,11 +8,12 @@ import { userSelector } from '../../redux/selectors';
 import SignUp from '../../components/SignUp/SignUp';
 import { loadDocsAction } from '../../redux/actions';
 import { axiosPost } from '../../hooks/useAxios';
+import { CommentDoc } from '../../../src-server/models';
 
 interface CommentBoxProps {
   question: string;
   type: 'response' | 'meta';
-  is_edited?: boolean;
+  editingComment?: CommentDoc;
   user?: string;
   parent_id?: string;
   actions?: any;
@@ -24,7 +25,7 @@ function CommentBox(props: CommentBoxProps) {
   const {
     question,
     type,
-    is_edited,
+    editingComment,
     parent_id,
     user,
     actions,
@@ -44,14 +45,18 @@ function CommentBox(props: CommentBoxProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
+      const fullContent = editingComment
+        ? `${editingComment.content}\n[EDIT]: \n${content}`
+        : content;
+
       axiosPost(
         '/api/comment',
         {
           question_id: question,
           parent_id,
-          content,
+          content: fullContent,
           type,
-          is_edited,
+          is_edited: Boolean(editingComment),
         },
         { collection: 'comments', loadDocsAction },
       ).then(() => {
@@ -65,7 +70,7 @@ function CommentBox(props: CommentBoxProps) {
   let placeholder;
   let submit;
 
-  if (is_edited) {
+  if (editingComment) {
     placeholder = 'Add an edit to your comment…';
     submit = 'Add Edit';
   } else if (parent_id) {

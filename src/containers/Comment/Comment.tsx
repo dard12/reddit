@@ -182,7 +182,7 @@ function Comment(props: CommentProps) {
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
                   onSubmit={toggleReplying}
                   type={type}
-                  is_edited={isMyComment}
+                  editingComment={commentDoc}
                 />
               </div>
             )}
