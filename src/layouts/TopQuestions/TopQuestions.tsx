@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Questions.module.scss';
+import styles from './TopQuestions.module.scss';
 import SearchBar from '../../containers/SearchBar/SearchBar';
 import { getQueryParams } from '../../history';
 import Paging from '../../containers/Paging/Paging';

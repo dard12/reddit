@@ -25,7 +25,7 @@ function QuestionListPage(props: QuestionListPageProps) {
   if (!isSuccess) {
     return (
       <React.Fragment>
-        {_.times(5, index => (
+        {_.times(6, index => (
           <Skeleton key={index} count={4} />
         ))}
       </React.Fragment>

@@ -4,7 +4,7 @@ import Axios from 'axios';
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 
-const Questions = lazy(() => import('./layouts/Questions/Questions'));
+const TopQuestions = lazy(() => import('./layouts/TopQuestions/TopQuestions'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
 const Login = lazy(() => import('./layouts/Login/Login'));
 const Profile = lazy(() => import('./layouts/Profile/Profile'));
@@ -21,7 +21,7 @@ function App() {
         <Suspense fallback={null}>
           <Switch>
             <Route exact path="/home" render={props => <RecentQuestions />} />
-            <Route exact path="/question" render={props => <Questions />} />
+            <Route exact path="/question" render={props => <TopQuestions />} />
             <Route
               path="/question/:question"
               render={props => {
