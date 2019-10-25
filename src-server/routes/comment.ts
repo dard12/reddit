@@ -19,28 +19,31 @@ router.get('/api/comment', async (req, res) => {
 
 router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user } = req;
-  const { parent_id, question_id, type, edit } = body;
-  const id = getId();
+  const { parent_id, question_id, type, is_edited } = body;
 
   if (!parent_id) {
     body.parent_id = id;
   }
 
-  const comment = _.omit(body, 'edit');
+  const row = {
+    ...body,
+    author_id: user.id,
+    author_name: user.user_name,
+    up_vote: 0,
+    down_vote: 0,
+  };
+  if (!row.id) {
+    row.id = getId();
+  }
 
-  if (edit) {
-    // EDIT
+  if (is_edited) {
+    const docs = await pg('comments')
+      .where({ id: row.id })
+      .update(row)
+      .returning('*');
   } else {
     const docs = await pg
-      .insert({
-        ...comment,
-        id,
-        author_id: user.id,
-        author_name: user.user_name,
-        up_vote: 0,
-        down_vote: 0,
-        created_at: new Date(),
-      })
+      .insert(row)
       .into('comments')
       .returning('*');
 
