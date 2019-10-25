@@ -9,6 +9,8 @@ import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
+import WithReputation from '../WithReputation/WithReputation';
+import Tooltip from '../../components/Tooltip/Tooltip';
 
 interface QuestionVoteProps {
   question: string;
@@ -43,7 +45,14 @@ function QuestionVote(props: QuestionVoteProps) {
         <React.Fragment>
           <IoIosArrowUp onClick={upVote} />
           <span>{questionDoc && scoreDisplay}</span>
-          <IoIosArrowDown onClick={downVote} />
+          <WithReputation
+            user={user}
+            render={(reputation: number) => (
+              <Tooltip content="You can't downvote yet." enabled={!reputation}>
+                <IoIosArrowDown onClick={reputation ? downVote : undefined} />
+              </Tooltip>
+            )}
+          />
         </React.Fragment>
       ) : (
         <React.Fragment>

@@ -7,6 +7,7 @@ export interface UserDoc {
   photo_link?: string;
   summary?: string;
   created_at: Date;
+  reputation: number;
 }
 
 export interface QuestionDoc {

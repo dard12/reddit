@@ -8,6 +8,8 @@ import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
+import Tooltip from '../../components/Tooltip/Tooltip';
+import WithReputation from '../WithReputation/WithReputation';
 
 interface CommentVoteProps {
   comment: string;
@@ -36,7 +38,14 @@ function CommentVote(props: CommentVoteProps) {
       {user ? (
         <React.Fragment>
           <IoIosArrowUp onClick={upVote} />
-          <IoIosArrowDown onClick={downVote} />
+          <WithReputation
+            user={user}
+            render={(reputation: number) => (
+              <Tooltip content="You can't downvote yet." enabled={!reputation}>
+                <IoIosArrowDown onClick={reputation ? downVote : undefined} />
+              </Tooltip>
+            )}
+          />
         </React.Fragment>
       ) : (
         <React.Fragment>
