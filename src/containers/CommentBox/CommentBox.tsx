@@ -12,7 +12,7 @@ import { axiosPost } from '../../hooks/useAxios';
 interface CommentBoxProps {
   question: string;
   type: 'response' | 'meta';
-  edit?: boolean;
+  is_edited?: boolean;
   user?: string;
   parent_id?: string;
   actions?: any;
@@ -24,7 +24,7 @@ function CommentBox(props: CommentBoxProps) {
   const {
     question,
     type,
-    edit,
+    is_edited,
     parent_id,
     user,
     actions,
@@ -51,7 +51,7 @@ function CommentBox(props: CommentBoxProps) {
           parent_id,
           content,
           type,
-          edit,
+          is_edited,
         },
         { collection: 'comments', loadDocsAction },
       ).then(() => {
@@ -65,7 +65,7 @@ function CommentBox(props: CommentBoxProps) {
   let placeholder;
   let submit;
 
-  if (edit) {
+  if (is_edited) {
     placeholder = 'Add an edit to your comment…';
     submit = 'Add Edit';
   } else if (parent_id) {

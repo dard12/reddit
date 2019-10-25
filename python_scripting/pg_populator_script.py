@@ -26,6 +26,8 @@ CREATE TRIGGER update_at_questions BEFORE UPDATE ON questions FOR EACH ROW EXECU
 CREATE TRIGGER update_at_comments  BEFORE UPDATE ON comments  FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
 CREATE TRIGGER update_at_votes     BEFORE UPDATE ON votes     FOR EACH ROW EXECUTE PROCEDURE update_at_trigger();
 
+ALTER TABLE comments ADD COLUMN is_edited boolean   DEFAULT false;
+
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
 def id_gen():
@@ -85,6 +87,7 @@ def build_and_populate_tables(env='test'):
                   parent_id       varchar(12) REFERENCES comments (id),
                   up_vote         int,
                   down_vote       int,
+                  is_edited       boolean   DEFAULT false,
                   created_at      timestamp DEFAULT current_timestamp,
                   updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
