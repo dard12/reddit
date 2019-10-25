@@ -36,7 +36,7 @@ function FullComment(props: FullCommentProps) {
       <Question question={question} />
 
       <div className={styles.recentComments}>
-        <div className={styles.recentTitle}>Recent Posts</div>
+        <div className={styles.recentTitle}>Recent Post</div>
 
         <Comment
           question={question}
