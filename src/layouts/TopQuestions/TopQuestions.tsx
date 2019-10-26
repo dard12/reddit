@@ -5,7 +5,7 @@ import { getQueryParams } from '../../history';
 import Paging from '../../containers/Paging/Paging';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
-interface QuestionsProps {}
+interface QuestionsProps { }
 
 function Questions(props: QuestionsProps) {
   const query = getQueryParams('query');

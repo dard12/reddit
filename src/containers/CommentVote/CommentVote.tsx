@@ -30,7 +30,7 @@ function CommentVote(props: CommentVoteProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  //const upVote = () => setMyVote(1);
+  const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
 
   return (
@@ -48,17 +48,17 @@ function CommentVote(props: CommentVoteProps) {
           />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <SignUpModal
-            buttonChildren={<IoIosArrowUp />}
-            prompt="To vote please "
-          />
-          <SignUpModal
-            buttonChildren={<IoIosArrowDown />}
-            prompt="To vote please "
-          />
-        </React.Fragment>
-      )}
+          <React.Fragment>
+            <SignUpModal
+              buttonChildren={<IoIosArrowUp />}
+              prompt="To vote please "
+            />
+            <SignUpModal
+              buttonChildren={<IoIosArrowDown />}
+              prompt="To vote please "
+            />
+          </React.Fragment>
+        )}
 
       {threadLine}
     </div>
