@@ -11,17 +11,73 @@ router.post('/api/comment_vote', requireAuth, async (req, res) => {
     ...body,
     id: getId(),
     user_id: user.id,
+  };
+
+  const existParams = _.omit(row, ['id', 'vote_type']);
+
+  const exists = await pg
+    .select('*')
+    .from('comment_votes')
+    .where(existParams);
+
+
+  let result;
+
+  if (!exists || !_.isEmpty(exists)) {
+    result = await pg
+      .insert(row)
+      .into('comment_votes')
+      .returning('*');
+
+    if (row.vote_type === 'up_vote') {
+      await pg
+        .increment('up_votes', 1)
+        .into('comments')
+        .where({ id: row.comment_id })
+    } else {
+      await pg
+        .increment('down_votes', 1)
+        .into('comments')
+        .where({ id: row.comment_id })
+    }
+  } else {
+    const updateParams = {
+      ...row,
+      id: exists[0]['id']
+    }
+
+    result = await pg
+      .update(updateParams)
+      .returning('*')
+
+    const currentType = exists[0]['vote_type']
+    if (currentType !== row.vote_type) {
+      if (row.vote_type == 'up_vote') {
+        await pg
+          .decrement('down_votes', 1)
+          .into('comments')
+          .where({ id: updateParams.comment_id })
+
+        await pg
+          .increment('up_votes', 1)
+          .into('comments')
+          .where({ id: updateParams.comment_id })
+
+      } else {
+        await pg
+          .increment('down_votes', 1)
+          .into('comments')
+          .where({ id: updateParams.comment_id })
+
+        await pg
+          .decrement('up_votes', 1)
+          .into('comments')
+          .where({ id: updateParams.comment_id })
+      }
+    }
   }
 
-  res = await pg
-    .insert(row)
-    .into('comment_votes')
-    .returning('*');
-
-
-  // TODO: increment vote count on comment
-
-  res.status(200).send({ res });
+  res.status(200).send({ result });
 });
 
 router.get('/api/comment_vote', async (req, res) => {

@@ -30,7 +30,7 @@ function CommentVote(props: CommentVoteProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  const upVote = () => setMyVote(1);
+  //const upVote = () => setMyVote(1);
   const downVote = () => setMyVote(-1);
 
   return (
