@@ -94,16 +94,26 @@ def build_and_populate_tables(env='test'):
                   updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
                """
-    def get_votes_tb_req():
-        return """ 
-                CREATE TABLE IF NOT EXISTS votes
+    def get_question_votes_tb_req():
+        return """
+                CREATE TABLE IF NOT EXISTS question_votes
                 (id           varchar(12) PRIMARY KEY,
                  user_id      varchar(12) REFERENCES users (id),
-                 action       vote_options_type,
-                 subject_id   bigint,  
-                 subject_type allowed_subject_types,
+                 question_id  varchar(12) REFERENCES questions (id),
+                 vote_type    vote_options_type,
                  created_at   timestamp DEFAULT current_timestamp,
-                 updated_at   timestamp DEFAULT current_timestamp,)
+                 updated_at   timestamp DEFAULT current_timestamp)
+               """
+    def get_comment_votes_tb_req():
+      return """
+                CREATE TABLE IF NOT EXISTS comment_votes
+                (id           varchar(12) PRIMARY KEY,
+                 user_id      varchar(12) REFERENCES users (id),
+                 comment_id   varchar(12) REFERENCES comments (id),
+                 question_id  varchar(12) REFERENCES questions (id),
+                 vote_type    vote_options_type,
+                 created_at   timestamp DEFAULT current_timestamp,
+                 updated_at   timestamp DEFAULT current_timestamp)
                """
 
     # tables = [
@@ -142,13 +152,14 @@ def build_and_populate_tables(env='test'):
         'allowed_subject_types': {'comments', 'questions'}
     }
     ppu.build_enum_types(conn, enum_map)
-    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_votes_tb_req()]:
+    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_question_votes_tb_req(), get_comment_votes_tb_req()]:
         cur.execute(req)
     conn.commit()
     create_updated_at_trigger_function(conn)
     create_multi_word_like_sum_function(conn)
 
     # build temp tables for upsert
+    tables = []
     for tb_control in tables:
         tb = tb_control['table_name']
         # cur.execute("CREATE TEMP TABLE temp_%s AS SELECT * FROM %s WHERE False" % (tb,tb))
@@ -330,10 +341,10 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    # build_and_populate_tables('test')
-    conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
-    cur = conn.cursor()
-    py_interact(locals())
+    build_and_populate_tables('dev')
+    # conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
+    # cur = conn.cursor()
+    # py_interact(locals())
 
 
 
