@@ -5,7 +5,6 @@ import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
 import { createDocSelector } from '../../redux/selectors';
 import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
-import Skeleton from '../../components/Skeleton/Skeleton';
 import Question from '../Question/Question';
 import Comment from '../Comment/Comment';
 
@@ -18,17 +17,13 @@ interface FullQuestionProps {
 
 function FullQuestion(props: FullQuestionProps) {
   const { question, comment, commentDoc, loadDocsAction } = props;
-  const { result, isSuccess } = useAxiosGet(
+  const { result } = useAxiosGet(
     '/api/comment',
     { id: comment },
     { name: 'FullQuestion', cachedResult: commentDoc },
   );
 
-  useLoadDocs({ collection: 'comment', result, loadDocsAction });
-
-  if (!isSuccess) {
-    return <Skeleton count={3} />;
-  }
+  useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   return (
     <div>
