@@ -11,7 +11,7 @@ function Questions(props: QuestionsProps) {
   const query = getQueryParams('query');
   const params = {
     search: { text: query },
-    sort: 'up_vote',
+    sort: 'up_votes',
   };
 
   return (

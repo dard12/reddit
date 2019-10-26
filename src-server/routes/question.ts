@@ -71,8 +71,8 @@ router.post('/api/question', requireAuth, async (req, res) => {
       author_id: user.id,
       response_count: 0,
       meta_count: 0,
-      up_vote: 0,
-      down_vote: 0,
+      up_votes: 0,
+      down_votes: 0,
     })
     .into('questions')
     .returning('*');

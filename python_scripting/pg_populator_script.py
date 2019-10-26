@@ -29,6 +29,10 @@ CREATE TRIGGER update_at_votes     BEFORE UPDATE ON votes     FOR EACH ROW EXECU
 ALTER TABLE comments ADD COLUMN is_edited boolean   DEFAULT false;
 ALTER TABLE comments ADD COLUMN is_answer boolean GENERATED ALWAYS AS (id = parent_id) STORED;
 
+ALTER TABLE questions ADD COLUMN up_votes int DEFAULT 0;
+ALTER TABLE questions ADD COLUMN down_votes int DEFAULT 0;
+ALTER TABLE comments ADD COLUMN up_votes int DEFAULT 0;
+ALTER TABLE comments ADD COLUMN down_votes int DEFAULT 0;
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
 def id_gen():
@@ -38,10 +42,16 @@ def pprint(obj):
     pp.sorted = lambda x, key=None: x
     pp.pprint(obj, width=100)
 
+def run(commands):
+    conn = ppu.conn_retry(ppu.get_sql_db('dev'))
+    cur = conn.cursor()
+    for command in commands:
+      cur.execute(command)
+    conn.commit()
+
 def build_and_populate_tables(env='test'):
     conn = ppu.conn_retry(ppu.get_sql_db(env))
     cur = conn.cursor()
-
 
     def get_user_tb_req():
         return """
@@ -69,8 +79,8 @@ def build_and_populate_tables(env='test'):
                   tags            varchar Array,
                   response_count  int,
                   meta_count      int,
-                  up_vote         int,
-                  down_vote       int,
+                  up_votes        int,      DEFAULT 0
+                  down_votes      int,      DEFAULT 0
                   created_at      timestamp DEFAULT current_timestamp,
                   updated_at      timestamp DEFAULT current_timestamp,
                   is_deleted      boolean)
@@ -86,8 +96,8 @@ def build_and_populate_tables(env='test'):
                   author_name     varchar, 
                   question_id     varchar(12) REFERENCES questions (id),
                   parent_id       varchar(12) REFERENCES comments (id),
-                  up_vote         int,
-                  down_vote       int,
+                  up_votes        int,      DEFAULT 0
+                  down_votes      int,      DEFAULT 0
                   is_edited       boolean   DEFAULT false,
                   is_answer
                   created_at      timestamp DEFAULT current_timestamp,
@@ -341,11 +351,10 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    build_and_populate_tables('dev')
+    # build_and_populate_tables('dev')
     # conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     # cur = conn.cursor()
     # py_interact(locals())
-
 
 
 

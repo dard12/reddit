@@ -30,8 +30,8 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  const up_vote = _.get(questionDoc, 'up_vote') || 0;
-  const down_vote = _.get(questionDoc, 'down_vote') || 0;
+  const up_vote = _.get(questionDoc, 'up_votes') || 0;
+  const down_vote = _.get(questionDoc, 'down_votes') || 0;
   const score = up_vote - down_vote + myVote;
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;

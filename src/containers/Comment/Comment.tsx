@@ -213,7 +213,7 @@ const ConnectedComment = connect(
 export default ConnectedComment;
 
 export function getSortedComments(user?: string, comments?: CommentDoc[]) {
-  const sortedChildren = _.orderBy(comments, 'up_vote', 'desc');
+  const sortedChildren = _.orderBy(comments, 'up_votes', 'desc');
   const allMyComments = _.filter(sortedChildren, { author_id: user });
   const myComment = _.first(_.orderBy(allMyComments, 'created_at', 'desc'));
 
