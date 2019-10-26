@@ -66,7 +66,7 @@ router.post('/api/comment', requireAuth, async (req, res) => {
   const newCount = questionDoc[targetCount] + 1;
 
   await pg
-    .update({ [targetCount]: newCount })
+    .update({ [targetCount]: newCount, last_comment_id: comment.id })
     .from('questions')
     .where({ id: question_id });
 });
