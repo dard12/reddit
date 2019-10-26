@@ -25,7 +25,7 @@ function Navbar(props: NavbarProps) {
   const { username, logoutAction } = props;
 
   const addQuestionBtn = (
-    <Button className={styles.addQuestionBtn}>Add a Question</Button>
+    <Button className={styles.addQuestionBtn}>Ask a Question</Button>
   );
 
   return (
@@ -62,7 +62,7 @@ function Navbar(props: NavbarProps) {
             ) : (
               <SignUpModal
                 buttonChildren={addQuestionBtn}
-                prompt="To add a question please "
+                prompt="To ask a question please "
               />
             )}
           </MediaQuery>

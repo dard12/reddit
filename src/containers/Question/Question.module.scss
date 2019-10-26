@@ -49,3 +49,14 @@
 * + .itemMeta {
   margin-left: $margin-2;
 }
+
+.tag {
+  @extend .hoverLink;
+  font-size: $text-1;
+  display: inline-block;
+  margin-top: $margin-2;
+
+  + .tag {
+    margin-left: $margin-2;
+  }
+}

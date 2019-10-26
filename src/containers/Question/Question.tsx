@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import styles from './Question.module.scss';
 import QuestionVote from '../../containers/QuestionVote/QuestionVote';
 import { QuestionDoc } from '../../../src-server/models';
@@ -32,7 +33,7 @@ function Question(props: QuestionProps) {
     return <Skeleton card count={4} />;
   }
 
-  const { description, meta_count, response_count } = questionDoc;
+  const { description, meta_count, response_count, tags } = questionDoc;
   const questionResponseLink = `/question/${question}?type=response`;
   const questionMetaLink = `/question/${question}?type=meta`;
 
@@ -46,6 +47,12 @@ function Question(props: QuestionProps) {
         </div>
         <div className={styles.itemDescription}>
           <Highlight textToHighlight={description} />
+
+          {/* <div>
+            {_.map(tags, tag => (
+              <div className={styles.tag}>#{tag}</div>
+            ))}
+          </div> */}
         </div>
         {!disableActions && (
           <div className={styles.itemActions}>
