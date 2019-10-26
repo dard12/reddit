@@ -48,17 +48,17 @@ function CommentVote(props: CommentVoteProps) {
           />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <SignUpModal
-            buttonChildren={<IoIosArrowUp />}
-            prompt="To vote please "
-          />
-          <SignUpModal
-            buttonChildren={<IoIosArrowDown />}
-            prompt="To vote please "
-          />
-        </React.Fragment>
-      )}
+          <React.Fragment>
+            <SignUpModal
+              buttonChildren={<IoIosArrowUp />}
+              prompt="To vote please "
+            />
+            <SignUpModal
+              buttonChildren={<IoIosArrowDown />}
+              prompt="To vote please "
+            />
+          </React.Fragment>
+        )}
 
       {threadLine}
     </div>
