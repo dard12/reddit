@@ -10,6 +10,7 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import WithReputation from '../WithReputation/WithReputation';
+import { axios } from '../../App';
 
 interface CommentVoteProps {
   comment: string;
@@ -30,8 +31,29 @@ function CommentVote(props: CommentVoteProps) {
 
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
-  const upVote = () => setMyVote(1);
-  const downVote = () => setMyVote(-1);
+  const submitVote = _.debounce((newVote: number) => {
+    const body = {
+      subject_id: comment,
+      subject_type: 'comments',
+      sent_at: new Date(),
+    };
+
+    if (newVote === 1) {
+      axios.post('/api/vote', { ...body, action: 'up_vote' });
+    } else if (newVote === -1) {
+      axios.post('/api/vote', { ...body, action: 'down_vote' });
+    } else {
+      axios.delete('/api/vote', { params: body });
+    }
+  }, 2000);
+
+  const updateVote = (newVote: number) => {
+    setMyVote(newVote);
+    submitVote(newVote);
+  };
+
+  const upVote = () => updateVote(Math.min(myVote + 1, 1));
+  const downVote = () => updateVote(Math.max(myVote - 1, -1));
 
   return (
     <div className={styles.vote}>
@@ -48,17 +70,17 @@ function CommentVote(props: CommentVoteProps) {
           />
         </React.Fragment>
       ) : (
-          <React.Fragment>
-            <SignUpModal
-              buttonChildren={<IoIosArrowUp />}
-              prompt="To vote please "
-            />
-            <SignUpModal
-              buttonChildren={<IoIosArrowDown />}
-              prompt="To vote please "
-            />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <SignUpModal
+            buttonChildren={<IoIosArrowUp />}
+            prompt="To vote please "
+          />
+          <SignUpModal
+            buttonChildren={<IoIosArrowDown />}
+            prompt="To vote please "
+          />
+        </React.Fragment>
+      )}
 
       {threadLine}
     </div>
