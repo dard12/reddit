@@ -45,7 +45,7 @@ export interface CommentDoc {
 export interface VoteDoc {
   id: string;
   user_id: string;
-  action: 'up_vote' | 'down_vote';
+  vote_type: 'up_vote' | 'down_vote';
   subject_id: string;
   created_at: Date;
   updated_at: Date;

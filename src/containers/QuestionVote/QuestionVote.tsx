@@ -38,15 +38,12 @@ function QuestionVote(props: QuestionVoteProps) {
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
   const submitVote = _.debounce((newVote: number) => {
-    const body = {
-      subject_id: question,
-      sent_at: new Date(),
-    };
+    const body = { question_id: question };
 
     if (newVote === 1) {
-      axios.post('/api/question_vote', { ...body, action: 'up_vote' });
+      axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
     } else if (newVote === -1) {
-      axios.post('/api/question_vote', { ...body, action: 'down_vote' });
+      axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     } else {
       axios.delete('/api/question_vote', { params: body });
     }
