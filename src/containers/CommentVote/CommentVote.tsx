@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
+import _ from 'lodash';
 import styles from './CommentVote.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
