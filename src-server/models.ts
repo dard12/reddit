@@ -42,11 +42,20 @@ export interface CommentDoc {
   is_answer: boolean;
 }
 
-export interface VoteDoc {
+export interface CommentVoteDoc {
   id: string;
   user_id: string;
   vote_type: 'up_vote' | 'down_vote';
-  subject_id: string;
+  comment_id: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface QuestionVoteDoc {
+  id: string;
+  user_id: string;
+  vote_type: 'up_vote' | 'down_vote';
+  question_id: string;
   created_at: Date;
   updated_at: Date;
 }
