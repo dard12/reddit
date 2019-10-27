@@ -40,16 +40,15 @@ function QuestionVote(props: QuestionVoteProps) {
   const submitVote = _.debounce((newVote: number) => {
     const body = {
       subject_id: question,
-      subject_type: 'questions',
       sent_at: new Date(),
     };
 
     if (newVote === 1) {
-      axios.post('/api/vote', { ...body, action: 'up_vote' });
+      axios.post('/api/question_vote', { ...body, action: 'up_vote' });
     } else if (newVote === -1) {
-      axios.post('/api/vote', { ...body, action: 'down_vote' });
+      axios.post('/api/question_vote', { ...body, action: 'down_vote' });
     } else {
-      axios.delete('/api/vote', { params: body });
+      axios.delete('/api/question_vote', { params: body });
     }
   }, 2000);
 

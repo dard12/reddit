@@ -35,16 +35,15 @@ function CommentVote(props: CommentVoteProps) {
   const submitVote = _.debounce((newVote: number) => {
     const body = {
       subject_id: comment,
-      subject_type: 'comments',
       sent_at: new Date(),
     };
 
     if (newVote === 1) {
-      axios.post('/api/vote', { ...body, action: 'up_vote' });
+      axios.post('/api/comment_vote', { ...body, action: 'up_vote' });
     } else if (newVote === -1) {
-      axios.post('/api/vote', { ...body, action: 'down_vote' });
+      axios.post('/api/comment_vote', { ...body, action: 'down_vote' });
     } else {
-      axios.delete('/api/vote', { params: body });
+      axios.delete('/api/comment_vote', { params: body });
     }
   }, 2000);
 
