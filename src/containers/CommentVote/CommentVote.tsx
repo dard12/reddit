@@ -33,14 +33,14 @@ function CommentVote(props: CommentVoteProps) {
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   const submitVote = _.debounce((newVote: number) => {
-    const body = { comment_id: comment };
+    const body = { comment_id: comment, sent_at: new Date() };
 
     if (newVote === 1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'up_vote' });
     } else if (newVote === -1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'down_vote' });
     } else {
-      axios.delete('/api/comment_vote', { params: body });
+      axios.delete('/api/comment_vote', { data: body });
     }
   }, 2000);
 
