@@ -11,6 +11,7 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
 import Tooltip from '../../components/Tooltip/Tooltip';
+import { axios } from '../../App';
 
 interface QuestionVoteProps {
   question: string;
@@ -36,8 +37,29 @@ function QuestionVote(props: QuestionVoteProps) {
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
-  const upVote = () => setMyVote(Math.min(myVote + 1, 1));
-  const downVote = () => setMyVote(Math.max(myVote - 1, -1));
+  const submitVote = _.debounce((newVote: number) => {
+    const body = {
+      subject_id: question,
+      subject_type: 'questions',
+      sent_at: new Date(),
+    };
+
+    if (newVote === 1) {
+      axios.post('/api/vote', { ...body, action: 'up_vote' });
+    } else if (newVote === -1) {
+      axios.post('/api/vote', { ...body, action: 'down_vote' });
+    } else {
+      axios.delete('/api/vote', { params: body });
+    }
+  }, 2000);
+
+  const updateVote = (newVote: number) => {
+    setMyVote(newVote);
+    submitVote(newVote);
+  };
+
+  const upVote = () => updateVote(Math.min(myVote + 1, 1));
+  const downVote = () => updateVote(Math.max(myVote - 1, -1));
 
   return (
     <div className={styles.vote}>
