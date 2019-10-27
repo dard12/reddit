@@ -47,7 +47,6 @@ export interface VoteDoc {
   user_id: string;
   action: 'up_vote' | 'down_vote';
   subject_id: string;
-  subject_type: 'comments' | 'questions';
   created_at: Date;
   updated_at: Date;
 }
