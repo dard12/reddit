@@ -157,10 +157,10 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
   let incQuery;
   if (deleted.vote_type === 'up_vote') {
     incQuery = pg
-      .increment('up_votes', 1)
+      .decrement('up_votes', 1)
   } else {
     incQuery = pg
-      .increment('down_votes', 1)
+      .decrement('down_votes', 1)
   }
   incQuery
     .into(object_table)
