@@ -129,7 +129,7 @@ async function vote(type: VoteType, req: Request, res: Response) {
 }
 
 async function removeVote(type: VoteType, req: Request, res: Response) {
-  const { vote_table } = getVoteConfig(type)
+  const { vote_table, object_table, vote_object_id_property } = getVoteConfig(type)
 
   const { body, user } = req;
   const row = _.omit({
@@ -143,7 +143,8 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
   const deleteQuery = pg
     .del()
     .from(vote_table)
-    .where(deleteParams);
+    .where(deleteParams)
+    .returning('*')
 
   console.log("delete query")
   console.log(deleteQuery.toSQL());
@@ -151,6 +152,34 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
 
   console.log("delete result:")
   console.log(result)
+
+  const deleted = result[0]
+  let incQuery;
+  if (deleted.vote_type === 'up_vote') {
+    incQuery = pg
+      .increment('up_votes', 1)
+  } else {
+    incQuery = pg
+      .increment('down_votes', 1)
+  }
+  incQuery
+    .into(object_table)
+    .where({ id: row[vote_object_id_property] });
+
+  console.log("inc query");
+  console.log(incQuery.toSQL());
+
+  await incQuery
+
+  res.status(200).send({ result });
+}
+
+async function getVotes(type: VoteType, req: Request, res: Response) {
+  const { vote_table } = getVoteConfig(type)
+  const result = await pg
+    .select('*')
+    .from(vote_table)
+    .where(req);
 
   res.status(200).send({ result });
 }
@@ -160,12 +189,7 @@ router.post('/api/comment_vote', requireAuth, async (req, res) => {
 });
 
 router.get('/api/comment_vote', async (req, res) => {
-  const result = await pg
-    .select('*')
-    .from('comment_votes')
-    .where(req);
-
-  res.status(200).send({ result });
+  await getVotes(VoteType.Comment, req, res)
 });
 
 router.post('/api/question_vote', requireAuth, async (req, res) => {
@@ -173,12 +197,7 @@ router.post('/api/question_vote', requireAuth, async (req, res) => {
 });
 
 router.get('/api/question_vote', async (req, res) => {
-  const result = await pg
-    .select('*')
-    .from('question_votes')
-    .where(req);
-
-  res.status(200).send({ result });
+  await getVotes(VoteType.Question, req, res)
 });
 
 router.delete('/api/remove_question_vote', requireAuth, async (req, res) => {
