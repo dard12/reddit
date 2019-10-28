@@ -141,7 +141,7 @@ function Comment(props: CommentProps) {
                 [styles.strongFlagged]: down_vote > 20,
               })}
             >
-              <RichText initialContent={content} readOnly />
+              <RichText content={content} readOnly />
             </div>
 
             <div className={styles.commentFooter}>

@@ -91,7 +91,7 @@ function CommentBox(props: CommentBoxProps) {
           <div className={styles.commentText}>
             <RichText
               placeholder={placeholder}
-              initialContent={content}
+              content={content}
               onChange={setContent}
             />
           </div>

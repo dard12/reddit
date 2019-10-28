@@ -8,8 +8,13 @@ const Delta = Quill.import('delta');
 interface RichTextProps {
   readOnly?: boolean;
   onChange?: Function;
-  initialContent?: any;
+  content?: any;
   placeholder?: string;
+}
+
+interface RichTextState {
+  id: string;
+  quill?: any;
 }
 
 export function getDelta(rawContent = '') {
@@ -26,22 +31,22 @@ export function getDelta(rawContent = '') {
 }
 
 class RichText extends Component<RichTextProps> {
-  state = { id: `id_${_.random(10000)}` };
+  state: RichTextState = { id: `id_${_.random(10000)}`, quill: undefined };
 
   componentDidMount() {
-    const { readOnly, onChange, initialContent, placeholder } = this.props;
-    const quill = new Quill(`#${this.state.id}`, {
+    const { readOnly, onChange, placeholder } = this.props;
+    const { id } = this.state;
+    const allowedFormatting = ['bold', 'italic', 'link', 'blockquote'];
+    const quill = new Quill(`#${id}`, {
       theme: 'bubble',
       placeholder,
       readOnly,
-      modules: {
-        toolbar: ['bold', 'italic', 'blockquote', 'link'],
-      },
+      formats: allowedFormatting,
+      modules: { toolbar: allowedFormatting },
     });
 
-    const delta = getDelta(initialContent);
-
-    quill.setContents(delta);
+    this.setState({ quill });
+    this.updateContent(quill);
 
     if (onChange) {
       quill.on('text-change', () => {
@@ -53,15 +58,29 @@ class RichText extends Component<RichTextProps> {
     }
   }
 
+  updateContent = (quill: any) => {
+    const { content } = this.props;
+
+    if (quill) {
+      const delta = getDelta(content);
+      quill.setContents(delta);
+    }
+  };
+
   render() {
-    const { placeholder } = this.props;
+    const { placeholder, onChange } = this.props;
+    const { id, quill } = this.state;
     const quillElement = document.querySelector('.ql-editor.ql-blank');
 
     if (quillElement && placeholder) {
       quillElement.setAttribute('data-placeholder', placeholder);
     }
 
-    return <div id={this.state.id} className={styles.richText} />;
+    if (!onChange) {
+      this.updateContent(quill);
+    }
+
+    return <div id={id} className={styles.richText} />;
   }
 }
 
