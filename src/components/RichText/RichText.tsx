@@ -43,12 +43,14 @@ class RichText extends Component<RichTextProps> {
 
     quill.setContents(delta);
 
-    quill.on('text-change', () => {
-      const isEmpty = _.isEmpty(_.trim(quill.getText()));
-      const contents = isEmpty ? '' : quill.getContents();
+    if (onChange) {
+      quill.on('text-change', () => {
+        const isEmpty = _.isEmpty(_.trim(quill.getText()));
+        const contents = isEmpty ? '' : quill.getContents();
 
-      onChange && onChange(contents);
-    });
+        onChange(contents);
+      });
+    }
   }
 
   render() {
