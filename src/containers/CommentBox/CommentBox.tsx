@@ -67,7 +67,7 @@ function CommentBox(props: CommentBoxProps) {
 
   if (editingComment) {
     placeholder = 'Edit your comment…';
-    submit = 'Edit';
+    submit = 'Update';
   } else if (parent_id) {
     placeholder = 'Write your reply…';
     submit = 'Reply';
