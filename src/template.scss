@@ -282,9 +282,21 @@ textarea {
   outline: none;
 }
 
+.ql-editor {
+  padding: 0;
+}
+
+.ql-tooltip-editor input::placeholder {
+  color: transparent;
+}
+
+.ql-bubble .ql-tooltip {
+  background-color: $dark-9;
+}
+
 .ql-editor.ql-blank::before {
   font-style: normal;
   font-family: $sans-serif;
   color: $dark-7;
-  margin-left: $margin-2;
+  left: 0;
 }

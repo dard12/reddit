@@ -24,6 +24,7 @@ import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import RichText from '../../components/RichText/RichText';
 
 interface CommentProps {
   comment: string;
@@ -140,7 +141,7 @@ function Comment(props: CommentProps) {
                 [styles.strongFlagged]: down_vote > 20,
               })}
             >
-              {content}
+              <RichText id={comment} initialContent={content} readOnly />
             </div>
 
             <div className={styles.commentFooter}>

@@ -1,11 +1,9 @@
 @import '../../template.scss';
 
 .richText {
-  font-family: $serif;
-  font-size: $text-3;
-  line-height: 1.5;
+  font-size: $text-2;
   color: $dark-10;
-  padding: 0 $margin-2;
+  padding: 0;
 
   strong {
     font-weight: bold;

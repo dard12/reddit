@@ -29,7 +29,7 @@ export function getDelta(rawContent = '') {
 class RichText extends Component<RichTextProps> {
   componentDidMount() {
     const { id, readOnly, onChange, initialContent, placeholder } = this.props;
-    const quill = new Quill(`#${id}`, {
+    const quill = new Quill(`#id_${id}`, {
       theme: 'bubble',
       placeholder,
       readOnly,
@@ -58,7 +58,7 @@ class RichText extends Component<RichTextProps> {
       quillElement.setAttribute('data-placeholder', placeholder);
     }
 
-    return <div id={id} className={styles.richText} />;
+    return <div id={`id_${id}`} className={styles.richText} />;
   }
 }
 
