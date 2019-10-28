@@ -14,30 +14,40 @@ router.post('/api/comment_vote', requireAuth, async (req, res) => {
 
   const existParams = _.omit(row, ['id', 'vote_type']);
 
-  const exists = await pg
+  console.log(existParams)
+
+  const existQuery = pg
     .select('*')
     .from('comment_votes')
     .where(existParams);
 
+  console.log(existQuery.toSQL());
+  const exists = await existQuery;
+
   let result;
 
+  console.log(exists)
   if (!exists || _.isEmpty(exists)) {
-    result = await pg
+    const insertVoteQuery = pg
       .insert(row)
       .into('comment_votes')
       .returning('*');
 
+    console.log(insertVoteQuery.toSQL());
+
+    result = await insertVoteQuery
+
+    let incQuery;
     if (row.vote_type === 'up_vote') {
-      await pg
+      incQuery = pg
         .increment('up_votes', 1)
-        .into('comments')
-        .where({ id: row.comment_id });
     } else {
-      await pg
+      incQuery = pg
         .increment('down_votes', 1)
-        .into('comments')
-        .where({ id: row.comment_id });
     }
+    incQuery
+      .into('comments')
+      .where({ id: row.comment_id });
   } else {
     const updateParams = {
       ...row,
