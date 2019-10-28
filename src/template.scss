@@ -281,3 +281,10 @@ textarea {
 [tabindex] {
   outline: none;
 }
+
+.ql-editor.ql-blank::before {
+  font-style: normal;
+  font-family: $sans-serif;
+  color: $dark-7;
+  margin-left: $margin-2;
+}
