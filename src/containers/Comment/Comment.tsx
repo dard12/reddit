@@ -169,7 +169,7 @@ function Comment(props: CommentProps) {
                   actions={<Button onClick={toggleReplying}>Cancel</Button>}
                   onSubmit={toggleReplying}
                   type={type}
-                  editingComment={commentDoc}
+                  editingComment={isMyComment ? commentDoc : undefined}
                 />
               </div>
             )}
