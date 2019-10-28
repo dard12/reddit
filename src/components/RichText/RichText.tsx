@@ -13,7 +13,7 @@ interface RichTextProps {
   placeholder?: string;
 }
 
-export function getDelta(rawContent: any) {
+export function getDelta(rawContent = '') {
   let delta;
 
   try {
@@ -51,7 +51,13 @@ class RichText extends Component<RichTextProps> {
   }
 
   render() {
-    const { id } = this.props;
+    const { id, placeholder } = this.props;
+    const quillElement = document.querySelector('.ql-editor.ql-blank');
+
+    if (quillElement && placeholder) {
+      quillElement.setAttribute('data-placeholder', placeholder);
+    }
+
     return <div id={id} className={styles.richText} />;
   }
 }
