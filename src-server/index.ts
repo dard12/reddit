@@ -36,6 +36,7 @@ import './routes/auth';
 import './routes/user';
 import './routes/comment';
 import './routes/question';
+import './routes/vote'
 
 if (isProd) {
   app.use(Sentry.Handlers.errorHandler());
