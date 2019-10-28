@@ -32,11 +32,9 @@ function CommentBox(props: CommentBoxProps) {
     onSubmit,
     loadDocsAction,
   } = props;
-  const [content, setContent] = useState<string>(
-    editingComment ? editingComment.content : '',
-  );
+  const initialContent = _.get(editingComment, 'content') || '';
+  const [content, setContent] = useState(initialContent);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const isFilled = _.size(_.trim(content));
 
   const onClickPublish = () => {
@@ -92,7 +90,6 @@ function CommentBox(props: CommentBoxProps) {
         <React.Fragment>
           <div className={styles.commentText}>
             <RichText
-              id={`id_${question}`}
               placeholder={placeholder}
               initialContent={content}
               onChange={setContent}

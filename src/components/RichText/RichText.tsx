@@ -6,7 +6,6 @@ import styles from './RichText.module.scss';
 const Delta = Quill.import('delta');
 
 interface RichTextProps {
-  id: string;
   readOnly?: boolean;
   onChange?: Function;
   initialContent?: any;
@@ -27,9 +26,11 @@ export function getDelta(rawContent = '') {
 }
 
 class RichText extends Component<RichTextProps> {
+  state = { id: `id_${_.random(10000)}` };
+
   componentDidMount() {
-    const { id, readOnly, onChange, initialContent, placeholder } = this.props;
-    const quill = new Quill(`#id_${id}`, {
+    const { readOnly, onChange, initialContent, placeholder } = this.props;
+    const quill = new Quill(`#${this.state.id}`, {
       theme: 'bubble',
       placeholder,
       readOnly,
@@ -51,14 +52,14 @@ class RichText extends Component<RichTextProps> {
   }
 
   render() {
-    const { id, placeholder } = this.props;
+    const { placeholder } = this.props;
     const quillElement = document.querySelector('.ql-editor.ql-blank');
 
     if (quillElement && placeholder) {
       quillElement.setAttribute('data-placeholder', placeholder);
     }
 
-    return <div id={`id_${id}`} className={styles.richText} />;
+    return <div id={this.state.id} className={styles.richText} />;
   }
 }
 
