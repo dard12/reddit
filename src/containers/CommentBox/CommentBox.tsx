@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import styles from './CommentBox.module.scss';
@@ -9,6 +8,7 @@ import SignUp from '../../components/SignUp/SignUp';
 import { loadDocsAction } from '../../redux/actions';
 import { axiosPost } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
+import RichText from '../../components/RichText/RichText';
 
 interface CommentBoxProps {
   question: string;
@@ -32,14 +32,10 @@ function CommentBox(props: CommentBoxProps) {
     onSubmit,
     loadDocsAction,
   } = props;
-  const [content, setContent] = useState<string | undefined>(
-    editingComment ? editingComment.content : undefined,
+  const [content, setContent] = useState<string>(
+    editingComment ? editingComment.content : '',
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.currentTarget.value);
-  };
 
   const isFilled = _.size(_.trim(content));
 
@@ -95,11 +91,11 @@ function CommentBox(props: CommentBoxProps) {
       {user && (
         <React.Fragment>
           <div className={styles.commentText}>
-            <TextareaAutosize
+            <RichText
+              id={`id_${question}`}
               placeholder={placeholder}
-              minRows={4}
-              value={content}
-              onChange={onChange}
+              initialContent={content}
+              onChange={setContent}
             />
           </div>
 

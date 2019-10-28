@@ -1,0 +1,22 @@
+@import '../../template.scss';
+
+.richText {
+  font-family: $serif;
+  font-size: $text-3;
+  line-height: 1.5;
+  color: $dark-10;
+  padding: 0 $margin-2;
+
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  .ql-editor.ql-blank::before {
+    font-style: normal;
+    color: $dark-4;
+  }
+}
