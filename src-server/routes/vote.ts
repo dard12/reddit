@@ -81,18 +81,21 @@ async function vote(type: VoteType, req: Request, res: Response) {
 
     await incQuery
   } else {
-    const updateParams = {
+    const updateParams = _.omit({
       ...row,
-      id: exists[0]['id'],
-    };
+    }, ['id'])
 
-    const updateQuery = pg.update(updateParams).returning('*')
+    console.log("id: ")
+    console.log(exists)
+
+    const updateQuery = pg(vote_table).update(updateParams).where({ id: exists[0].id }).returning('*')
+    console.log("update query:")
+    console.log(updateQuery.toSQL())
 
     result = await updateQuery
     console.log("result: ")
     console.log(result)
 
-    // this could probably be compacted
     const currentType = exists[0]['vote_type'];
     if (currentType !== row.vote_type) {
       let incQuery;
