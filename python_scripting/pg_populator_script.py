@@ -28,11 +28,15 @@ CREATE TRIGGER update_at_votes     BEFORE UPDATE ON votes     FOR EACH ROW EXECU
 
 ALTER TABLE comments ADD COLUMN is_edited boolean   DEFAULT false;
 ALTER TABLE comments ADD COLUMN is_answer boolean GENERATED ALWAYS AS (id = parent_id) STORED;
+ALTER TABLE questions ADD COLUMN last_commented_at timestamp;
 
 ALTER TABLE questions ADD COLUMN up_votes int DEFAULT 0;
 ALTER TABLE questions ADD COLUMN down_votes int DEFAULT 0;
 ALTER TABLE comments ADD COLUMN up_votes int DEFAULT 0;
 ALTER TABLE comments ADD COLUMN down_votes int DEFAULT 0;
+
+UPDATE comments SET is_answer = (parent_id = id) 
+
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
 def id_gen():
@@ -72,18 +76,20 @@ def build_and_populate_tables(env='test'):
     def get_question_tb_req():
         return """
                CREATE TABLE IF NOT EXISTS questions
-                 (id              varchar(12) PRIMARY KEY,
-                  author_id       varchar(12) REFERENCES users (id),
-                  title           varchar,
-                  description     varchar,
-                  tags            varchar Array,
-                  response_count  int,
-                  meta_count      int,
-                  up_votes        int,      DEFAULT 0
-                  down_votes      int,      DEFAULT 0
-                  created_at      timestamp DEFAULT current_timestamp,
-                  updated_at      timestamp DEFAULT current_timestamp,
-                  is_deleted      boolean)
+                 (id                varchar(12) PRIMARY KEY,
+                  author_id         varchar(12) REFERENCES users (id),
+                  title             varchar,
+                  description       varchar,
+                  tags              varchar Array,
+                  response_count    int,
+                  meta_count        int,
+                  up_votes          int       DEFAULT 0,
+                  down_votes        int       DEFAULT 0,
+                  last_commented_at timestamp DEFAULT current_timestamp,
+                  last_comment_id   varchar(12) REFERENCES comments (id),
+                  created_at        timestamp   DEFAULT current_timestamp,
+                  updated_at        timestamp   DEFAULT current_timestamp,
+                  is_deleted        boolean)
                   
                """
     def get_comment_tb_req():
@@ -96,8 +102,8 @@ def build_and_populate_tables(env='test'):
                   author_name     varchar, 
                   question_id     varchar(12) REFERENCES questions (id),
                   parent_id       varchar(12) REFERENCES comments (id),
-                  up_votes        int,      DEFAULT 0
-                  down_votes      int,      DEFAULT 0
+                  up_votes        int       DEFAULT 0,
+                  down_votes      int       DEFAULT 0,
                   is_edited       boolean   DEFAULT false,
                   is_answer
                   created_at      timestamp DEFAULT current_timestamp,
@@ -238,16 +244,44 @@ def recompute_counts(cur, conn):
       UPDATE questions
       SET response_count = cnt
       FROM temp_cnt
-      WHERE temp_cnt.qid = questions.id
+      WHERE questions.id = temp_cnt.qid
         AND temp_cnt.type = 'response';
       UPDATE questions
       SET meta_count = cnt
       FROM temp_cnt
-      WHERE temp_cnt.qid = questions.id
+      WHERE questions.id = temp_cnt.qid 
         AND temp_cnt.type = 'meta'
       """)
     conn.commit()
     cur.execute("DROP TABLE   temp_cnt;")
+
+def recompute_question_last_comments(conn):
+    cur.execute("CREATE TEMP TABLE temp_last_coms (qid varchar, last_c_id varchar, last_c_time timestamp) ")
+    cur.execute("INSERT INTO temp_last_coms(qid) SELECT id FROM questions")
+    cur.execute(""" UPDATE temp_last_coms
+                    SET last_c_time = B.mtime
+                    FROM (SELECT question_id, MAX(created_at) as mtime
+                           FROM comments 
+                           GROUP BY question_id) AS B
+                    WHERE temp_last_coms.qid = B.question_id
+                """)
+    cur.execute(""" UPDATE temp_last_coms
+                    SET last_c_id = id
+                    FROM comments
+                    WHERE temp_last_coms.qid = comments.question_id
+                      AND comments.created_at = temp_last_coms.last_c_time
+                """)
+    cur.execute("SELECT * FROM temp_last_coms")
+    rr=cur.fetchall()
+    ps(rr)
+    cur.execute(""" UPDATE questions
+                    SET last_commented_at = temp_last_coms.last_c_time,
+                        last_comment_id   = temp_last_coms.last_c_id
+                    FROM temp_last_coms
+                    WHERE questions.id =  temp_last_coms.qid  """)
+    conn.commit()
+
+
 
 
 def temp_map_to_tags(cur, conn):
@@ -352,9 +386,9 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
 
 if __name__ == '__main__':
     # build_and_populate_tables('dev')
-    # conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
-    # cur = conn.cursor()
-    # py_interact(locals())
+    conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
+    cur = conn.cursor()
+    py_interact(locals())
 
 
 
