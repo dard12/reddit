@@ -63,7 +63,7 @@ function QuestionVote(props: QuestionVoteProps) {
     } else if (newVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
-  }, 2000);
+  }, 500);
 
   const updateVote = (vote: number) => {
     const newVote = vote === myVote ? 0 : vote;

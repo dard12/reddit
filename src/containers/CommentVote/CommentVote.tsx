@@ -42,7 +42,7 @@ function CommentVote(props: CommentVoteProps) {
     } else if (newVote === -1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'down_vote' });
     }
-  }, 2000);
+  }, 500);
 
   const updateVote = (newVote: number) => {
     setMyVote(newVote === myVote ? 0 : newVote);
