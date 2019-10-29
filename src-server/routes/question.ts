@@ -56,7 +56,7 @@ router.get('/api/question', async (req, res) => {
       }
     }
   }
-  console.log(pgQuery.toSQL());
+  // console.log(pgQuery.toSQL());
   const result = await execute(pgQuery, query);
 
   res.status(200).send(result);

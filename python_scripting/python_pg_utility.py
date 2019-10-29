@@ -346,13 +346,17 @@ def print_order_sql_rows(rows, cols_to_sort=[0], siz=45, sort_lambda=None):
                 str: '',
                 bool: False,
                 list: [],
-                datetime: datetime(1970, 1,1)}[maj_type]
+                type(None): -1,
+                datetime: datetime(1970, 1,1)}.get(maj_type)
         for r_idx, r in enumerate(rows):
             if type(r[idx]) != maj_type:
                 r_l = list(r)
                 r_l[idx] = swap
                 rows[r_idx] = tuple(r_l)
-        rows.sort(key=lambda x:x[idx])
+        try:
+         rows.sort(key=lambda x:x[idx])
+        except:
+         pass
     if sort_lambda:
         rows.sort(key=sort_lambda)
     print_sql_rows(rows, siz)
