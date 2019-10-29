@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import { getQueryParams, setQueryParams } from '../../history';
 
@@ -10,11 +10,10 @@ interface TabsProps {
 
 function Tabs(props: TabsProps) {
   const { tabs, initialTab, queryParamName } = props;
-  const [tab, setTab] = useState(getQueryParams(queryParamName));
+  const tab = getQueryParams(queryParamName);
 
   const createOnClick = (value: string) => () => {
     setQueryParams({ [queryParamName]: value });
-    setTab(value);
   };
 
   if (!tab) {
