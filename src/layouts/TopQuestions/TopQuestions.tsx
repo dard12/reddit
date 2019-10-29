@@ -15,7 +15,14 @@ function Questions(props: QuestionsProps) {
     search: { text: query, tags: [tag] },
     sort: 'up_votes',
   };
-  const tabs = [{ label: 'All', value: 'all' }];
+  const tabs = [
+    { label: 'All', value: 'all' },
+    { label: 'Motivation', value: 'motivation' },
+    { label: 'Technical', value: 'technical' },
+    { label: 'Team Fit', value: 'fit' },
+    { label: 'Coordination', value: 'coordination' },
+    { label: 'Misc / Fun', value: 'fun' },
+  ];
 
   return (
     <div className={styles.topQuestions}>
