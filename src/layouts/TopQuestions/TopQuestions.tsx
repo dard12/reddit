@@ -18,10 +18,16 @@ function Questions(props: QuestionsProps) {
   const tabs = [
     { label: 'All', value: 'all' },
     { label: 'Motivation', value: 'motivation' },
-    { label: 'Technical', value: 'technical' },
     { label: 'Team Fit', value: 'fit' },
-    { label: 'Coordination', value: 'coordination' },
-    { label: 'Misc / Fun', value: 'fun' },
+    { label: 'Tech', value: 'technical' },
+    { label: 'Security', value: 'security' },
+    { label: 'Dev Ops', value: 'devops' },
+    { label: 'Sales', value: 'sales' },
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Design', value: 'design' },
+    { label: 'Management', value: 'management' },
+    { label: 'Support', value: 'support' },
+    { label: 'Fun', value: 'fun' },
   ];
 
   return (
