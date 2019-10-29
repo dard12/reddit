@@ -11,6 +11,7 @@ import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import QuestionName from '../QuestionName/QuestionName';
 import Highlight from '../Highlight/Highlight';
+import Tag from '../../components/Tag/Tag';
 
 interface QuestionProps {
   question: string;
@@ -45,15 +46,17 @@ function Question(props: QuestionProps) {
         <div className={styles.itemHeader}>
           <QuestionName question={question} />
         </div>
+
         <div className={styles.itemDescription}>
           <Highlight textToHighlight={description} />
-
-          {/* <div>
-            {_.map(tags, tag => (
-              <div className={styles.tag}>#{tag}</div>
-            ))}
-          </div> */}
         </div>
+
+        <div>
+          {_.map(tags, tag => (
+            <Tag tag={tag} />
+          ))}
+        </div>
+
         {!disableActions && (
           <div className={styles.itemActions}>
             <Link to={questionResponseLink} className={styles.itemMeta}>

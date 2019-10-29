@@ -1,0 +1,13 @@
+@import '../../template.scss';
+
+.tag {
+  @extend .hoverLink;
+  margin: $margin-1 0;
+  font-style: italic;
+  font-size: $text-1;
+  color: $dark-6;
+
+  + .tag {
+    margin-left: $margin-2;
+  }
+}

@@ -19,14 +19,12 @@ router.get('/api/comment', async (req, res) => {
 
 router.post('/api/comment', requireAuth, async (req, res) => {
   const { body, user }: any = req;
-
   const { id, parent_id, question_id, type, is_edited } = body;
   const newId = getId();
   const comment = {
     ...body,
     id: id || newId,
     parent_id: parent_id || newId,
-    is_answer: !parent_id,
   };
 
   const row = {

@@ -40,7 +40,6 @@ function QuestionVote(props: QuestionVoteProps) {
   const submitVote = _.debounce((newVote: number) => {
     const body = { question_id: question, sent_at: new Date() };
 
-    console.log("voting")
     if (newVote === 1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
     } else if (newVote === -1) {
@@ -78,18 +77,18 @@ function QuestionVote(props: QuestionVoteProps) {
           />
         </React.Fragment>
       ) : (
-          <React.Fragment>
-            <SignUpModal
-              buttonChildren={<IoIosArrowUp />}
-              prompt="To vote please "
-            />
-            <span>{questionDoc && scoreDisplay}</span>
-            <SignUpModal
-              buttonChildren={<IoIosArrowDown />}
-              prompt="To vote please "
-            />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <SignUpModal
+            buttonChildren={<IoIosArrowUp />}
+            prompt="To vote please "
+          />
+          <span>{questionDoc && scoreDisplay}</span>
+          <SignUpModal
+            buttonChildren={<IoIosArrowDown />}
+            prompt="To vote please "
+          />
+        </React.Fragment>
+      )}
     </div>
   );
 }

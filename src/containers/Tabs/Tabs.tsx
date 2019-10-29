@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { getQueryParams, setQueryParams } from '../../history';
 
 interface TabsProps {
-  tabs: any[];
+  tabs: { label: string; value: string }[];
   initialTab: string;
   queryParamName: string;
 }
