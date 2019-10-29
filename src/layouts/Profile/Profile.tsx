@@ -45,7 +45,6 @@ function Profile(props: ProfileProps) {
   const commentsLink = `/profile/${targetUsername}/comments`;
   const questionsLink = `/profile/${targetUsername}/questions`;
   const upvotesLink = `/profile/${targetUsername}/upvotes`;
-  const downvotesLink = `/profile/${targetUsername}/downvotes`;
 
   return (
     <div className={styles.profilePage}>
@@ -77,10 +76,7 @@ function Profile(props: ProfileProps) {
             Questions
           </NavLink>
           <NavLink to={upvotesLink} activeClassName="active">
-            Upvotes
-          </NavLink>
-          <NavLink to={downvotesLink} activeClassName="active">
-            Downvotes
+            Question Upvotes
           </NavLink>
         </div>
       </div>
@@ -113,8 +109,15 @@ function Profile(props: ProfileProps) {
             />
           )}
         />
-        <Route path={upvotesLink} render={() => null} />
-        <Route path={downvotesLink} render={() => null} />
+        <Route
+          path={upvotesLink}
+          render={() => (
+            <Paging
+              component={QuestionListPage}
+              params={{ upvoted_by: targetUser }}
+            />
+          )}
+        />
 
         <Route render={() => <Redirect to={answersLink} />} />
       </Switch>
