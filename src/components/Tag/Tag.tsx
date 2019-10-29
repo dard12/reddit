@@ -1,6 +1,7 @@
 import React from 'react';
+import qs from 'qs';
 import styles from './Tag.module.scss';
-import { setQueryParams } from '../../history';
+import history, { getQueryParams } from '../../history';
 
 interface TagProps {
   tag: string;
@@ -9,7 +10,10 @@ interface TagProps {
 function Tag(props: TagProps) {
   const { tag } = props;
   const onClick = () => {
-    setQueryParams({ tag });
+    const queryParams = getQueryParams();
+    queryParams.tag = tag;
+    const search = qs.stringify(queryParams);
+    history.push({ pathname: '/question', search });
   };
 
   return (
