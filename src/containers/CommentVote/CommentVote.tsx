@@ -35,22 +35,22 @@ function CommentVote(props: CommentVoteProps) {
   const submitVote = _.debounce((newVote: number) => {
     const body = { comment_id: comment, sent_at: new Date() };
 
-    if (newVote === 1) {
+    if (newVote === myVote) {
+      axios.delete('/api/comment_vote', { data: body });
+    } else if (newVote === 1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'up_vote' });
     } else if (newVote === -1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'down_vote' });
-    } else {
-      axios.delete('/api/comment_vote', { data: body });
     }
   }, 2000);
 
   const updateVote = (newVote: number) => {
-    setMyVote(newVote);
+    setMyVote(newVote === myVote ? 0 : newVote);
     submitVote(newVote);
   };
 
-  const upVote = () => updateVote(Math.min(myVote + 1, 1));
-  const downVote = () => updateVote(Math.max(myVote - 1, -1));
+  const upVote = () => updateVote(1);
+  const downVote = () => updateVote(-1);
 
   return (
     <div className={styles.vote}>

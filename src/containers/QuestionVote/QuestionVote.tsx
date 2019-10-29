@@ -37,25 +37,25 @@ function QuestionVote(props: QuestionVoteProps) {
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
-  const submitVote = _.debounce((newVote: number) => {
+  const submitVote = _.debounce(() => {
     const body = { question_id: question, sent_at: new Date() };
 
-    if (newVote === 1) {
-      axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
-    } else if (newVote === -1) {
-      axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
-    } else {
+    if (myVote === 0) {
       axios.delete('/api/question_vote', { data: body });
+    } else if (myVote === 1) {
+      axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
+    } else if (myVote === -1) {
+      axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
   }, 2000);
 
   const updateVote = (newVote: number) => {
-    setMyVote(newVote);
-    submitVote(newVote);
+    setMyVote(newVote === myVote ? 0 : newVote);
+    submitVote();
   };
 
-  const upVote = () => updateVote(Math.min(myVote + 1, 1));
-  const downVote = () => updateVote(Math.max(myVote - 1, -1));
+  const upVote = () => updateVote(1);
+  const downVote = () => updateVote(-1);
 
   return (
     <div className={styles.vote}>

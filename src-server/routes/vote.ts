@@ -210,10 +210,10 @@ router.get('/api/question_vote', async (req, res) => {
   await getVotes(VoteType.Question, req, res);
 });
 
-router.delete('/api/remove_question_vote', requireAuth, async (req, res) => {
+router.delete('/api/question_vote', requireAuth, async (req, res) => {
   await removeVote(VoteType.Question, req, res);
 });
 
-router.delete('/api/remove_comment_vote', requireAuth, async (req, res) => {
+router.delete('/api/comment_vote', requireAuth, async (req, res) => {
   await removeVote(VoteType.Comment, req, res);
 });
