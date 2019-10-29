@@ -3,6 +3,7 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
+import classNames from 'classnames';
 import styles from './QuestionVote.module.scss';
 import { QuestionDoc, QuestionVoteDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
@@ -76,11 +77,13 @@ function QuestionVote(props: QuestionVoteProps) {
     <div className={styles.vote}>
       {user ? (
         <React.Fragment>
-          {isLoaded ? (
-            <IoIosArrowUp onClick={upVote} />
-          ) : (
-            <IoIosArrowUp className={styles.disabled} />
-          )}
+          <IoIosArrowUp
+            onClick={isLoaded ? upVote : undefined}
+            className={classNames({
+              [styles.disabled]: !isLoaded,
+              [styles.active]: myVote === 1,
+            })}
+          />
 
           <span>{scoreDisplay}</span>
 
@@ -89,10 +92,14 @@ function QuestionVote(props: QuestionVoteProps) {
             render={(reputation: number) => {
               const canVote = reputation && isLoaded;
 
-              return canVote ? (
-                <IoIosArrowDown onClick={downVote} />
-              ) : (
-                <IoIosArrowDown className={styles.disabled} />
+              return (
+                <IoIosArrowDown
+                  onClick={canVote ? downVote : undefined}
+                  className={classNames({
+                    [styles.disabled]: !canVote,
+                    [styles.active]: myVote === -1,
+                  })}
+                />
               );
             }}
           />

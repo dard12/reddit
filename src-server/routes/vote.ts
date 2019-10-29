@@ -187,12 +187,12 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
 async function getVotes(type: VoteType, req: Request, res: Response) {
   const { vote_table } = getVoteConfig(type);
   const { body }: any = req;
-  const result = await pg
+  const docs = await pg
     .select('*')
     .from(vote_table)
     .where(body);
 
-  res.status(200).send({ result });
+  res.status(200).send({ docs });
 }
 
 router.post('/api/comment_vote', requireAuth, async (req, res) => {
