@@ -40,7 +40,7 @@ function Question(props: QuestionProps) {
 
   return (
     <div className={styles.item}>
-      <QuestionVote question={question} />
+      <QuestionVote question={question} questionDoc={questionDoc} />
 
       <div className={styles.itemContent}>
         <div className={styles.itemHeader}>
@@ -53,7 +53,7 @@ function Question(props: QuestionProps) {
 
         <div>
           {_.map(tags, tag => (
-            <Tag tag={tag} />
+            <Tag tag={tag} key={tag} />
           ))}
         </div>
 

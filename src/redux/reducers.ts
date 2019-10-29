@@ -53,7 +53,11 @@ export const collectionsReducer = createReducer<CollectionsInterface>(
       const { docs, name } = action.payload;
 
       _.each(docs, doc => {
-        if (name === 'users') {
+        if (name === 'comment_votes') {
+          state[name] = { ...state[name], [doc.comment_id]: doc };
+        } else if (name === 'question_votes') {
+          state[name] = { ...state[name], [doc.question_id]: doc };
+        } else if (name === 'users') {
           state[name] = { ...state[name], [doc.id]: doc, [doc.user_name]: doc };
         } else {
           state[name] = { ...state[name], [doc.id]: doc };

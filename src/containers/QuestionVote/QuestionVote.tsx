@@ -4,36 +4,51 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import styles from './QuestionVote.module.scss';
-import { QuestionDoc } from '../../../src-server/models';
+import { QuestionDoc, QuestionVoteDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
-import Tooltip from '../../components/Tooltip/Tooltip';
 import { axios } from '../../App';
 
 interface QuestionVoteProps {
   question: string;
-  questionDoc?: QuestionDoc;
+  questionDoc: QuestionDoc;
+  questionVoteDoc?: QuestionVoteDoc;
   user?: string;
   loadDocsAction?: Function;
 }
 
 function QuestionVote(props: QuestionVoteProps) {
-  const { question, questionDoc, user, loadDocsAction } = props;
-  const [myVote, setMyVote] = useState(0);
-  const { result } = useAxiosGet(
-    '/api/question',
-    { id: question },
-    { name: 'QuestionVote', cachedResult: questionDoc },
+  const {
+    question,
+    questionDoc,
+    questionVoteDoc,
+    user,
+    loadDocsAction,
+  } = props;
+
+  const [myVote, setMyVote] = useState<number | undefined>();
+  const { result, isSuccess } = useAxiosGet(
+    '/api/question_vote',
+    { question_id: question, user_id: user },
+    { name: 'QuestionVote', cachedResult: questionVoteDoc },
   );
 
-  useLoadDocs({ collection: 'questions', result, loadDocsAction });
+  useLoadDocs({ collection: 'question_votes', result, loadDocsAction });
 
-  const up_vote = _.get(questionDoc, 'up_votes') || 0;
-  const down_vote = _.get(questionDoc, 'down_votes') || 0;
-  const score = up_vote - down_vote + myVote;
+  const isLoaded = myVote !== undefined;
+
+  if (isSuccess && !isLoaded) {
+    const vote_type = _.get(questionVoteDoc, 'vote_type');
+    const existingVote = vote_type === 'up_vote' ? 1 : -1;
+
+    setMyVote(questionVoteDoc ? existingVote : 0);
+  }
+
+  const { up_votes, down_votes } = questionDoc;
+  const score = _.sum([up_votes, -1 * down_votes, myVote]);
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
@@ -61,17 +76,23 @@ function QuestionVote(props: QuestionVoteProps) {
     <div className={styles.vote}>
       {user ? (
         <React.Fragment>
-          <IoIosArrowUp onClick={upVote} />
-          <span>{questionDoc && scoreDisplay}</span>
+          {isLoaded ? (
+            <IoIosArrowUp onClick={upVote} />
+          ) : (
+            <IoIosArrowUp className={styles.disabled} />
+          )}
+
+          <span>{scoreDisplay}</span>
+
           <WithReputation
             user={user}
             render={(reputation: number) => {
-              const canVote = reputation || myVote === 1;
+              const canVote = reputation && isLoaded;
 
-              return (
-                <Tooltip content="You can't downvote yet." enabled={!canVote}>
-                  <IoIosArrowDown onClick={canVote ? downVote : undefined} />
-                </Tooltip>
+              return canVote ? (
+                <IoIosArrowDown onClick={downVote} />
+              ) : (
+                <IoIosArrowDown className={styles.disabled} />
               );
             }}
           />
@@ -82,7 +103,7 @@ function QuestionVote(props: QuestionVoteProps) {
             buttonChildren={<IoIosArrowUp />}
             prompt="To vote please "
           />
-          <span>{questionDoc && scoreDisplay}</span>
+          <span>{scoreDisplay}</span>
           <SignUpModal
             buttonChildren={<IoIosArrowDown />}
             prompt="To vote please "
@@ -96,9 +117,9 @@ function QuestionVote(props: QuestionVoteProps) {
 const mapStateToProps = createSelector(
   [
     createDocSelector({
-      collection: 'questions',
+      collection: 'question_votes',
       id: 'question',
-      prop: 'questionDoc',
+      prop: 'questionVoteDoc',
     }),
     userSelector,
   ],

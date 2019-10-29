@@ -19,8 +19,8 @@ export interface QuestionDoc {
   author_id: string;
   response_count: number;
   meta_count: number;
-  up_vote: number;
-  down_vote: number;
+  up_votes: number;
+  down_votes: number;
   last_comment_id: string;
   created_at: Date;
   updated_at: Date;
