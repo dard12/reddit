@@ -30,7 +30,8 @@ function QuestionVote(props: QuestionVoteProps) {
     loadDocsAction,
   } = props;
 
-  const [myVote, setMyVote] = useState<number | undefined>();
+  const [currentVote, setCurrentVote] = useState<number>(0);
+  const [existingVote, setExistingVote] = useState<number | undefined>();
   const { result, isSuccess } = useAxiosGet(
     '/api/question_vote',
     { question_id: question, user_id: user },
@@ -39,35 +40,36 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'question_votes', result, loadDocsAction });
 
-  const isLoaded = myVote !== undefined;
+  const isLoaded = existingVote !== undefined;
 
   if (isSuccess && !isLoaded) {
     const vote_type = _.get(questionVoteDoc, 'vote_type');
-    const existingVote = vote_type === 'up_vote' ? 1 : -1;
+    const vote = vote_type === 'up_vote' ? 1 : -1;
+    const updatedVote = questionVoteDoc ? vote : 0;
 
-    setMyVote(questionVoteDoc ? existingVote : 0);
+    setExistingVote(updatedVote);
   }
 
   const { up_votes, down_votes } = questionDoc;
-  const score = _.sum([up_votes, -1 * down_votes, myVote]);
+  const score = _.sum([up_votes, -1 * down_votes, currentVote]);
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
-  const submitVote = _.debounce(newVote => {
+  const submitVote = _.debounce(updatedVote => {
     const body = { question_id: question, sent_at: new Date() };
 
-    if (newVote === 0) {
+    if (updatedVote === 0) {
       axios.delete('/api/question_vote', { data: body });
-    } else if (newVote === 1) {
+    } else if (updatedVote === 1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
-    } else if (newVote === -1) {
+    } else if (updatedVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
   }, 500);
 
   const updateVote = (vote: number) => {
-    const newVote = vote === myVote ? 0 : vote;
-    setMyVote(newVote);
+    const newVote = vote === currentVote ? 0 : vote;
+    setCurrentVote(newVote);
     submitVote(newVote);
   };
 
@@ -82,7 +84,9 @@ function QuestionVote(props: QuestionVoteProps) {
             onClick={isLoaded ? upVote : undefined}
             className={classNames({
               [styles.disabled]: !isLoaded,
-              [styles.active]: myVote === 1,
+              [styles.active]: currentVote
+                ? currentVote === 1
+                : existingVote === 1,
             })}
           />
 
@@ -98,7 +102,9 @@ function QuestionVote(props: QuestionVoteProps) {
                   onClick={canVote ? downVote : undefined}
                   className={classNames({
                     [styles.disabled]: !canVote,
-                    [styles.active]: myVote === -1,
+                    [styles.active]: currentVote
+                      ? currentVote === -1
+                      : existingVote === -1,
                   })}
                 />
               );
