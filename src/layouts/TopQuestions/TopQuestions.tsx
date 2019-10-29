@@ -5,12 +5,13 @@ import { getQueryParams } from '../../history';
 import Paging from '../../containers/Paging/Paging';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
-interface QuestionsProps { }
+interface QuestionsProps {}
 
 function Questions(props: QuestionsProps) {
   const query = getQueryParams('query');
+  const tag = getQueryParams('tag');
   const params = {
-    search: { text: query },
+    search: { text: query, tags: [tag] },
     sort: 'up_votes',
   };
 
