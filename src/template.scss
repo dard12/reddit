@@ -131,6 +131,7 @@ $line-height-1: 1.2;
   display: flex;
   justify-content: space-around;
   border: 1px solid $dark-9;
+  padding: 0 $margin-3;
 
   @media (max-device-width: 768px) {
     display: block;
