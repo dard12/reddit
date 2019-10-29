@@ -185,11 +185,11 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
 
 async function getVotes(type: VoteType, req: Request, res: Response) {
   const { vote_table } = getVoteConfig(type);
-  const { body }: any = req;
+  const { query }: any = req;
   const docs = await pg
     .select('*')
     .from(vote_table)
-    .where(body);
+    .where(query);
 
   res.status(200).send({ docs });
 }
