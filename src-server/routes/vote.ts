@@ -146,7 +146,6 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
   const row = _.omit(
     {
       ...body,
-      id: getId(),
       user_id: user.id,
     },
     ['sent_at'],

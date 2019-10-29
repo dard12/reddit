@@ -53,21 +53,22 @@ function QuestionVote(props: QuestionVoteProps) {
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
-  const submitVote = _.debounce(() => {
+  const submitVote = _.debounce(newVote => {
     const body = { question_id: question, sent_at: new Date() };
 
-    if (myVote === 0) {
+    if (newVote === 0) {
       axios.delete('/api/question_vote', { data: body });
-    } else if (myVote === 1) {
+    } else if (newVote === 1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'up_vote' });
-    } else if (myVote === -1) {
+    } else if (newVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
   }, 2000);
 
-  const updateVote = (newVote: number) => {
-    setMyVote(newVote === myVote ? 0 : newVote);
-    submitVote();
+  const updateVote = (vote: number) => {
+    const newVote = vote === myVote ? 0 : vote;
+    setMyVote(newVote);
+    submitVote(newVote);
   };
 
   const upVote = () => updateVote(1);
