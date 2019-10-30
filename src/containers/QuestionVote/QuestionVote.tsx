@@ -30,8 +30,7 @@ function QuestionVote(props: QuestionVoteProps) {
     loadDocsAction,
   } = props;
 
-  const [currentVote, setCurrentVote] = useState<number>(0);
-  const [savedVote, setSavedVote] = useState<number | undefined>();
+  const [currentVote, setCurrentVote] = useState<number>();
   const { result, isSuccess } = useAxiosGet(
     '/api/question_vote',
     { question_id: question, user_id: user },
@@ -40,25 +39,15 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'question_votes', result, loadDocsAction });
 
-  const isLoaded = savedVote !== undefined;
+  const savedVote = getVoteNumber(questionVoteDoc);
 
-  if (isSuccess && !isLoaded) {
-    const vote_type = _.get(questionVoteDoc, 'vote_type');
-    const vote = vote_type === 'up_vote' ? 1 : -1;
-
-    setSavedVote(questionVoteDoc ? vote : 0);
-    setCurrentVote(questionVoteDoc ? vote : 0);
+  if (isSuccess && currentVote === undefined) {
+    setCurrentVote(savedVote);
   }
 
   const { up_votes, down_votes } = questionDoc;
-  const score = _.sum([
-    up_votes,
-    -1 * down_votes,
-    savedVote ? -1 * savedVote : 0,
-    currentVote,
-  ]);
-  const scoreDisplay =
-    Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
+  const score = _.sum([up_votes, -1 * down_votes, -1 * savedVote, currentVote]);
+  const scoreDisplay = getScoreDisplay(score);
 
   const submitVote = _.debounce(updatedVote => {
     const body = { question_id: question, sent_at: new Date() };
@@ -86,9 +75,9 @@ function QuestionVote(props: QuestionVoteProps) {
       {user ? (
         <React.Fragment>
           <IoIosArrowUp
-            onClick={isLoaded ? upVote : undefined}
+            onClick={isSuccess ? upVote : undefined}
             className={classNames({
-              [styles.disabled]: !isLoaded,
+              [styles.disabled]: !isSuccess,
               [styles.active]: currentVote === 1,
             })}
           />
@@ -98,7 +87,7 @@ function QuestionVote(props: QuestionVoteProps) {
           <WithReputation
             user={user}
             render={(reputation: number) => {
-              const canVote = reputation && isLoaded;
+              const canVote = reputation && isSuccess;
 
               return (
                 <IoIosArrowDown
@@ -145,3 +134,17 @@ export default connect(
   mapStateToProps,
   { loadDocsAction },
 )(QuestionVote);
+
+function getScoreDisplay(score: number) {
+  return Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
+}
+
+function getVoteNumber(questionVoteDoc?: QuestionVoteDoc) {
+  const vote_type = _.get(questionVoteDoc, 'vote_type');
+  const typeToNumber = {
+    up_vote: 1,
+    down_vote: -1,
+  };
+
+  return vote_type ? typeToNumber[vote_type] : 0;
+}
