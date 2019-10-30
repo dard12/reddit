@@ -31,7 +31,7 @@ function QuestionVote(props: QuestionVoteProps) {
   } = props;
 
   const [currentVote, setCurrentVote] = useState<number>(0);
-  const [existingVote, setExistingVote] = useState<number | undefined>();
+  const [savedVote, setSavedVote] = useState<number | undefined>();
   const { result, isSuccess } = useAxiosGet(
     '/api/question_vote',
     { question_id: question, user_id: user },
@@ -40,18 +40,23 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'question_votes', result, loadDocsAction });
 
-  const isLoaded = existingVote !== undefined;
+  const isLoaded = savedVote !== undefined;
 
   if (isSuccess && !isLoaded) {
     const vote_type = _.get(questionVoteDoc, 'vote_type');
     const vote = vote_type === 'up_vote' ? 1 : -1;
-    const updatedVote = questionVoteDoc ? vote : 0;
 
-    setExistingVote(updatedVote);
+    setSavedVote(questionVoteDoc ? vote : 0);
+    setCurrentVote(questionVoteDoc ? vote : 0);
   }
 
   const { up_votes, down_votes } = questionDoc;
-  const score = _.sum([up_votes, -1 * down_votes, currentVote]);
+  const score = _.sum([
+    up_votes,
+    -1 * down_votes,
+    savedVote ? -1 * savedVote : 0,
+    currentVote,
+  ]);
   const scoreDisplay =
     Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 
@@ -84,9 +89,7 @@ function QuestionVote(props: QuestionVoteProps) {
             onClick={isLoaded ? upVote : undefined}
             className={classNames({
               [styles.disabled]: !isLoaded,
-              [styles.active]: currentVote
-                ? currentVote === 1
-                : existingVote === 1,
+              [styles.active]: currentVote === 1,
             })}
           />
 
@@ -102,9 +105,7 @@ function QuestionVote(props: QuestionVoteProps) {
                   onClick={canVote ? downVote : undefined}
                   className={classNames({
                     [styles.disabled]: !canVote,
-                    [styles.active]: currentVote
-                      ? currentVote === -1
-                      : existingVote === -1,
+                    [styles.active]: currentVote === -1,
                   })}
                 />
               );
