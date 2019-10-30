@@ -9,15 +9,14 @@
   text-align: center;
   width: calc(50rem / 14);
 
-  svg {
-    display: block;
-    margin: $margin-2 auto;
-    border-radius: 50%;
-  }
-
   > * {
+    display: flex;
     flex-shrink: 0;
     margin: $margin-2 auto;
+  }
+
+  svg {
+    border-radius: 50%;
   }
 
   svg:not(.disabled):hover {
