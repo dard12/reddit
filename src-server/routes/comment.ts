@@ -44,7 +44,7 @@ router.post('/api/comment', requireAuth, async (req, res) => {
   if (is_edited) {
     docs = await pg('comments')
       .where({ id: row.id })
-      .update(row)
+      .update({ content: row.content })
       .returning('*');
   } else {
     docs = await pg
