@@ -59,6 +59,8 @@ function QuestionVote(props: QuestionVoteProps) {
     } else if (updatedVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
+
+    axios.get('/api/tags',
   }, 500);
 
   const updateVote = (vote: number) => {

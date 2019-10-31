@@ -1,5 +1,6 @@
 
 import python_pg_utility as ppu
+import tags
 import inspect
 from datetime import datetime as dt
 from datetime import timedelta as td
@@ -52,6 +53,14 @@ def run(commands):
     for command in commands:
       cur.execute(command)
     conn.commit()
+
+def get_tags_tb_req():
+  return """
+            CREATE TABLE IF NOT EXISTS tags
+            (id           varchar PRIMARY KEY,
+             display_name varchar
+            )
+            """
 
 def build_and_populate_tables(env='test'):
     conn = ppu.conn_retry(ppu.get_sql_db(env))
@@ -168,7 +177,7 @@ def build_and_populate_tables(env='test'):
         'allowed_subject_types': {'comments', 'questions'}
     }
     ppu.build_enum_types(conn, enum_map)
-    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_question_votes_tb_req(), get_comment_votes_tb_req()]:
+    for req in [get_user_tb_req(), get_question_tb_req(), get_comment_tb_req(), get_question_votes_tb_req(), get_comment_votes_tb_req(), get_tags_tb_req()]:
         cur.execute(req)
     conn.commit()
     create_updated_at_trigger_function(conn)
@@ -358,7 +367,9 @@ def create_multi_word_like_sum_function(conn):
     cur.execute(req)
     conn.commit()
 
-
+def populate_tags(conn):
+  ppu.bulk_insert(conn.cursor(), "tags", ["id", "display_name"], tags.tags)
+  conn.commit()
 
 
 def py_interact(f_locals):  
@@ -385,10 +396,9 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
 if __name__ == '__main__':
-    # build_and_populate_tables('dev')
+    ##build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     cur = conn.cursor()
-    py_interact(locals())
 
 
 
