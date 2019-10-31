@@ -79,7 +79,7 @@ function Comment(props: CommentProps) {
     created_at,
     question_id,
     type,
-    down_vote,
+    down_votes,
     is_answer,
   } = commentDoc;
   const sortedComments = getSortedComments(user, childrenComments);
@@ -137,8 +137,8 @@ function Comment(props: CommentProps) {
 
             <div
               className={classNames(styles.commentBody, {
-                [styles.flagged]: down_vote > 5,
-                [styles.strongFlagged]: down_vote > 20,
+                [styles.flagged]: down_votes > 5,
+                [styles.strongFlagged]: down_votes > 20,
               })}
             >
               <RichText content={content} readOnly />

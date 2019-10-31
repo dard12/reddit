@@ -36,8 +36,8 @@ export interface CommentDoc {
   parent_id?: string;
   created_at: Date;
   updated_at: Date;
-  up_vote: number;
-  down_vote: number;
+  up_votes: number;
+  down_votes: number;
   is_edited: boolean;
   is_answer: boolean;
 }

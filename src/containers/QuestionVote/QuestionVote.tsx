@@ -12,6 +12,7 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
 import { axios } from '../../App';
+import VoteScore, { getVoteScore } from '../VoteScore/VoteScore';
 
 interface QuestionVoteProps {
   question: string;
@@ -39,15 +40,11 @@ function QuestionVote(props: QuestionVoteProps) {
 
   useLoadDocs({ collection: 'question_votes', result, loadDocsAction });
 
-  const savedVote = getVoteNumber(questionVoteDoc);
+  const savedVote = getVoteScore(questionVoteDoc);
 
   if (isSuccess && currentVote === undefined) {
     setCurrentVote(savedVote);
   }
-
-  const { up_votes, down_votes } = questionDoc;
-  const score = _.sum([up_votes, -1 * down_votes, -1 * savedVote, currentVote]);
-  const scoreDisplay = getScoreDisplay(score);
 
   const submitVote = _.debounce(updatedVote => {
     const body = { question_id: question, sent_at: new Date() };
@@ -59,8 +56,6 @@ function QuestionVote(props: QuestionVoteProps) {
     } else if (updatedVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
-
-    axios.get('/api/tags');
   }, 500);
 
   const updateVote = (vote: number) => {
@@ -84,7 +79,11 @@ function QuestionVote(props: QuestionVoteProps) {
             })}
           />
 
-          <span>{scoreDisplay}</span>
+          <VoteScore
+            targetDoc={questionDoc}
+            voteDoc={questionVoteDoc}
+            currentVote={currentVote}
+          />
 
           <WithReputation
             user={user}
@@ -104,18 +103,24 @@ function QuestionVote(props: QuestionVoteProps) {
           />
         </React.Fragment>
       ) : (
-          <React.Fragment>
-            <SignUpModal
-              buttonChildren={<IoIosArrowUp />}
-              prompt="To vote please "
-            />
-            <span>{scoreDisplay}</span>
-            <SignUpModal
-              buttonChildren={<IoIosArrowDown />}
-              prompt="To vote please "
-            />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <SignUpModal
+            buttonChildren={<IoIosArrowUp />}
+            prompt="To vote please "
+          />
+
+          <VoteScore
+            targetDoc={questionDoc}
+            voteDoc={questionVoteDoc}
+            currentVote={currentVote}
+          />
+
+          <SignUpModal
+            buttonChildren={<IoIosArrowDown />}
+            prompt="To vote please "
+          />
+        </React.Fragment>
+      )}
     </div>
   );
 }
@@ -136,17 +141,3 @@ export default connect(
   mapStateToProps,
   { loadDocsAction },
 )(QuestionVote);
-
-function getScoreDisplay(score: number) {
-  return Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
-}
-
-function getVoteNumber(questionVoteDoc?: QuestionVoteDoc) {
-  const vote_type = _.get(questionVoteDoc, 'vote_type');
-  const typeToNumber = {
-    up_vote: 1,
-    down_vote: -1,
-  };
-
-  return vote_type ? typeToNumber[vote_type] : 0;
-}
