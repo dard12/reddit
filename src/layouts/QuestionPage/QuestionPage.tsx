@@ -9,17 +9,17 @@ import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import QuestionComments from '../../containers/QuestionComments/QuestionComments';
-import { getQueryParams } from '../../history';
 import Tabs from '../../containers/Tabs/Tabs';
 
 interface QuestionPageProps {
   question: string;
+  type?: any;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }
 
 function QuestionPage(props: QuestionPageProps) {
-  const { question, questionDoc, loadDocsAction } = props;
+  const { question, type, questionDoc, loadDocsAction } = props;
   const { result } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -34,14 +34,18 @@ function QuestionPage(props: QuestionPageProps) {
     { label: `Answer Discussion (${response_count})`, value: 'response' },
     { label: `Meta Discussion (${meta_count})`, value: 'meta' },
   ];
-  const type = getQueryParams('type');
 
   return (
     <div className={styles.questionPage}>
       <Question question={question} disableActions />
 
       <div className={styles.commentSection}>
-        <Tabs tabs={tabs} queryParamName="type" initialTab="response" />
+        <Tabs
+          tabs={tabs}
+          queryParamName="type"
+          currentTab={type}
+          defaultTab="response"
+        />
         <CommentBox question={question} type={type} />
       </div>
 

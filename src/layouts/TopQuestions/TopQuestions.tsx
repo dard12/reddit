@@ -33,7 +33,13 @@ function Questions(props: QuestionsProps) {
   return (
     <div className={styles.topQuestions}>
       <SearchBar query={query} />
-      <Tabs tabs={tabs} initialTab="all" queryParamName="tag" />
+      <Tabs
+        tabs={tabs}
+        currentTab={tag}
+        queryParamName="tag"
+        defaultTab="all"
+      />
+
       <Paging component={QuestionListPage} params={params} />
     </div>
   );

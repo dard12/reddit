@@ -1,24 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
-import { getQueryParams, setQueryParams } from '../../history';
+import { setQueryParams } from '../../history';
 
 interface TabsProps {
   tabs: { label: string; value: string }[];
-  initialTab: string;
+  defaultTab: string;
   queryParamName: string;
+  currentTab?: string;
 }
 
 function Tabs(props: TabsProps) {
-  const { tabs, initialTab, queryParamName } = props;
-  const tab = getQueryParams(queryParamName);
-
+  const { tabs, currentTab, defaultTab, queryParamName } = props;
   const createOnClick = (value: string) => () => {
     setQueryParams({ [queryParamName]: value });
   };
 
-  if (!tab) {
-    const clickAll = createOnClick(initialTab);
-    clickAll();
+  if (!currentTab) {
+    const clickDefault = createOnClick(defaultTab);
+    clickDefault();
   }
 
   return (
@@ -26,7 +25,7 @@ function Tabs(props: TabsProps) {
       {_.map(tabs, ({ label, value }) => (
         <div
           onClick={createOnClick(value)}
-          className={tab === value ? 'active' : undefined}
+          className={currentTab === value ? 'active' : undefined}
           key={value}
         >
           {label}

@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Axios from 'axios';
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
+import { getQueryParams } from './history';
 
 const TopQuestions = lazy(() => import('./layouts/TopQuestions/TopQuestions'));
 const QuestionPage = lazy(() => import('./layouts/QuestionPage/QuestionPage'));
@@ -26,7 +27,10 @@ function App() {
               path="/question/:question"
               render={props => {
                 const { question } = props.match.params;
-                return question && <QuestionPage question={question} />;
+                const type = getQueryParams('type');
+                return (
+                  question && <QuestionPage question={question} type={type} />
+                );
               }}
             />
             <Route
