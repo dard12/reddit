@@ -59,6 +59,8 @@ function QuestionVote(props: QuestionVoteProps) {
     } else if (updatedVote === -1) {
       axios.post('/api/question_vote', { ...body, vote_type: 'down_vote' });
     }
+
+    axios.get('/api/tags');
   }, 500);
 
   const updateVote = (vote: number) => {
@@ -102,18 +104,18 @@ function QuestionVote(props: QuestionVoteProps) {
           />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <SignUpModal
-            buttonChildren={<IoIosArrowUp />}
-            prompt="To vote please "
-          />
-          <span>{scoreDisplay}</span>
-          <SignUpModal
-            buttonChildren={<IoIosArrowDown />}
-            prompt="To vote please "
-          />
-        </React.Fragment>
-      )}
+          <React.Fragment>
+            <SignUpModal
+              buttonChildren={<IoIosArrowUp />}
+              prompt="To vote please "
+            />
+            <span>{scoreDisplay}</span>
+            <SignUpModal
+              buttonChildren={<IoIosArrowDown />}
+              prompt="To vote please "
+            />
+          </React.Fragment>
+        )}
     </div>
   );
 }
