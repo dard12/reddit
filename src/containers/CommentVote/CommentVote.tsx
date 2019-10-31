@@ -3,49 +3,58 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import _ from 'lodash';
+import classNames from 'classnames';
 import styles from './CommentVote.module.scss';
-import { CommentDoc } from '../../../src-server/models';
+import { CommentVoteDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
-import Tooltip from '../../components/Tooltip/Tooltip';
 import WithReputation from '../WithReputation/WithReputation';
 import { axios } from '../../App';
+import { getVoteScore } from '../VoteScore/VoteScore';
 
 interface CommentVoteProps {
   comment: string;
-  user?: string;
-  commentDoc?: CommentDoc;
+  commentVoteDoc?: CommentVoteDoc;
   loadDocsAction?: Function;
   threadLine?: any;
+  user?: string;
 }
 
 function CommentVote(props: CommentVoteProps) {
-  const { comment, user, commentDoc, loadDocsAction, threadLine } = props;
-  const [myVote, setMyVote] = useState(0);
-  const { result } = useAxiosGet(
-    '/api/comment',
-    { id: comment },
-    { cachedResult: commentDoc, name: 'CommentVote' },
+  const { comment, commentVoteDoc, loadDocsAction, threadLine, user } = props;
+
+  const [currentVote, setCurrentVote] = useState(0);
+  const { result, isSuccess } = useAxiosGet(
+    '/api/comment_vote',
+    { comment_id: comment, user_id: user },
+    { cachedResult: commentVoteDoc, name: 'CommentVote' },
   );
 
-  useLoadDocs({ collection: 'comments', result, loadDocsAction });
+  useLoadDocs({ collection: 'comment_votes', result, loadDocsAction });
 
-  const submitVote = _.debounce((newVote: number) => {
+  const savedVote = getVoteScore(commentVoteDoc);
+
+  if (isSuccess && currentVote === undefined) {
+    setCurrentVote(savedVote);
+  }
+
+  const submitVote = _.debounce(updatedVote => {
     const body = { comment_id: comment, sent_at: new Date() };
 
-    if (newVote === myVote) {
+    if (updatedVote === 0) {
       axios.delete('/api/comment_vote', { data: body });
-    } else if (newVote === 1) {
+    } else if (updatedVote === 1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'up_vote' });
-    } else if (newVote === -1) {
+    } else if (updatedVote === -1) {
       axios.post('/api/comment_vote', { ...body, vote_type: 'down_vote' });
     }
   }, 500);
 
-  const updateVote = (newVote: number) => {
-    setMyVote(newVote === myVote ? 0 : newVote);
+  const updateVote = (vote: number) => {
+    const newVote = vote === currentVote ? 0 : vote;
+    setCurrentVote(newVote);
     submitVote(newVote);
   };
 
@@ -56,14 +65,29 @@ function CommentVote(props: CommentVoteProps) {
     <div className={styles.vote}>
       {user ? (
         <React.Fragment>
-          <IoIosArrowUp onClick={upVote} />
+          <IoIosArrowUp
+            onClick={isSuccess ? upVote : undefined}
+            className={classNames({
+              [styles.disabled]: !isSuccess,
+              [styles.active]: currentVote === 1,
+            })}
+          />
+
           <WithReputation
             user={user}
-            render={(reputation: number) => (
-              <Tooltip content="You can't downvote yet." enabled={!reputation}>
-                <IoIosArrowDown onClick={reputation ? downVote : undefined} />
-              </Tooltip>
-            )}
+            render={(reputation: number) => {
+              const canVote = reputation && isSuccess;
+
+              return (
+                <IoIosArrowDown
+                  onClick={canVote ? downVote : undefined}
+                  className={classNames({
+                    [styles.disabled]: !canVote,
+                    [styles.active]: currentVote === -1,
+                  })}
+                />
+              );
+            }}
           />
         </React.Fragment>
       ) : (
