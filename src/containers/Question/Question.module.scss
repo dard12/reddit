@@ -12,12 +12,12 @@
 
 .itemHeader {
   font-weight: 600;
-  border-bottom: 1px dotted $dark-8;
   font-family: $serif;
   display: block;
   margin-bottom: $margin-2;
   text-decoration: none;
   font-size: $text-3;
+  text-decoration: underline;
 
   a:hover {
     background-color: $primary-5;
