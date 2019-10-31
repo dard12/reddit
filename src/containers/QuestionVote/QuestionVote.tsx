@@ -31,7 +31,7 @@ function QuestionVote(props: QuestionVoteProps) {
     loadDocsAction,
   } = props;
 
-  const [currentVote, setCurrentVote] = useState<number>();
+  const [currentVote, setCurrentVote] = useState();
   const { result, isSuccess } = useAxiosGet(
     '/api/question_vote',
     { question_id: question, user_id: user },

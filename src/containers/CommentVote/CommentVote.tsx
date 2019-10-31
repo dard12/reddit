@@ -25,7 +25,7 @@ interface CommentVoteProps {
 function CommentVote(props: CommentVoteProps) {
   const { comment, commentVoteDoc, loadDocsAction, threadLine, user } = props;
 
-  const [currentVote, setCurrentVote] = useState(0);
+  const [currentVote, setCurrentVote] = useState();
   const { result, isSuccess } = useAxiosGet(
     '/api/comment_vote',
     { comment_id: comment, user_id: user },
@@ -111,9 +111,9 @@ function CommentVote(props: CommentVoteProps) {
 const mapStateToProps = createSelector(
   [
     createDocSelector({
-      collection: 'comments',
+      collection: 'comment_votes',
       id: 'comment',
-      prop: 'commentDoc',
+      prop: 'commentVoteDoc',
     }),
     userSelector,
   ],
