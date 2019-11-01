@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { differenceInDays } from 'date-fns';
 import { UserDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
@@ -26,7 +27,10 @@ function WithReputation(props: WithReputationProps) {
     return null;
   }
 
-  return <React.Fragment>{render(userDoc.reputation)}</React.Fragment>;
+  const { created_at } = userDoc;
+  const daysSinceSignup = differenceInDays(new Date(), created_at);
+
+  return <React.Fragment>{render(daysSinceSignup > 3)}</React.Fragment>;
 }
 
 export default connect(
