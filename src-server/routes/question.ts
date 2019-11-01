@@ -30,9 +30,13 @@ router.get('/api/question', async (req, res) => {
   }
 
   if (upvoted_by) {
-    pgQuery
-      .leftJoin('question_votes', 'questions.id', 'question_votes.question_id')
+    const upvoteResult = await pg
+      .select('*')
+      .from('question_votes')
       .where({ 'question_votes.user_id': upvoted_by, vote_type: 'up_vote' });
+    const questionIds = _.map(upvoteResult, 'question_id');
+
+    pgQuery.whereIn('id', questionIds);
   }
 
   if (search) {
