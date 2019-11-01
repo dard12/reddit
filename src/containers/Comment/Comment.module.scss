@@ -64,12 +64,16 @@
 
   &:hover {
     background-color: $primary-2;
+
+    .threadLine {
+      background-color: $dark-8;
+    }
   }
 }
 
 .threadLine {
   width: 2px;
-  background-color: $dark-8;
+  background-color: $dark-3;
   height: 100%;
 }
 

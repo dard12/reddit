@@ -9,4 +9,8 @@
   + .tag {
     margin-left: $margin-2;
   }
+
+  &:hover {
+    color: $dark-9;
+  }
 }

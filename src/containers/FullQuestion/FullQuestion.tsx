@@ -27,12 +27,10 @@ function FullQuestion(props: FullQuestionProps) {
 
   return (
     <div>
-      <Question question={question} />
+      <Question question={question} className={styles.question} />
 
       {comment && commentDoc && (
-        <div className={styles.recent}>
-          <div className={styles.recentTitle}>Recent Post</div>
-
+        <div className={styles.comment}>
           <Comment
             question={question}
             comment={comment}

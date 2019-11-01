@@ -16,12 +16,20 @@ import Tag from '../../components/Tag/Tag';
 interface QuestionProps {
   question: string;
   disableActions?: boolean;
+  className?: string;
   questionDoc?: QuestionDoc;
   loadDocsAction?: Function;
 }
 
 function Question(props: QuestionProps) {
-  const { question, disableActions, questionDoc, loadDocsAction } = props;
+  const {
+    question,
+    disableActions,
+    className = styles.item,
+    questionDoc,
+    loadDocsAction,
+  } = props;
+
   const { result, isSuccess } = useAxiosGet(
     '/api/question',
     { id: question },
@@ -39,7 +47,7 @@ function Question(props: QuestionProps) {
   const questionMetaLink = `/question/${question}?type=meta`;
 
   return (
-    <div className={styles.item}>
+    <div className={className}>
       <QuestionVote question={question} questionDoc={questionDoc} />
 
       <div className={styles.itemContent}>
