@@ -41,7 +41,7 @@ function CommentVote(props: CommentVoteProps) {
   }
 
   const submitVote = _.debounce(updatedVote => {
-    const body = { comment_id: comment, sent_at: new Date() };
+    const body = { comment_id: comment };
 
     if (updatedVote === 0) {
       axios.delete('/api/comment_vote', { data: body });

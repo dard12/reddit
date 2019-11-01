@@ -36,28 +36,16 @@ async function vote(type: VoteType, req: Request, res: Response) {
   );
 
   const { body, user }: any = req;
-
-  const row = _.omit(
-    {
-      ...body,
-      id: getId(),
-      user_id: user.id,
-    },
-    ['sent_at'],
-  );
-
-  const existParams = _.omit(row, ['id', 'vote_type', 'sent_at']);
-
-  const existQuery = pg
+  const row = { ...body, id: getId(), user_id: user.id };
+  const existParams = _.omit(row, ['id', 'vote_type']);
+  const exists = await pg
     .select('*')
     .from(vote_table)
     .where(existParams);
 
-  const exists = await existQuery;
-
   let result;
 
-  if (!exists || _.isEmpty(exists)) {
+  if (_.isEmpty(exists)) {
     const insertVoteQuery = pg
       .insert(row)
       .into(vote_table)
@@ -66,21 +54,18 @@ async function vote(type: VoteType, req: Request, res: Response) {
     result = await insertVoteQuery;
 
     let incQuery;
+
     if (row.vote_type === 'up_vote') {
       incQuery = pg.increment('up_votes', 1);
     } else {
       incQuery = pg.increment('down_votes', 1);
     }
+
     incQuery.into(object_table).where({ id: row[vote_object_id_property] });
 
     await incQuery;
   } else {
-    const updateParams = _.omit(
-      {
-        ...row,
-      },
-      ['id'],
-    );
+    const updateParams = _.omit({ ...row }, ['id']);
 
     const updateQuery = pg(vote_table)
       .update(updateParams)
@@ -90,9 +75,11 @@ async function vote(type: VoteType, req: Request, res: Response) {
     result = await updateQuery;
 
     const currentType = exists[0].vote_type;
+
     if (currentType !== row.vote_type) {
       let incQuery;
       let decQuery;
+
       if (row.vote_type === 'up_vote') {
         decQuery = pg.decrement('down_votes', 1);
         incQuery = pg.increment('up_votes', 1);
@@ -100,6 +87,7 @@ async function vote(type: VoteType, req: Request, res: Response) {
         incQuery = pg.increment('down_votes', 1);
         decQuery = pg.decrement('up_votes', 1);
       }
+
       decQuery
         .into(object_table)
         .where({ id: updateParams[vote_object_id_property] });
@@ -111,6 +99,7 @@ async function vote(type: VoteType, req: Request, res: Response) {
       await incQuery;
     }
   }
+
   res.status(200).send({ result });
 }
 
@@ -120,20 +109,11 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
   );
 
   const { body, user }: any = req;
-  const row = _.omit(
-    {
-      ...body,
-      user_id: user.id,
-    },
-    ['sent_at'],
-  );
-
-  const deleteParams = _.omit(row, ['sent_at']);
-
+  const row = { ...body, user_id: user.id };
   const deleteQuery = pg
     .del()
     .from(vote_table)
-    .where(deleteParams)
+    .where(row)
     .returning('*');
 
   const result = await deleteQuery;

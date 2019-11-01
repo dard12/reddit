@@ -51,7 +51,7 @@ function QuestionVote(props: QuestionVoteProps) {
   }
 
   const submitVote = _.debounce(updatedVote => {
-    const body = { question_id: question, sent_at: new Date() };
+    const body = { question_id: question };
 
     if (updatedVote === 0) {
       axios.delete('/api/question_vote', { data: body });
