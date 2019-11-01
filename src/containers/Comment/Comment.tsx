@@ -101,6 +101,7 @@ function Comment(props: CommentProps) {
             <span className={styles.author}>
               <UserLink user_name={author_name} />
             </span>
+
             <span className={styles.collapseText} onClick={toggleCollapsed}>
               [ +{(subTreeCount || 0) + 1} ] See More
             </span>
@@ -123,18 +124,20 @@ function Comment(props: CommentProps) {
           />
 
           <div className={styles.commentContent} data-anchor={anchor}>
-            <div className={styles.commentHeader}>
-              {is_answer && <div className={styles.answerLabel}>Answer by</div>}
+            <div>
+              {is_answer && (
+                <span className={styles.answerLabel}>Answer by</span>
+              )}
 
-              <div className={styles.author}>
+              <span className={styles.author}>
                 <UserLink user_name={author_name} />
-              </div>
+              </span>
 
-              <div className={styles.collapseText} onClick={toggleCollapsed}>
+              <span className={styles.collapseText} onClick={toggleCollapsed}>
                 [ - ]
-              </div>
+              </span>
 
-              <div className={styles.commentPoints}>5 points</div>
+              <span className={styles.commentPoints}>5 points</span>
             </div>
 
             <div
