@@ -25,6 +25,7 @@ import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import RichText from '../../components/RichText/RichText';
+import { getScoreDisplay } from '../QuestionVote/QuestionVote';
 
 interface CommentProps {
   comment: string;
@@ -85,6 +86,8 @@ function Comment(props: CommentProps) {
   const sortedComments = getSortedComments(user, childrenComments);
   const isMyComment = user === author_id;
 
+  const scoreDisplay = getScoreDisplay({ targetDoc: commentDoc });
+
   return (
     <div className={styles.comment}>
       {collapsed && (
@@ -137,7 +140,9 @@ function Comment(props: CommentProps) {
                 [ - ]
               </span>
 
-              <span className={styles.commentPoints}>5 points</span>
+              <span className={styles.commentPoints}>
+                {scoreDisplay} points
+              </span>
             </div>
 
             <div
