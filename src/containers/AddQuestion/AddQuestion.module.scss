@@ -4,11 +4,10 @@
   @extend .card;
   padding: $margin-4;
   border: 0;
-  border-bottom: 3px solid $dark-8;
+  border-bottom: 4px solid $dark-8;
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  width: $width-3;
-  align-items: flex-start;
+  grid-gap: $margin-3;
+  width: $width-2;
 }
 
 .addQuestionSignup {
@@ -27,13 +26,18 @@
 }
 
 .questionContainer {
+  padding-top: $margin-3;
   display: grid;
   grid-gap: $margin-3;
 }
 
 .guidelineContainer {
   display: grid;
-  grid-gap: $margin-2;
+  grid-gap: $margin-1;
+  background-color: $dark-1;
+  border: 1px solid $dark-9;
+  border-bottom: 2px solid $dark-8;
+  padding: $margin-3;
 }
 
 .questionTitle {
