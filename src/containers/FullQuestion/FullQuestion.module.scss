@@ -3,19 +3,25 @@
 .question {
   @extend .card;
   border: 1px solid $dark-6;
+  border-bottom: 0;
   display: flex;
 }
 
 .comment {
   @extend .card;
   border: 1px solid $dark-6;
-  border-bottom: 3px solid $dark-8;
+  border-bottom: 0;
   border-top: 0;
   background-color: $dark-1;
 
   > div {
     margin-top: 0;
+    padding: 0 $margin-3;
   }
+}
+
+.fullContainer {
+  border-bottom: 3px solid $dark-8;
 }
 
 .commentTitle {

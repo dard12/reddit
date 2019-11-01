@@ -26,11 +26,12 @@ function FullQuestion(props: FullQuestionProps) {
   useLoadDocs({ collection: 'comments', result, loadDocsAction });
 
   return (
-    <div>
+    <div className={styles.fullContainer}>
       <Question question={question} className={styles.question} />
 
       {comment && commentDoc && (
         <div className={styles.comment}>
+          {/* <div className={styles.commentTitle}>Recent post</div> */}
           <Comment
             question={question}
             comment={comment}
