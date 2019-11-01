@@ -12,7 +12,7 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
 import { axios } from '../../App';
-import { getVoteScore } from '../VoteScore/VoteScore';
+import { getVoteScore } from '../QuestionVote/QuestionVote';
 
 interface CommentVoteProps {
   comment: string;

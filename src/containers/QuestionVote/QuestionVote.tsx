@@ -5,14 +5,18 @@ import { connect } from 'react-redux';
 import { createSelector } from 'redux-starter-kit';
 import classNames from 'classnames';
 import styles from './QuestionVote.module.scss';
-import { QuestionDoc, QuestionVoteDoc } from '../../../src-server/models';
+import {
+  QuestionDoc,
+  QuestionVoteDoc,
+  CommentDoc,
+  CommentVoteDoc,
+} from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
 import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
 import { axios } from '../../App';
-import VoteScore, { getVoteScore } from '../VoteScore/VoteScore';
 
 interface QuestionVoteProps {
   question: string;
@@ -67,6 +71,12 @@ function QuestionVote(props: QuestionVoteProps) {
   const upVote = () => updateVote(1);
   const downVote = () => updateVote(-1);
 
+  const scoreDisplay = getScoreDisplay({
+    targetDoc: questionDoc,
+    voteDoc: questionVoteDoc,
+    currentVote,
+  });
+
   return (
     <div className={styles.vote}>
       {user ? (
@@ -79,11 +89,7 @@ function QuestionVote(props: QuestionVoteProps) {
             })}
           />
 
-          <VoteScore
-            targetDoc={questionDoc}
-            voteDoc={questionVoteDoc}
-            currentVote={currentVote}
-          />
+          <span>{scoreDisplay}</span>
 
           <WithReputation
             user={user}
@@ -109,11 +115,7 @@ function QuestionVote(props: QuestionVoteProps) {
             prompt="To vote please "
           />
 
-          <VoteScore
-            targetDoc={questionDoc}
-            voteDoc={questionVoteDoc}
-            currentVote={currentVote}
-          />
+          <span>{scoreDisplay}</span>
 
           <SignUpModal
             buttonChildren={<IoIosArrowDown />}
@@ -141,3 +143,29 @@ export default connect(
   mapStateToProps,
   { loadDocsAction },
 )(QuestionVote);
+
+export function getScoreDisplay({
+  targetDoc,
+  voteDoc,
+  currentVote,
+}: {
+  targetDoc: QuestionDoc | CommentDoc;
+  voteDoc?: QuestionVoteDoc | CommentVoteDoc;
+  currentVote?: number;
+}) {
+  const { up_votes, down_votes } = targetDoc;
+  const savedVote = getVoteScore(voteDoc);
+  const score = _.sum([up_votes, -1 * down_votes, -1 * savedVote, currentVote]);
+
+  return Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
+}
+
+export function getVoteScore(voteDoc?: QuestionVoteDoc | CommentVoteDoc) {
+  const vote_type = _.get(voteDoc, 'vote_type');
+  const typeToNumber: any = {
+    up_vote: 1,
+    down_vote: -1,
+  };
+
+  return vote_type ? typeToNumber[vote_type] : 0;
+}
