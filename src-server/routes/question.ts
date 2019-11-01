@@ -6,8 +6,14 @@ import execute from '../execute';
 
 router.get('/api/question', async (req, res) => {
   const { query } = req;
-  const { sort, search } = query;
-  const where = _.omit(query, ['search', 'sort', 'page', 'pageSize']);
+  const { sort, search, upvoted_by } = query;
+  const where = _.omit(query, [
+    'search',
+    'sort',
+    'page',
+    'pageSize',
+    'upvoted_by',
+  ]);
 
   const pgQuery = pg
     .select('*')
@@ -21,6 +27,12 @@ router.get('/api/question', async (req, res) => {
       .orderBy('response_count', 'desc');
   } else if (sort) {
     pgQuery.orderBy(sort, 'desc').orderBy('response_count', 'desc');
+  }
+
+  if (upvoted_by) {
+    pgQuery
+      .leftJoin('question_votes', 'questions.id', 'question_votes.question_id')
+      .where({ 'question_votes.user_id': upvoted_by, vote_type: 'up_vote' });
   }
 
   if (search) {
@@ -39,7 +51,7 @@ router.get('/api/question', async (req, res) => {
       );
       if (words) {
         const terms = `%(${words.join(' | ')})%`;
-        const likeSearch = '%' + searchDict.text + '%';
+        const likeSearch = `%${searchDict.text}%`;
         pgQuery.whereRaw(
           '(lower(title) similar to ? OR lower(description) similar to ?)',
           [terms, terms],
@@ -56,7 +68,7 @@ router.get('/api/question', async (req, res) => {
       }
     }
   }
-  // console.log(pgQuery.toSQL());
+
   const result = await execute(pgQuery, query);
 
   res.status(200).send(result);

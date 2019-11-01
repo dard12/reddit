@@ -1,8 +1,8 @@
 import _ from 'lodash';
+import { Request, Response } from 'express-serve-static-core';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
-import { Request, Response } from 'express-serve-static-core';
 
 enum VoteType {
   Question,
@@ -24,9 +24,9 @@ function getVoteConfig(type: VoteType) {
   }
 
   return {
-    vote_table: vote_table,
-    object_table: object_table,
-    vote_object_id_property: vote_object_id_property,
+    vote_table,
+    object_table,
+    vote_object_id_property,
   };
 }
 
@@ -48,28 +48,20 @@ async function vote(type: VoteType, req: Request, res: Response) {
 
   const existParams = _.omit(row, ['id', 'vote_type', 'sent_at']);
 
-  console.log(existParams);
-
   const existQuery = pg
     .select('*')
     .from(vote_table)
     .where(existParams);
 
-  console.log('exist query');
-  console.log(existQuery.toSQL());
   const exists = await existQuery;
 
   let result;
 
-  console.log(exists);
   if (!exists || _.isEmpty(exists)) {
     const insertVoteQuery = pg
       .insert(row)
       .into(vote_table)
       .returning('*');
-
-    console.log('insert vote');
-    console.log(insertVoteQuery.toSQL());
 
     result = await insertVoteQuery;
 
@@ -81,9 +73,6 @@ async function vote(type: VoteType, req: Request, res: Response) {
     }
     incQuery.into(object_table).where({ id: row[vote_object_id_property] });
 
-    console.log('inc query');
-    console.log(incQuery.toSQL());
-
     await incQuery;
   } else {
     const updateParams = _.omit(
@@ -93,25 +82,18 @@ async function vote(type: VoteType, req: Request, res: Response) {
       ['id'],
     );
 
-    console.log('id: ');
-    console.log(exists);
-
     const updateQuery = pg(vote_table)
       .update(updateParams)
       .where({ id: exists[0].id })
       .returning('*');
-    console.log('update query:');
-    console.log(updateQuery.toSQL());
 
     result = await updateQuery;
-    console.log('result: ');
-    console.log(result);
 
-    const currentType = exists[0]['vote_type'];
+    const currentType = exists[0].vote_type;
     if (currentType !== row.vote_type) {
       let incQuery;
       let decQuery;
-      if (row.vote_type == 'up_vote') {
+      if (row.vote_type === 'up_vote') {
         decQuery = pg.decrement('down_votes', 1);
         incQuery = pg.increment('up_votes', 1);
       } else {
@@ -124,11 +106,6 @@ async function vote(type: VoteType, req: Request, res: Response) {
       incQuery
         .into(object_table)
         .where({ id: updateParams[vote_object_id_property] });
-
-      console.log('dec query');
-      console.log(decQuery.toSQL());
-      console.log('inc query');
-      console.log(incQuery.toSQL());
 
       await decQuery;
       await incQuery;
@@ -159,12 +136,7 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
     .where(deleteParams)
     .returning('*');
 
-  console.log('delete query');
-  console.log(deleteQuery.toSQL());
   const result = await deleteQuery;
-
-  console.log('delete result:');
-  console.log(result);
 
   const deleted = result[0];
   let incQuery;
@@ -174,9 +146,6 @@ async function removeVote(type: VoteType, req: Request, res: Response) {
     incQuery = pg.decrement('down_votes', 1);
   }
   incQuery.into(object_table).where({ id: row[vote_object_id_property] });
-
-  console.log('inc query');
-  console.log(incQuery.toSQL());
 
   await incQuery;
 
