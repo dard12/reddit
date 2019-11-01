@@ -25,7 +25,9 @@ function Navbar(props: NavbarProps) {
   const { username, logoutAction } = props;
 
   const addQuestionBtn = (
-    <Button className={styles.addQuestionBtn}>Ask a Question</Button>
+    <Button className={styles.addQuestionBtn}>
+      <span>Ask a Question</span>
+    </Button>
   );
 
   return (

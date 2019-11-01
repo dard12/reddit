@@ -1,7 +1,6 @@
 @import '../../template.scss';
 
 .navbarContainer {
-  background-color: $white;
   width: 100vw;
 }
 
@@ -13,7 +12,6 @@
   margin: 0 auto;
   padding: 0 $margin-3;
   height: $margin-5;
-  border-bottom: 3px solid $dark-9;
 
   .navActions {
     display: flex;
@@ -61,8 +59,12 @@
   }
 }
 
-.addQuestionBtn:hover {
-  background-color: $primary-5;
+.addQuestionBtn {
+  font-weight: 600;
+
+  &:hover span {
+    background-color: $primary-5;
+  }
 }
 
 .logoutBtn {

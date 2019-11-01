@@ -35,11 +35,6 @@
 
 .questionTitle {
   border: 0;
-  border-bottom: 2px solid $dark-9;
-  padding: $margin-2;
-  font-weight: 600;
-  font-family: $serif;
-  font-size: $text-3;
   background-color: $dark-2;
 
   &::placeholder {

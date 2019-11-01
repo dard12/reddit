@@ -5,9 +5,10 @@
   padding: 0.6em 1em;
   cursor: pointer;
   border: 1px solid $dark-9;
+  border-bottom-width: 2px;
 
   &:hover:not([disabled]) {
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   &[disabled] {

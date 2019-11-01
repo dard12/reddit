@@ -60,6 +60,7 @@ function AddQuestion(props: AddQuestionProps) {
           placeholder="Write your question…"
           value={title}
           onChange={createOnChange(setTitle)}
+          autoFocus
         />
         <div className={styles.questionDescription}>
           <TextareaAutosize
