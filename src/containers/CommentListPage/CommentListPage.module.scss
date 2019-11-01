@@ -8,6 +8,7 @@
   @extend .card;
   border-top: 0;
   background-color: $dark-1;
+  border-bottom: 3px solid $dark-8;
 
   > div {
     margin-top: 0;
@@ -17,8 +18,6 @@
 .question {
   @extend .hoverLink;
   font-weight: 600;
-  font-family: $serif;
-  border-bottom: 1px dotted $dark-8;
   font-size: $text-3;
 
   &:hover {
