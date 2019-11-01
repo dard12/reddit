@@ -3,6 +3,7 @@ import { Request, Response } from 'express-serve-static-core';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
+import { UserDoc } from '../models';
 
 enum VoteType {
   Question,
@@ -28,6 +29,19 @@ function getVoteConfig(type: VoteType) {
     object_table,
     vote_object_id_property,
   };
+}
+
+async function updateReputation(voteDoc: any) {
+  const { vote_type, user_id: id } = voteDoc;
+  const pgQuery = pg.into('users').where({ id });
+
+  if (vote_type === 'up_vote') {
+    pgQuery.increment('reputation', 1);
+  } else {
+    pgQuery.decrement('reputation', 1);
+  }
+
+  await pgQuery;
 }
 
 async function vote(type: VoteType, req: Request, res: Response) {
@@ -101,6 +115,8 @@ async function vote(type: VoteType, req: Request, res: Response) {
   }
 
   res.status(200).send({ result });
+
+  await updateReputation(row);
 }
 
 async function removeVote(type: VoteType, req: Request, res: Response) {
