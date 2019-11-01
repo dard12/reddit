@@ -103,3 +103,14 @@
   margin-right: $margin-2;
   color: $secondary-5;
 }
+
+.commentPoints {
+  font-size: $text-1;
+  margin-left: $margin-2;
+  color: $dark-6;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+}

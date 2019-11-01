@@ -41,10 +41,13 @@ function CommentBox(props: CommentBoxProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
+      const id = _.get(editingComment, 'id');
+      const parent_id = _.get(editingComment, 'parent_id');
+
       axiosPost(
         '/api/comment',
         {
-          id: editingComment ? editingComment.id : undefined,
+          id,
           question_id: question,
           parent_id,
           content,
