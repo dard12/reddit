@@ -2,6 +2,9 @@
 
 .addQuestion {
   @extend .card;
+  padding: $margin-4;
+  border: 0;
+  border-bottom: 3px solid $dark-8;
   display: grid;
   grid-template-columns: 1fr 3fr;
   width: $width-3;
