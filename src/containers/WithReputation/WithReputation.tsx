@@ -27,10 +27,9 @@ function WithReputation(props: WithReputationProps) {
     return null;
   }
 
-  const { created_at } = userDoc;
-  const daysSinceSignup = differenceInDays(new Date(), created_at);
+  const { reputation } = userDoc;
 
-  return <React.Fragment>{render(daysSinceSignup > 3)}</React.Fragment>;
+  return <React.Fragment>{render(reputation > 5)}</React.Fragment>;
 }
 
 export default connect(
