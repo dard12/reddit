@@ -52,14 +52,15 @@ async function vote(type: VoteType, req: Request, res: Response) {
   const { body, user }: any = req;
   const row = { ...body, id: getId(), user_id: user.id };
   const existParams = _.omit(row, ['id', 'vote_type']);
-  const exists = await pg
+  const existResult = await pg
     .select('*')
     .from(vote_table)
     .where(existParams);
+  const existingDoc = _.get(existResult, '[0]');
 
   let result;
 
-  if (_.isEmpty(exists)) {
+  if (existingDoc) {
     const insertVoteQuery = pg
       .insert(row)
       .into(vote_table)
@@ -80,17 +81,16 @@ async function vote(type: VoteType, req: Request, res: Response) {
     await incQuery;
   } else {
     const updateParams = _.omit({ ...row }, ['id']);
+    const { id, vote_type } = existingDoc;
 
     const updateQuery = pg(vote_table)
       .update(updateParams)
-      .where({ id: exists[0].id })
+      .where({ id })
       .returning('*');
 
     result = await updateQuery;
 
-    const currentType = exists[0].vote_type;
-
-    if (currentType !== row.vote_type) {
+    if (vote_type !== row.vote_type) {
       let incQuery;
       let decQuery;
 
@@ -116,7 +116,9 @@ async function vote(type: VoteType, req: Request, res: Response) {
 
   res.status(200).send({ result });
 
-  await updateReputation(row);
+  const voteDoc = _.get(result, 'docs[0]');
+
+  await updateReputation(voteDoc);
 }
 
 async function removeVote(type: VoteType, req: Request, res: Response) {
