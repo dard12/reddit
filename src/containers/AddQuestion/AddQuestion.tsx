@@ -7,6 +7,7 @@ import { Input } from '../../components/Input/Input';
 import history from '../../history';
 import { axiosPost } from '../../hooks/useAxios';
 import Tooltip from '../../components/Tooltip/Tooltip';
+import { Select } from '../../components/Select/Select';
 
 interface AddQuestionProps {
   closeModal: any;
@@ -16,6 +17,7 @@ function AddQuestion(props: AddQuestionProps) {
   const { closeModal } = props;
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
+  const [tags, setTags] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createOnChange = (setContent: Function) => (
@@ -38,6 +40,12 @@ function AddQuestion(props: AddQuestionProps) {
       });
     }
   };
+
+  const tagOptions = [
+    { value: 'motivation', label: 'Motivation' },
+    { value: 'fit', label: 'Team Fit' },
+    { value: 'technical', label: 'Tech' },
+  ];
 
   return (
     <div className={styles.addQuestion}>
@@ -70,14 +78,14 @@ function AddQuestion(props: AddQuestionProps) {
             onChange={createOnChange(setDescription)}
           />
         </div>
-        <div className={styles.questionDescription}>
-          <TextareaAutosize
-            placeholder="Add tags (optional)"
-            minRows={1}
-            value={description}
-            onChange={createOnChange(setDescription)}
-          />
-        </div>
+        <Select
+          value={tags}
+          onChange={setTags}
+          options={tagOptions}
+          placeholder="Add tags (optional)"
+          isSearchable
+          isMulti
+        />
         <div className={styles.questionRow}>
           <Button onClick={closeModal}>Cancel</Button>
 
