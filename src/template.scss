@@ -303,7 +303,7 @@ textarea {
   background-color: $dark-9;
 }
 
-.ql-editor.ql-blank::before {
+.ql-editor[data-placeholder]:before {
   font-style: normal;
   font-family: $sans-serif;
   color: $dark-7;

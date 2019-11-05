@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { differenceInDays } from 'date-fns';
 import { UserDoc } from '../../../src-server/models';
 import { createDocSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
