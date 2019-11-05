@@ -32,16 +32,23 @@ function AddQuestion(props: AddQuestionProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
-      axiosPost('/api/question', { title, description }).then(({ docs }) => {
-        const id = _.get(docs, '[0].id');
-        setIsSubmitting(false);
-        history.push(`/question/${id}`);
-        closeModal();
-      });
+      const tagValues = _.map(tags, 'value');
+
+      axiosPost('/api/question', { title, description, tags: tagValues }).then(
+        ({ docs }) => {
+          const id = _.get(docs, '[0].id');
+          setIsSubmitting(false);
+          history.push(`/question/${id}`);
+          closeModal();
+        },
+      );
     }
   };
 
   const tagOptions = [
+    { value: 'motivation', label: 'Motivation' },
+    { value: 'fit', label: 'Team Fit' },
+    { value: 'technical', label: 'Tech' },
     { value: 'motivation', label: 'Motivation' },
     { value: 'fit', label: 'Team Fit' },
     { value: 'technical', label: 'Tech' },

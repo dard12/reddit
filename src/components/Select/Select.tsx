@@ -26,6 +26,7 @@ export function Select(props: SelectProps & any) {
     <ReactSelect
       isClearable={false}
       maxMenuHeight={150}
+      menuPortalTarget={document.body}
       styles={{
         control: (provided, { isFocused }) => ({
           ...provided,
