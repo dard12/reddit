@@ -5,14 +5,9 @@
   border: 0;
   background-color: $dark-2;
   padding: $margin-3;
-  min-height: 100px;
 
-  textarea {
-    background-color: $dark-2;
-
-    &::placeholder {
-      color: $dark-8;
-    }
+  > div > div:first-child {
+    min-height: 100px;
   }
 }
 
