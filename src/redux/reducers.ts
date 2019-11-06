@@ -86,8 +86,10 @@ export const commentTreeReducer = createReducer<CollectionsInterface>(
           const newTree: Tree = { [questionId]: rootNode };
           state[questionId] = newTree;
         }
-        const newComments = _.filter(docs, d => !state[questionId][d.id]);
-
+        const newComments = _.filter(
+          docs,
+          d => !_.get(state, `${questionId}.${d.id}.parent_id`),
+        );
         if (newComments.length > 0) {
           // extend trees
           buildTree(state[questionId], docs);
