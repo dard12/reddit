@@ -59,3 +59,8 @@ export interface QuestionVoteDoc {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface TagDoc {
+  id: string;
+  display_name: string;
+}

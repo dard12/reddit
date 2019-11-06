@@ -7,22 +7,34 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
+import { createSelector } from 'redux-starter-kit';
 import styles from './Navbar.module.scss';
-import { logoutAction } from '../../redux/actions';
-import { usernameSelector } from '../../redux/selectors';
+import { logoutAction, loadDocsAction } from '../../redux/actions';
+import { usernameSelector, createDocListSelector } from '../../redux/selectors';
 import Modal from '../../components/Modal/Modal';
 import AddQuestion from '../../containers/AddQuestion/AddQuestion';
 import { axios } from '../../App';
 import { Button } from '../../components/Button/Button';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
+import { TagDoc } from '../../../src-server/models';
+import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 
 interface NavbarProps extends RouteComponentProps {
   username?: string;
+  tagDocs?: TagDoc[];
   logoutAction?: Function;
+  loadDocsAction?: Function;
 }
 
 function Navbar(props: NavbarProps) {
-  const { username, logoutAction } = props;
+  const { username, tagDocs, logoutAction, loadDocsAction } = props;
+  const { result } = useAxiosGet(
+    '/api/tag',
+    {},
+    { cachedResult: tagDocs, name: 'Navbar' },
+  );
+
+  useLoadDocs({ collection: 'tags', result, loadDocsAction });
 
   const addQuestionBtn = (
     <Button className={styles.addQuestionBtn}>
@@ -92,9 +104,21 @@ function Navbar(props: NavbarProps) {
   );
 }
 
+const mapStateToProps = createSelector(
+  [
+    createDocListSelector({
+      collection: 'tags',
+      filter: 'tagFilter',
+      prop: 'tagDocs',
+    }),
+    usernameSelector,
+  ],
+  (a, b) => ({ ...a, ...b }),
+);
+
 export default withRouter(
   connect(
-    usernameSelector,
-    { logoutAction },
+    mapStateToProps,
+    { logoutAction, loadDocsAction },
   )(Navbar),
 );

@@ -95,7 +95,7 @@ export function useAxiosGet(
 
     setIsSuccess(false);
 
-    if (cache) {
+    if (!_.isEmpty(cache)) {
       setResult({ docs: [cache] });
       setIsSuccess(true);
     } else {
