@@ -8,7 +8,7 @@ import styles from './CommentVote.module.scss';
 import { CommentVoteDoc } from '../../../src-server/models';
 import { createDocSelector, userSelector } from '../../redux/selectors';
 import { loadDocsAction } from '../../redux/actions';
-import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
+import { useLoadDocs, useAxiosGet, axiosGet } from '../../hooks/useAxios';
 import SignUpModal from '../../components/SignUpModal/SignUpModal';
 import WithReputation from '../WithReputation/WithReputation';
 import { axios } from '../../App';
@@ -42,13 +42,23 @@ function CommentVote(props: CommentVoteProps) {
 
   const submitVote = _.debounce(updatedVote => {
     const body = { comment_id: comment };
+    const refreshComment = () =>
+      axiosGet(
+        '/api/comment',
+        { id: comment },
+        { collection: 'comments', loadDocsAction },
+      );
 
     if (updatedVote === 0) {
-      axios.delete('/api/comment_vote', { data: body });
+      axios.delete('/api/comment_vote', { data: body }).then(refreshComment);
     } else if (updatedVote === 1) {
-      axios.post('/api/comment_vote', { ...body, vote_type: 'up_vote' });
+      axios
+        .post('/api/comment_vote', { ...body, vote_type: 'up_vote' })
+        .then(refreshComment);
     } else if (updatedVote === -1) {
-      axios.post('/api/comment_vote', { ...body, vote_type: 'down_vote' });
+      axios
+        .post('/api/comment_vote', { ...body, vote_type: 'down_vote' })
+        .then(refreshComment);
     }
   }, 500);
 

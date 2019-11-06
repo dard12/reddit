@@ -2,6 +2,20 @@ import { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { axios } from '../App';
 
+function loadDocs({
+  docs,
+  collection,
+  loadDocsAction,
+}: {
+  docs: any[];
+  collection: string;
+  loadDocsAction?: Function;
+}) {
+  if (!_.isEmpty(docs) && loadDocsAction) {
+    loadDocsAction({ docs, name: collection });
+  }
+}
+
 export function useLoadDocs(params: {
   collection: string;
   result: any;
@@ -11,9 +25,7 @@ export function useLoadDocs(params: {
   const docs = result ? result.docs : undefined;
 
   useEffect(() => {
-    if (!_.isEmpty(docs) && loadDocsAction) {
-      loadDocsAction({ docs, name: collection });
-    }
+    loadDocs({ docs, collection, loadDocsAction });
   }, [collection, docs, loadDocsAction]);
 }
 
@@ -28,10 +40,24 @@ export function axiosPost(
   return axios.post(url, params).then(result => {
     const docs = _.get(result, 'data.docs');
 
-    if (options) {
-      const { collection, loadDocsAction } = options;
-      loadDocsAction && loadDocsAction({ docs, name: collection });
-    }
+    options && loadDocs({ docs, ...options });
+
+    return { docs };
+  });
+}
+
+export function axiosGet(
+  url: string,
+  params: any,
+  options?: {
+    collection: string;
+    loadDocsAction?: Function;
+  },
+) {
+  return axios.get(url, { params }).then(result => {
+    const docs = _.get(result, 'data.docs');
+
+    options && loadDocs({ docs, ...options });
 
     return { docs };
   });
