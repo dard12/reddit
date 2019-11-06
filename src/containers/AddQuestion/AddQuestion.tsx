@@ -46,12 +46,17 @@ function AddQuestion(props: AddQuestionProps) {
   };
 
   const tagOptions = [
-    { value: 'motivation', label: 'Motivation' },
-    { value: 'fit', label: 'Team Fit' },
-    { value: 'technical', label: 'Tech' },
-    { value: 'motivation', label: 'Motivation' },
-    { value: 'fit', label: 'Team Fit' },
-    { value: 'technical', label: 'Tech' },
+    { label: 'Motivation', value: 'motivation' },
+    { label: 'Team Fit', value: 'fit' },
+    { label: 'Tech', value: 'technical' },
+    { label: 'Security', value: 'security' },
+    { label: 'Dev Ops', value: 'devops' },
+    { label: 'Sales', value: 'sales' },
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Design', value: 'design' },
+    { label: 'Management', value: 'management' },
+    { label: 'Support', value: 'support' },
+    { label: 'Fun', value: 'fun' },
   ];
 
   return (
@@ -89,6 +94,7 @@ function AddQuestion(props: AddQuestionProps) {
           value={tags}
           onChange={setTags}
           options={tagOptions}
+          maxItems={5}
           placeholder="Add tags (optional)"
           isSearchable
           isMulti

@@ -1,5 +1,6 @@
 import ReactSelect from 'react-select';
 import React from 'react';
+import _ from 'lodash';
 
 interface SelectProps {
   options: { value: string; label: string }[];
@@ -9,10 +10,11 @@ interface SelectProps {
   isDisabled?: boolean;
   isMulti?: boolean;
   isSearchable?: boolean;
+  maxItems?: number;
 }
 
 export function Select(props: SelectProps & any) {
-  const { ...passedProps } = props;
+  const { maxItems, onChange, ...passedProps } = props;
 
   const dark1 = 'hsl(230, 35%, 98%)';
   const dark2 = 'hsl(230, 35%, 95%)';
@@ -70,6 +72,11 @@ export function Select(props: SelectProps & any) {
           ...provided,
           color: dark6,
         }),
+      }}
+      onChange={selection => {
+        if (!maxItems || _.size(selection) <= maxItems) {
+          onChange(selection);
+        }
       }}
       {...passedProps}
     />
