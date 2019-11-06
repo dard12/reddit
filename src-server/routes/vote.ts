@@ -3,7 +3,6 @@ import { Request, Response } from 'express-serve-static-core';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
-import { UserDoc } from '../models';
 
 enum VoteType {
   Question,
@@ -32,8 +31,23 @@ function getVoteConfig(type: VoteType) {
 }
 
 async function updateReputation(voteDoc: any) {
-  const { vote_type, user_id: id } = voteDoc;
-  const pgQuery = pg.into('users').where({ id });
+  const { vote_type, question_id, comment_id } = voteDoc;
+  let voteTarget;
+
+  if (question_id) {
+    voteTarget = await pg
+      .select('author_id')
+      .from('questions')
+      .where({ id: question_id });
+  } else if (comment_id) {
+    voteTarget = await pg
+      .select('author_id')
+      .from('comments')
+      .where({ id: comment_id });
+  }
+
+  const votedUser = _.get(voteTarget, '[0].author_id');
+  const pgQuery = pg.into('users').where({ id: votedUser });
 
   if (vote_type === 'up_vote') {
     pgQuery.increment('reputation', 1);
@@ -52,15 +66,14 @@ async function vote(type: VoteType, req: Request, res: Response) {
   const { body, user }: any = req;
   const row = { ...body, id: getId(), user_id: user.id };
   const existParams = _.omit(row, ['id', 'vote_type']);
-  const existResult = await pg
+  const exists = await pg
     .select('*')
     .from(vote_table)
     .where(existParams);
-  const existingDoc = _.get(existResult, '[0]');
 
   let result;
 
-  if (existingDoc) {
+  if (_.isEmpty(exists)) {
     const insertVoteQuery = pg
       .insert(row)
       .into(vote_table)
@@ -80,17 +93,18 @@ async function vote(type: VoteType, req: Request, res: Response) {
 
     await incQuery;
   } else {
-    const updateParams = _.omit({ ...row }, ['id']);
-    const { id, vote_type } = existingDoc;
+    const updateParams = _.omit(row, ['id']);
 
     const updateQuery = pg(vote_table)
       .update(updateParams)
-      .where({ id })
+      .where({ id: exists[0].id })
       .returning('*');
 
     result = await updateQuery;
 
-    if (vote_type !== row.vote_type) {
+    const currentType = exists[0].vote_type;
+
+    if (currentType !== row.vote_type) {
       let incQuery;
       let decQuery;
 
@@ -116,7 +130,7 @@ async function vote(type: VoteType, req: Request, res: Response) {
 
   res.status(200).send({ result });
 
-  const voteDoc = _.get(result, 'docs[0]');
+  const voteDoc = _.first(result);
 
   await updateReputation(voteDoc);
 }

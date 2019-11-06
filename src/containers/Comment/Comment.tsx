@@ -83,9 +83,9 @@ function Comment(props: CommentProps) {
     down_votes,
     is_answer,
   } = commentDoc;
+
   const sortedComments = getSortedComments(user, childrenComments);
   const isMyComment = user === author_id;
-
   const scoreDisplay = getScoreDisplay({ targetDoc: commentDoc });
 
   return (
