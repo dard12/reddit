@@ -11,7 +11,7 @@ import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import QuestionName from '../QuestionName/QuestionName';
 import Highlight from '../Highlight/Highlight';
-import Tag from '../../components/Tag/Tag';
+import Tag from '../Tag/Tag';
 
 interface QuestionProps {
   question: string;
