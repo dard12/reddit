@@ -51,7 +51,14 @@ class RichText extends Component<RichTextProps> {
       readOnly,
       formats: ['bold', 'italic', 'link', 'blockquote', 'list'],
       modules: {
-        toolbar: ['bold', 'italic', 'link', 'blockquote', { list: 'ordered' }],
+        toolbar: [
+          'bold',
+          'italic',
+          'link',
+          'blockquote',
+          { list: 'ordered' },
+          { list: 'bullet' },
+        ],
         keyboard: {
           bindings: {
             custom: {
