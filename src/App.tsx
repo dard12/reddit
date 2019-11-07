@@ -21,8 +21,17 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
-            <Route exact path="/home" render={props => <RecentQuestions />} />
-            <Route exact path="/question" render={props => <TopQuestions />} />
+            <Route exact path="/home" render={() => <RecentQuestions />} />
+            <Route
+              exact
+              path="/question"
+              render={() => {
+                const query = getQueryParams('query');
+                const tag = getQueryParams('tag');
+
+                return <TopQuestions query={query} tag={tag} />;
+              }}
+            />
             <Route
               path="/question/:question"
               render={props => {

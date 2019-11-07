@@ -1,34 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import styles from './TopQuestions.module.scss';
 import SearchBar from '../../containers/SearchBar/SearchBar';
-import { getQueryParams } from '../../history';
 import Paging from '../../containers/Paging/Paging';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 import Tabs from '../../containers/Tabs/Tabs';
+import { createDocListSelector } from '../../redux/selectors';
+import { TagDoc } from '../../../src-server/models';
 
-interface QuestionsProps {}
+interface TopQuestionsProps {
+  query?: string;
+  tag?: string;
+  tagDocs?: TagDoc[];
+}
 
-function Questions(props: QuestionsProps) {
-  const query = getQueryParams('query');
-  const tag = getQueryParams('tag');
+function TopQuestions(props: TopQuestionsProps) {
+  const { query, tag, tagDocs } = props;
   const params = {
     search: { text: query, tags: [tag] },
     sort: 'up_votes',
   };
-  const tabs = [
-    { label: 'All', value: 'all' },
-    { label: 'Motivation', value: 'motivation' },
-    { label: 'Team Fit', value: 'fit' },
-    { label: 'Tech', value: 'technical' },
-    { label: 'Security', value: 'security' },
-    { label: 'Dev Ops', value: 'devops' },
-    { label: 'Sales', value: 'sales' },
-    { label: 'Marketing', value: 'marketing' },
-    { label: 'Design', value: 'design' },
-    { label: 'Management', value: 'management' },
-    { label: 'Support', value: 'support' },
-    { label: 'Fun', value: 'fun' },
-  ];
+  const tabs = _.map(tagDocs, ({ display_name, id }) => ({
+    label: display_name,
+    value: id,
+  }));
+
+  tabs.unshift({ label: 'All', value: 'all' });
 
   return (
     <div className={styles.topQuestions}>
@@ -45,4 +43,10 @@ function Questions(props: QuestionsProps) {
   );
 }
 
-export default Questions;
+export default connect(
+  createDocListSelector({
+    collection: 'tags',
+    filter: 'none',
+    prop: 'tagDocs',
+  }),
+)(TopQuestions);

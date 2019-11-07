@@ -108,7 +108,7 @@ const mapStateToProps = createSelector(
   [
     createDocListSelector({
       collection: 'tags',
-      filter: 'tagFilter',
+      filter: 'none',
       prop: 'tagDocs',
     }),
     usernameSelector,
