@@ -39,6 +39,7 @@ function Tabs(props: TabsProps) {
 
       {seeMore && (
         <div className={styles.seeMore}>
+          <div className={styles.divider} />
           <span>
             More
             <IoIosArrowDown />
