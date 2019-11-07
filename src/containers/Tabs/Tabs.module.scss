@@ -6,4 +6,20 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   justify-content: flex-start;
+  position: relative;
+}
+
+.seeMore {
+  @extend .link;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: $white;
+
+  svg {
+    margin-left: $margin-1;
+  }
 }

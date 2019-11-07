@@ -36,6 +36,7 @@ function TopQuestions(props: TopQuestionsProps) {
         currentTab={tag}
         queryParamName="tag"
         defaultTab="all"
+        seeMore
       />
 
       <Paging component={QuestionListPage} params={params} />
