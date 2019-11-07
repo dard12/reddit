@@ -39,7 +39,6 @@ class RichText extends Component<RichTextProps> {
   componentDidMount() {
     const { readOnly, onChange, onEnter, placeholder } = this.props;
     const { id } = this.state;
-    const allowedFormatting = ['bold', 'italic', 'link', 'blockquote'];
     const getContents = () => {
       const isEmpty = _.isEmpty(_.trim(quill.getText()));
       return isEmpty ? '' : quill.getContents();
@@ -50,9 +49,9 @@ class RichText extends Component<RichTextProps> {
       theme: 'bubble',
       placeholder,
       readOnly,
-      formats: allowedFormatting,
+      formats: ['bold', 'italic', 'link', 'blockquote', 'list'],
       modules: {
-        toolbar: allowedFormatting,
+        toolbar: ['bold', 'italic', 'link', 'blockquote', { list: 'ordered' }],
         keyboard: {
           bindings: {
             custom: {
