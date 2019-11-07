@@ -54,10 +54,10 @@ class RichText extends Component<RichTextProps> {
         toolbar: [
           'bold',
           'italic',
-          'link',
-          'blockquote',
           { list: 'ordered' },
           { list: 'bullet' },
+          'blockquote',
+          'link',
         ],
         keyboard: {
           bindings: {
