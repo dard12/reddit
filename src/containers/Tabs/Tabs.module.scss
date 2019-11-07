@@ -19,7 +19,7 @@
   border: 1px solid $dark-9;
   border-bottom-width: 3px;
   border-left: none;
-  padding: $margin-3;
+  padding: $margin-3 $margin-2;
   cursor: pointer;
 
   svg {
@@ -27,7 +27,7 @@
   }
 
   span {
-    padding-left: $margin-2;
+    padding-left: $margin-3;
     border-left: 1px solid $dark-9;
     display: flex;
     align-items: center;

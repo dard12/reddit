@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
+import { IoIosArrowDown } from 'react-icons/io';
 import { setQueryParams } from '../../history';
 import styles from './Tabs.module.scss';
-import { IoIosArrowDown } from 'react-icons/io';
 
 interface TabsProps {
   tabs: { label: string; value: string }[];
@@ -36,6 +36,7 @@ function Tabs(props: TabsProps) {
           </div>
         ))}
       </div>
+
       {seeMore && (
         <div className={styles.seeMore}>
           <span>
