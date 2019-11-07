@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import styles from './AddQuestion.module.scss';
 import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
@@ -8,13 +9,16 @@ import history from '../../history';
 import { axiosPost } from '../../hooks/useAxios';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import { Select } from '../../components/Select/Select';
+import { createDocListSelector } from '../../redux/selectors';
+import { TagDoc } from '../../../src-server/models';
 
 interface AddQuestionProps {
   closeModal: any;
+  tagDocs?: TagDoc[];
 }
 
 function AddQuestion(props: AddQuestionProps) {
-  const { closeModal } = props;
+  const { closeModal, tagDocs } = props;
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
   const [tags, setTags] = useState([]);
@@ -45,19 +49,10 @@ function AddQuestion(props: AddQuestionProps) {
     }
   };
 
-  const tagOptions = [
-    { label: 'Motivation', value: 'motivation' },
-    { label: 'Team Fit', value: 'fit' },
-    { label: 'Tech', value: 'technical' },
-    { label: 'Security', value: 'security' },
-    { label: 'Dev Ops', value: 'devops' },
-    { label: 'Sales', value: 'sales' },
-    { label: 'Marketing', value: 'marketing' },
-    { label: 'Design', value: 'design' },
-    { label: 'Management', value: 'management' },
-    { label: 'Support', value: 'support' },
-    { label: 'Fun', value: 'fun' },
-  ];
+  const tagOptions = _.map(tagDocs, ({ display_name, id }) => ({
+    label: display_name,
+    value: id,
+  }));
 
   return (
     <div className={styles.addQuestion}>
@@ -120,4 +115,10 @@ function AddQuestion(props: AddQuestionProps) {
   );
 }
 
-export default AddQuestion;
+export default connect(
+  createDocListSelector({
+    collection: 'tags',
+    filter: 'none',
+    prop: 'tagDocs',
+  }),
+)(AddQuestion);
