@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { setQueryParams } from '../../history';
+import styles from './Tabs.module.scss';
 
 interface TabsProps {
   tabs: { label: string; value: string }[];
@@ -21,11 +22,11 @@ function Tabs(props: TabsProps) {
   }
 
   return (
-    <div className="tabs">
+    <div className={styles.tabs}>
       {_.map(tabs, ({ label, value }) => (
         <div
           onClick={createOnClick(value)}
-          className={currentTab === value ? 'active' : undefined}
+          className={currentTab === value ? styles.active : undefined}
           key={value}
         >
           {label}
