@@ -24,20 +24,24 @@ function Tabs(props: TabsProps) {
   }
 
   return (
-    <div className={styles.tabs}>
-      {_.map(tabs, ({ label, value }) => (
-        <div
-          onClick={createOnClick(value)}
-          className={currentTab === value ? styles.active : undefined}
-          key={value}
-        >
-          {label}
-        </div>
-      ))}
+    <div className={styles.tabsContainer}>
+      <div className={styles.tabs}>
+        {_.map(tabs, ({ label, value }) => (
+          <div
+            onClick={createOnClick(value)}
+            className={currentTab === value ? styles.active : undefined}
+            key={value}
+          >
+            {label}
+          </div>
+        ))}
+      </div>
       {seeMore && (
         <div className={styles.seeMore}>
-          See More
-          <IoIosArrowDown />
+          <span>
+            More
+            <IoIosArrowDown />
+          </span>
         </div>
       )}
     </div>

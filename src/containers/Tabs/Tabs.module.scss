@@ -1,25 +1,39 @@
 @import '../../template.scss';
 
+.tabsContainer {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  align-items: center;
+}
+
 .tabs {
   @extend .tabs;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
   justify-content: flex-start;
-  position: relative;
+  border-right: none;
 }
 
 .seeMore {
-  @extend .link;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: $white;
+  border: 1px solid $dark-9;
+  border-bottom-width: 3px;
+  border-left: none;
+  padding: $margin-3;
+  cursor: pointer;
 
   svg {
     margin-left: $margin-1;
+  }
+
+  span {
+    padding-left: $margin-2;
+    border-left: 1px solid $dark-9;
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover span {
+    background-color: $primary-5;
   }
 }
