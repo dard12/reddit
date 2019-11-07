@@ -24,10 +24,12 @@ function Tabs(props: TabsProps) {
     clickDefault();
   }
 
+  const viewableTabs = seeMore ? _.take(tabs, 10) : tabs;
+
   return (
     <div className={styles.tabsContainer}>
       <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
-        {_.map(tabs, ({ label, value }) => (
+        {_.map(viewableTabs, ({ label, value }) => (
           <div
             onClick={createOnClick(value)}
             className={currentTab === value ? styles.active : undefined}
@@ -42,7 +44,7 @@ function Tabs(props: TabsProps) {
         <div className={styles.seeMore}>
           <div className={styles.divider} />
           <span>
-            More
+            more
             <IoIosArrowDown />
           </span>
         </div>
