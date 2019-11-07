@@ -71,7 +71,12 @@ function Navbar(props: NavbarProps) {
             {username ? (
               <Modal
                 buttonChildren={addQuestionBtn}
-                render={closeModal => <AddQuestion closeModal={closeModal} />}
+                render={closeModal => (
+                  <AddQuestion
+                    closeModal={closeModal}
+                    tagFilter={{ approved: true }}
+                  />
+                )}
               />
             ) : (
               <SignUpModal

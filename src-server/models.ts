@@ -62,5 +62,5 @@ export interface QuestionVoteDoc {
 
 export interface TagDoc {
   id: string;
-  display_name: string;
+  approved: boolean;
 }

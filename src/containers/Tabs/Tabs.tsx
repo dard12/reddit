@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 import { IoIosArrowDown } from 'react-icons/io';
 import { setQueryParams } from '../../history';
 import styles from './Tabs.module.scss';
@@ -25,7 +26,7 @@ function Tabs(props: TabsProps) {
 
   return (
     <div className={styles.tabsContainer}>
-      <div className={styles.tabs}>
+      <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
         {_.map(tabs, ({ label, value }) => (
           <div
             onClick={createOnClick(value)}

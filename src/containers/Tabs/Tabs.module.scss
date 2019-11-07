@@ -9,10 +9,15 @@
 
 .tabs {
   @extend .tabs;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  justify-content: flex-start;
-  border-right: none;
+  justify-content: space-around;
+
+  &.hasMore {
+    justify-content: flex-start;
+    border-right: none;
+  }
 }
 
 .divider {

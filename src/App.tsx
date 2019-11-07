@@ -29,7 +29,13 @@ function App() {
                 const query = getQueryParams('query');
                 const tag = getQueryParams('tag');
 
-                return <TopQuestions query={query} tag={tag} />;
+                return (
+                  <TopQuestions
+                    query={query}
+                    tag={tag}
+                    tagFilter={{ approved: true }}
+                  />
+                );
               }}
             />
             <Route

@@ -15,6 +15,7 @@ import { TagDoc } from '../../../src-server/models';
 interface AddQuestionProps {
   closeModal: any;
   tagDocs?: TagDoc[];
+  tagFilter?: any;
 }
 
 function AddQuestion(props: AddQuestionProps) {
@@ -49,10 +50,7 @@ function AddQuestion(props: AddQuestionProps) {
     }
   };
 
-  const tagOptions = _.map(tagDocs, ({ display_name, id }) => ({
-    label: display_name,
-    value: id,
-  }));
+  const tagOptions = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
 
   return (
     <div className={styles.addQuestion}>
@@ -118,7 +116,7 @@ function AddQuestion(props: AddQuestionProps) {
 export default connect(
   createDocListSelector({
     collection: 'tags',
-    filter: 'none',
+    filter: 'tagFilter',
     prop: 'tagDocs',
   }),
 )(AddQuestion);

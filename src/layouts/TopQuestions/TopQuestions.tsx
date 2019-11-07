@@ -13,6 +13,7 @@ interface TopQuestionsProps {
   query?: string;
   tag?: string;
   tagDocs?: TagDoc[];
+  tagFilter?: any;
 }
 
 function TopQuestions(props: TopQuestionsProps) {
@@ -21,10 +22,7 @@ function TopQuestions(props: TopQuestionsProps) {
     search: { text: query, tags: [tag] },
     sort: 'up_votes',
   };
-  const tabs = _.map(tagDocs, ({ display_name, id }) => ({
-    label: display_name,
-    value: id,
-  }));
+  const tabs = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
 
   tabs.unshift({ label: 'All', value: 'all' });
 
@@ -47,7 +45,7 @@ function TopQuestions(props: TopQuestionsProps) {
 export default connect(
   createDocListSelector({
     collection: 'tags',
-    filter: 'none',
+    filter: 'tagFilter',
     prop: 'tagDocs',
   }),
 )(TopQuestions);
