@@ -3,6 +3,13 @@
 .toggleLink {
   @extend .hoverLink;
   padding: 0;
-  color: $primary-4;
-  margin-left: $margin-2;
+  margin-top: $margin-3;
+  border: 0;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.verticalTruncate {
+  overflow: hidden;
+  max-height: 300px;
 }

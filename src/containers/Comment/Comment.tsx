@@ -24,8 +24,11 @@ import CommentBox from '../CommentBox/CommentBox';
 import { Button } from '../../components/Button/Button';
 import UserLink from '../../components/UserLink/UserLink';
 import Skeleton from '../../components/Skeleton/Skeleton';
-import RichText from '../../components/RichText/RichText';
+import RichText, {
+  getShouldTruncate,
+} from '../../components/RichText/RichText';
 import { getScoreDisplay } from '../QuestionVote/QuestionVote';
+import Truncate from '../../components/Truncate/Truncate';
 
 interface CommentProps {
   comment: string;
@@ -151,7 +154,9 @@ function Comment(props: CommentProps) {
                 [styles.strongFlagged]: down_votes > 20,
               })}
             >
-              <RichText content={content} readOnly />
+              <Truncate shouldTruncate={getShouldTruncate(content)}>
+                <RichText content={content} readOnly />
+              </Truncate>
             </div>
 
             <div className={styles.commentFooter}>

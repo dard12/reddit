@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
 import { Button } from '../Button/Button';
 import styles from './Truncate.module.scss';
 
 interface TruncateProps {
-  content?: any;
+  children?: any;
+  shouldTruncate?: boolean;
 }
 
 function Truncate(props: TruncateProps) {
-  const { content } = props;
+  const { children, shouldTruncate } = props;
   const [truncated, setTruncated] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const charLength = _.size(content);
-  const newlines = _.size(content.match(/\n/g));
-
   useEffect(() => {
-    const shouldTruncate = charLength > 200 || newlines > 3;
-
     if (!truncated && shouldTruncate) {
       setTruncated(true);
     }
-
-    if (truncated && !shouldTruncate) {
-      setTruncated(false);
-    }
-  }, [charLength, newlines, truncated]);
+  }, [truncated, shouldTruncate]);
 
   const toggleExpanded = (event: any) => {
     event.preventDefault();
@@ -35,24 +26,16 @@ function Truncate(props: TruncateProps) {
   return (
     <React.Fragment>
       {truncated && !expanded && (
-        <React.Fragment>
-          {_.truncate(_.replace(content, /\n/g, ' '), { length: 200 })}
+        <div className={styles.truncateContainer}>
+          <div className={styles.verticalTruncate}>{children}</div>
 
           <Button className={styles.toggleLink} onClick={toggleExpanded}>
             See More
           </Button>
-        </React.Fragment>
+        </div>
       )}
 
-      {(!truncated || expanded) && content}
-
-      {expanded && (
-        <React.Fragment>
-          <Button className={styles.toggleLink} onClick={toggleExpanded}>
-            See Less
-          </Button>
-        </React.Fragment>
-      )}
+      {(!truncated || expanded) && children}
     </React.Fragment>
   );
 }
