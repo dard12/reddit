@@ -30,7 +30,7 @@ function Navbar(props: NavbarProps) {
   const { username, tagDocs, logoutAction, loadDocsAction } = props;
   const { result } = useAxiosGet(
     '/api/tag',
-    {},
+    { approved: true },
     { cachedResult: tagDocs, name: 'Navbar' },
   );
 
