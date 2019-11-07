@@ -24,9 +24,13 @@ router.get('/api/question', async (req, res) => {
     pgQuery
       .orderBy('last_commented_at', 'desc')
       .orderBy('created_at', 'desc')
-      .orderBy('response_count', 'desc');
+      .orderBy('response_count', 'desc')
+      .orderBy('id');
   } else if (sort) {
-    pgQuery.orderBy(sort, 'desc').orderBy('response_count', 'desc');
+    pgQuery
+      .orderBy(sort, 'desc')
+      .orderBy('response_count', 'desc')
+      .orderBy('id');
   }
 
   if (upvoted_by) {
@@ -65,7 +69,8 @@ router.get('/api/question', async (req, res) => {
           ` coalesce(lower(title) LIKE ?, FALSE) DESC,
             coalesce(lower(description) LIKE ?, FALSE) DESC,
             like_count(lower(title), ?::varchar array) DESC,
-            like_count(lower(description), ?::varchar array) DESC
+            like_count(lower(description), ?::varchar array) DESC,
+            id
            `,
           [likeSearch, likeSearch, words, words],
         );
