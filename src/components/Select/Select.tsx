@@ -1,6 +1,7 @@
-import ReactSelect from 'react-select';
 import React from 'react';
 import _ from 'lodash';
+
+const CreatableSelect = require('react-select/creatable').default;
 
 interface SelectProps {
   options: { value: string; label: string }[];
@@ -25,55 +26,55 @@ export function Select(props: SelectProps & any) {
   const white = '#ffffff';
 
   return (
-    <ReactSelect
+    <CreatableSelect
       isClearable={false}
       maxMenuHeight={150}
       menuPortalTarget={document.body}
       styles={{
-        control: (provided, { isFocused }) => ({
+        control: (provided: any, { isFocused }: any) => ({
           ...provided,
           borderRadius: 0,
           border: 'none',
           backgroundColor: dark2,
           boxShadow: 'none',
         }),
-        dropdownIndicator: provided => ({
+        dropdownIndicator: (provided: any) => ({
           ...provided,
           color: dark8,
         }),
-        indicatorSeparator: provided => ({
+        indicatorSeparator: (provided: any) => ({
           ...provided,
           display: 'none',
         }),
-        option: (provided, { isFocused }) => ({
+        option: (provided: any, { isFocused }: any) => ({
           ...provided,
           backgroundColor: isFocused ? dark1 : white,
           ':active': { backgroundColor: dark1 },
         }),
-        menu: provided => ({
+        menu: (provided: any) => ({
           ...provided,
           borderRadius: 0,
           backgroundColor: white,
           border: `1px solid ${dark3}`,
           boxShadow: 'none',
         }),
-        multiValue: provided => ({
+        multiValue: (provided: any) => ({
           ...provided,
           backgroundColor: dark4,
         }),
-        multiValueRemove: provided => ({
+        multiValueRemove: (provided: any) => ({
           ...provided,
           cursor: 'pointer',
           ':hover': {
             backgroundColor: 'transparent',
           },
         }),
-        placeholder: provided => ({
+        placeholder: (provided: any) => ({
           ...provided,
           color: dark6,
         }),
       }}
-      onChange={selection => {
+      onChange={(selection: any) => {
         if (!maxItems || _.size(selection) <= maxItems) {
           onChange(selection);
         }
