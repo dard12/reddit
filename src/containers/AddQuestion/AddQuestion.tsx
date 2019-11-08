@@ -52,9 +52,10 @@ function AddQuestion(props: AddQuestionProps) {
 
   const initialOptions = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
   const allTagOptions = _.uniqBy(_.concat(initialOptions, tags), 'value');
-  const onCreateTag = (inputValue: string) => {
-    const cleanTag = _.toLower(_.replace(inputValue, /[^a-z0-9]/gi, ' '));
-    setTags([...tags, { label: cleanTag, value: cleanTag }]);
+
+  const onCreateTag = (input: string) => {
+    const value = _.trim(_.toLower(_.replace(input, /[^a-z0-9]/gi, ' ')));
+    setTags([...tags, { label: value, value }]);
   };
 
   return (
