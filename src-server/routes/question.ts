@@ -108,7 +108,7 @@ router.post('/api/question', requireAuth, async (req, res) => {
         VALUES (?)
         ON CONFLICT (id)
         DO UPDATE
-        SET count = count + 1
+        SET count = tags.count + 1
         `,
       [tag],
     );
