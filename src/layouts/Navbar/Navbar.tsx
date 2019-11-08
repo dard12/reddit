@@ -45,9 +45,17 @@ function Navbar(props: NavbarProps) {
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
-        <Link to="/home" className={styles.brand}>
-          CoverStory
-        </Link>
+        <div className={styles.brand}>
+          <Link to="/home">Questions</Link>
+          <a
+            className={styles.subscript}
+            href="https://coverstory.page"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            by CoverStory
+          </a>
+        </div>
 
         <div className={styles.navActions}>
           <NavLink to="/home" activeClassName={styles.active}>
