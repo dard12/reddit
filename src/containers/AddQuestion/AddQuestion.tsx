@@ -77,7 +77,8 @@ function AddQuestion(props: AddQuestionProps) {
         />
         <div className={styles.questionDescription}>
           <TextareaAutosize
-            placeholder="Add some details to consider when answering this question…"
+            placeholder="Add some brief details to consider when answering this question…"
+            maxLength={300}
             minRows={4}
             value={description}
             onChange={createOnChange(setDescription)}
