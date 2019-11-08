@@ -85,6 +85,7 @@ router.get('/api/question', async (req, res) => {
 
 router.post('/api/question', requireAuth, async (req, res) => {
   const { body, user }: any = req;
+  const { tags } = body;
   const docs = await pg
     .insert({
       ...body,
@@ -99,4 +100,17 @@ router.post('/api/question', requireAuth, async (req, res) => {
     .returning('*');
 
   res.status(200).send({ docs });
+
+  _.each(tags, async tag => {
+    await pg.raw(
+      `
+        INSERT INTO tags (id)
+        VALUES (?)
+        ON CONFLICT (id)
+        DO UPDATE
+        SET count = count + 1
+        `,
+      [tag],
+    );
+  });
 });
