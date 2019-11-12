@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
 import getId from '../utility';
-import execute from '../execute';
+import { execute } from '../util';
 
 router.get('/api/comment', async (req, res) => {
   const { query } = req;
