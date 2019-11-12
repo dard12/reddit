@@ -80,12 +80,12 @@ const facebookStrategy = new FacebookStrategy(
     try {
       await pg.raw(
         `
-        INSERT INTO users (id, facebook_id, first_name, last_name, email, user_name, created_at)
+        INSERT INTO users (id, facebook_id, first_name, last_name, email, user_name)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (facebook_id)
         DO NOTHING
         `,
-        [id, facebook_id, first_name, last_name, email, id, new Date()],
+        [id, facebook_id, first_name, last_name, email, id],
       );
     } catch (error) {
       // Do nothing
@@ -126,12 +126,12 @@ const googleStrategy = new GoogleStrategy(
     try {
       await pg.raw(
         `
-        INSERT INTO users (id, google_id, first_name, last_name, email, user_name, photo, created_at)
+        INSERT INTO users (id, google_id, first_name, last_name, email, user_name, photo)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (google_id)
         DO NOTHING
       `,
-        [id, google_id, first_name, last_name, email, id, photo, new Date()],
+        [id, google_id, first_name, last_name, email, id, photo],
       );
     } catch (error) {
       // do nothing

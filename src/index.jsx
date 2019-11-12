@@ -15,7 +15,7 @@ import LegalTerms from './layouts/LegalTerms/LegalTerms';
 import LegalGuidelines from './layouts/LegalGuidelines/LegalGuidelines';
 
 Sentry.init({
-  dsn: 'https://08a2f9f0d5874e3686d6c1fe312db70c@sentry.io/1817673',
+  dsn: 'https://e3617d1dda95457498a4997450ffe700@sentry.io/1817670',
 });
 
 const rootElement = document.getElementById('root');
