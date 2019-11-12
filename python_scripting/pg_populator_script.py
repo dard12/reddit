@@ -36,7 +36,7 @@ ALTER TABLE questions ADD COLUMN down_votes int DEFAULT 0;
 ALTER TABLE comments ADD COLUMN up_votes int DEFAULT 0;
 ALTER TABLE comments ADD COLUMN down_votes int DEFAULT 0;
 
-UPDATE comments SET is_answer = (parent_id = id) 
+UPDATE comments SET is_answer = (parent_id = id) and type = 'response'
 
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
@@ -244,6 +244,7 @@ def recompute_counts(cur, conn):
     rows = [(q,t,c) for (q,t), c in all_tups.items()]
     ps([r for r in rows if r[2] > 0])
 
+    cur.execute("DROP TABLE IF EXISTS temp_cnt;")
     cur.execute("CREATE TEMP TABLE temp_cnt (qid varchar, type varchar, cnt int) ")
     ppu.bulk_insert(cur=cur,
                     table_name='temp_cnt',
@@ -295,26 +296,37 @@ def recompute_question_last_comments(conn):
 
 def temp_map_to_tags(cur, conn):
     tb_tags = {
-        'technical'     :   ['technical'], 
-        'Misc': ['fun'], 
-        'coordination': ['fit'], 
-        'SWE - Technical': ['technical'], 
-        'Team Coordination': ['fit'], 
-        'Misc - Technical': ['technical'], 
-        'SWE - Team Process': ['technical', 'fit'], 
-        'Personal Motivations': ['motivation']}
-    
-    cur.execute(" SELECT id, tags FROM questions ")
+      'design': 'design', 
+      'motivation': 'personal motivation', 
+      'Team Coordination': 'team process', 
+      'misc': 'fun', 
+      'Misc': 'fun', 
+      'Personal Motivations': 'personal motivation', 
+      'management': 'management', 
+      'coordination': 'technical', 
+      'fit': False, 
+      'SWE - Team Process': 'team process', 
+      'Misc - Technical': 'software engineering', 
+      'devops': 'devops', 
+      'technical': 'software engineering', 
+      'fun': 'fun', 
+      'SWE - Technical': 'software engineering'
+    }
+    cur.execute(" SELECT id, tags, title FROM questions ")
     temp = []
-    for qid, tags in cur:
+    for qid, tags, title in cur: 
         if not tags:
           continue
-        all_t = set(tags)
-        for t in tags:
-          for nt in tb_tags.get(t, []):
-            all_t.add(nt)
-        temp.append((qid, list(all_t)))
-    if temp:
+
+        new_tags = set(tb_tags[t] for t in tags if tb_tags[t])
+        print(qid)
+        print(new_tags)
+        print(tags)
+        print('')
+    #       for nt in tb_tags.get(t, []):
+    #         all_t.add(nt)
+        temp.append((qid, list(new_tags)))
+    if temp:  
       cur.execute("CREATE TEMP TABLE temp_tags (qid varchar, new_tags varchar[]) ")
       ppu.bulk_insert(cur=cur,
                       table_name='temp_tags',
@@ -399,7 +411,7 @@ if __name__ == '__main__':
     ##build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
     cur = conn.cursor()
-
+    py_interact(locals())
 
 
 
