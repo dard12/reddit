@@ -22,7 +22,7 @@ function AddQuestion(props: AddQuestionProps) {
   const { closeModal, tagDocs } = props;
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createOnChange = (setContent: Function) => (
@@ -50,7 +50,13 @@ function AddQuestion(props: AddQuestionProps) {
     }
   };
 
-  const tagOptions = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
+  const initialOptions = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
+  const allTagOptions = _.uniqBy(_.concat(initialOptions, tags), 'value');
+
+  const onCreateTag = (input: string) => {
+    const value = _.trim(_.toLower(_.replace(input, /[^a-z0-9]/gi, ' ')));
+    setTags([...tags, { label: value, value }]);
+  };
 
   return (
     <div className={styles.addQuestion}>
@@ -87,9 +93,10 @@ function AddQuestion(props: AddQuestionProps) {
         <Select
           value={tags}
           onChange={setTags}
-          options={tagOptions}
+          options={allTagOptions}
           maxItems={5}
           placeholder="Add tags (optional)"
+          onCreateOption={onCreateTag}
           isSearchable
           isMulti
         />

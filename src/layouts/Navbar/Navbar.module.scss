@@ -52,6 +52,12 @@
     }
   }
 
+  .subscript {
+    font-size: $text-3;
+    font-weight: 400;
+    margin-left: $margin-2;
+  }
+
   .home {
     @media (max-device-width: 768px) {
       display: none;
