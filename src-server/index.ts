@@ -5,14 +5,28 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import * as Sentry from '@sentry/node';
 
+const prerender = require('prerender-node');
+
 const app = express();
-const { NODE_ENV, SENTRY_DSN, SERVER_PORT = 8080 } = process.env;
+const {
+  NODE_ENV,
+  SENTRY_DSN,
+  PRERENDER_TOKEN,
+  SERVER_PORT = 8080,
+} = process.env;
+
 const isProd = NODE_ENV === 'production';
 const origin = isProd ? 'https://coverstory.page' : 'http://localhost';
 
 if (isProd) {
   Sentry.init({ dsn: SENTRY_DSN });
   app.use(Sentry.Handlers.requestHandler());
+  app.use(
+    prerender
+      .set('prerenderToken', PRERENDER_TOKEN)
+      .whitelisted(['/', '/home'])
+      .blacklisted(['/question.*', '/register', '/login', '/legal.*']),
+  );
 }
 
 const router = express.Router();
