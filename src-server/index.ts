@@ -11,7 +11,7 @@ const isProd = NODE_ENV === 'production';
 const origin = isProd ? 'https://coverstory.page' : 'http://localhost';
 
 if (isProd) {
-  // Sentry.init({ dsn: SENTRY_DSN });
+  Sentry.init({ dsn: SENTRY_DSN });
   app.use(Sentry.Handlers.requestHandler());
 }
 
