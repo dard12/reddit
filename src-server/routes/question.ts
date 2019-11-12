@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
-import getId from '../utility';
-import { execute } from '../util';
+import { execute, getId } from '../util';
 
 router.get('/api/question', async (req, res) => {
   const { query } = req;

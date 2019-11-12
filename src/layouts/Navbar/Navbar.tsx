@@ -38,7 +38,7 @@ function Navbar(props: NavbarProps) {
 
   const addQuestionBtn = (
     <Button className={styles.addQuestionBtn}>
-      <span>Ask a Question</span>
+      <span>Add Question</span>
     </Button>
   );
 
@@ -47,14 +47,7 @@ function Navbar(props: NavbarProps) {
       <div className={styles.navbar}>
         <div className={styles.brand}>
           <Link to="/home">Questions</Link>
-          <a
-            className={styles.subscript}
-            href="https://coverstory.page"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            by CoverStory
-          </a>
+          <span className={styles.subscript}>by CoverStory</span>
         </div>
 
         <div className={styles.navActions}>
