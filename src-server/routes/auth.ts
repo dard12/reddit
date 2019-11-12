@@ -88,7 +88,7 @@ const facebookStrategy = new FacebookStrategy(
         [id, facebook_id, first_name, last_name, email, id, new Date()],
       );
     } catch (error) {
-      done(error);
+      // Do nothing
     }
 
     try {
@@ -134,7 +134,7 @@ const googleStrategy = new GoogleStrategy(
         [id, google_id, first_name, last_name, email, id, photo, new Date()],
       );
     } catch (error) {
-      done(error);
+      // do nothing
     }
 
     try {
