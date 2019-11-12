@@ -53,7 +53,10 @@ router.post('/api/comment', requireAuth, async (req, res) => {
       .returning('*');
 
     const targetCount = type === 'response' ? 'response_count' : 'meta_count';
-    await pg('questions').increment(targetCount, 1);
+
+    await pg('questions')
+      .where({ id: docs[0].question_id })
+      .increment(targetCount, 1);
 
     const last_comment_id = docs[0].id;
     const last_commented_at = docs[0].created_at;
