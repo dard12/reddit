@@ -80,7 +80,7 @@ const facebookStrategy = new FacebookStrategy(
     try {
       await pg.raw(
         `
-        INSERT INTO ratings.user (id, facebook_id, first_name, last_name, email, username, created_at)
+        INSERT INTO users (id, facebook_id, first_name, last_name, email, user_name, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (facebook_id)
         DO NOTHING
@@ -94,12 +94,12 @@ const facebookStrategy = new FacebookStrategy(
     try {
       await pg
         .update({ facebook_id })
-        .from('ratings.user')
+        .from('users')
         .where({ email });
 
       const user = await pg
         .first('*')
-        .from('ratings.user')
+        .from('users')
         .where({ facebook_id });
 
       done(null, user);
@@ -126,7 +126,7 @@ const googleStrategy = new GoogleStrategy(
     try {
       await pg.raw(
         `
-        INSERT INTO ratings.user (id, google_id, first_name, last_name, email, username, photo, created_at)
+        INSERT INTO users (id, google_id, first_name, last_name, email, user_name, photo, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (google_id)
         DO NOTHING
@@ -140,12 +140,12 @@ const googleStrategy = new GoogleStrategy(
     try {
       await pg
         .update({ google_id, photo })
-        .from('ratings.user')
+        .from('users')
         .where({ email });
 
       const user = await pg
         .first('*')
-        .from('ratings.user')
+        .from('users')
         .where({ google_id });
 
       done(undefined, user);
