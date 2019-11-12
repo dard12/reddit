@@ -46,6 +46,8 @@ router.post('/api/comment', requireAuth, async (req, res) => {
       .update({ content: row.content })
       .returning('*');
   } else {
+    row.is_answer = type === 'response' && row.id === row.parent_id;
+
     docs = await pg
       .insert(row)
       .into('comments')
