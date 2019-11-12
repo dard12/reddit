@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import MediaQuery from 'react-responsive';
 import styles from './TopQuestions.module.scss';
 import SearchBar from '../../containers/SearchBar/SearchBar';
 import Paging from '../../containers/Paging/Paging';
@@ -29,12 +30,15 @@ function TopQuestions(props: TopQuestionsProps) {
   return (
     <div className={styles.topQuestions}>
       <SearchBar query={query} />
-      <Tabs
-        tabs={tabs}
-        currentTab={tag}
-        queryParamName="tag"
-        defaultTab="all"
-      />
+
+      <MediaQuery minDeviceWidth={768}>
+        <Tabs
+          tabs={tabs}
+          currentTab={tag}
+          queryParamName="tag"
+          defaultTab="all"
+        />
+      </MediaQuery>
 
       <Paging component={QuestionListPage} params={params} />
     </div>
