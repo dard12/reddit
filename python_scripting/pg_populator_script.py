@@ -15,6 +15,7 @@ import random
 """
 source venv/bin/activate
 psql -h minidb.cpoebeflfeyk.us-east-1.rds.amazonaws.com -d postgres  -U postgres -p 5432
+pkill -f node
 
 
 ALTER TABLE users     ADD COLUMN updated_at timestamp DEFAULT current_timestamp;
@@ -31,12 +32,18 @@ ALTER TABLE comments ADD COLUMN is_edited boolean   DEFAULT false;
 ALTER TABLE comments ADD COLUMN is_answer boolean GENERATED ALWAYS AS (id = parent_id) STORED;
 ALTER TABLE questions ADD COLUMN last_commented_at timestamp;
 
+
 ALTER TABLE questions ADD COLUMN up_votes int DEFAULT 0;
 ALTER TABLE questions ADD COLUMN down_votes int DEFAULT 0;
-ALTER TABLE comments ADD COLUMN up_votes int DEFAULT 0;
-ALTER TABLE comments ADD COLUMN down_votes int DEFAULT 0;
+ALTER TABLE comments  ADD COLUMN up_votes int DEFAULT 0;
+ALTER TABLE comments  ADD COLUMN down_votes int DEFAULT 0;
+
+ALTER TABLE tags ADD COLUMN priority int DEFAULT 0;
+
 
 UPDATE comments SET is_answer = (parent_id = id) and type = 'response'
+
+CREATE INDEX i_questions_  ON questions  (available);
 
 """
 id_alphabet = [c for c in 'abcdefghijklmnopqrstuvwxyz1234567890']
@@ -223,6 +230,22 @@ def recompute_author_names(cur, conn):
       WHERE comments.author_id = users.id
       """)
     conn.commit()
+
+def recompute_tag_counts(cur, conn):
+    cur.execute("DROP TABLE IF EXISTS tag_cnt_temp;")
+    cur.execute(""" CREATE TEMP TABLE tag_cnt_temp AS (
+      SELECT tag AS tag, COUNT(1) as cnt
+      FROM (SELECT UNNEST(tags) as tag FROM questions) AS t
+      GROUP BY tag)          
+       """)
+    cur.execute("""
+      UPDATE tags 
+      SET count = temp.cnt
+      FROM tag_cnt_temp as temp
+      WHERE tags.id = temp.tag
+      """)    
+    conn.commit()
+
 
 def recompute_counts(cur, conn):
 

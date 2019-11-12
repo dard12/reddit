@@ -22,6 +22,7 @@ function TopQuestions(props: TopQuestionsProps) {
     search: { text: query, tags: [tag] },
     sort: 'up_votes',
   };
+
   const tabs = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
 
   tabs.unshift({ label: 'All', value: 'all' });
@@ -46,5 +47,6 @@ export default connect(
     collection: 'tags',
     filter: 'tagFilter',
     prop: 'tagDocs',
+    orderBy: 'priority',
   }),
 )(TopQuestions);
