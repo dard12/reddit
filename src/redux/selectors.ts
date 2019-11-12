@@ -32,10 +32,12 @@ export const createDocListSelector = ({
   collection,
   filter,
   prop,
+  orderBy,
 }: {
   collection: string;
   filter: string;
   prop: string;
+  orderBy?: string;
 }): any => {
   return createSelector(
     [
@@ -44,7 +46,11 @@ export const createDocListSelector = ({
     ],
     (collections, filterObj) => {
       const collectionDict = collections[collection];
-      const docList = _.filter(collectionDict, filterObj);
+      let docList = _.filter(collectionDict, filterObj);
+
+      if (orderBy) {
+        docList = _.orderBy(docList, orderBy, ['desc']);
+      }
 
       return { [prop]: docList };
     },

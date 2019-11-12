@@ -46,5 +46,6 @@ export default connect(
     collection: 'tags',
     filter: 'tagFilter',
     prop: 'tagDocs',
+    orderBy: 'priority',
   }),
 )(TopQuestions);
