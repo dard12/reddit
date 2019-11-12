@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Request, Response } from 'express-serve-static-core';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
-import getId from '../utility';
+import { getId } from '../util';
 
 enum VoteType {
   Question,

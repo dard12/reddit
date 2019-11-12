@@ -2,6 +2,15 @@ import { QueryBuilder } from 'knex';
 import _ from 'lodash';
 import pg from './pg';
 
+export function getId() {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890';
+  const id_list: string[] = [];
+  _.each(Array(12), i => {
+    id_list.push(alphabet[_.random(0, 35)]);
+  });
+  return id_list.join('');
+}
+
 export async function execute(pgQuery: QueryBuilder, options?: any) {
   const page = _.toNumber(_.get(options, 'page')) || 0;
   const pageSize = _.toNumber(_.get(options, 'pageSize')) || 5;
