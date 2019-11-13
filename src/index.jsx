@@ -23,6 +23,15 @@ const init = rootElement.hasChildNodes() ? hydrate : render;
 
 init(
   <Provider store={store}>
+    <Helmet>
+      <title> Questions by CoverStory | Interview Question & Answers </title>
+      <meta
+        name="description"
+        content="Questions by CoverStory is a collection of interview questions and answers. Prepare for your next job search with CoverStory."
+      />
+      <link rel="canonical" href="https://coverstory.page" />
+    </Helmet>
+
     <Router history={history}>
       <ScrollToTop>
         <Switch>
