@@ -54,7 +54,7 @@ function Profile(props: ProfileProps) {
             <div className={styles.profileName}>
               <UserName user={targetUser} plainName />
             </div>
-            @<UserName user={targetUser} plainName />
+            @{targetUser}
           </div>
 
           <div className={styles.profileRight}>
