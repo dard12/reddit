@@ -12,11 +12,12 @@ interface UserNameProps {
   user: string;
   userDoc?: UserDoc;
   loadDocsAction?: Function;
-  plainName?: boolean;
+  noLink?: boolean;
+  noDisplay?: boolean;
 }
 
 function UserName(props: UserNameProps) {
-  const { user, userDoc, loadDocsAction, plainName } = props;
+  const { user, userDoc, loadDocsAction, noLink, noDisplay } = props;
   const { result, isSuccess } = useAxiosGet(
     '/api/user',
     { id: user },
@@ -32,15 +33,15 @@ function UserName(props: UserNameProps) {
   const { first_name, last_name, user_name } = userDoc;
   let displayName;
 
-  if (first_name && last_name) {
+  if (first_name && last_name && !noDisplay) {
     displayName = `${first_name} ${_.first(last_name)}.`;
-  } else if (first_name) {
+  } else if (first_name && !noDisplay) {
     displayName = first_name;
   } else {
     displayName = user_name;
   }
 
-  return plainName ? (
+  return noLink ? (
     <React.Fragment>{displayName}</React.Fragment>
   ) : (
     <UserLink user_name={user_name} displayName={displayName} />

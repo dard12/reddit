@@ -52,9 +52,9 @@ function Profile(props: ProfileProps) {
         <div className={styles.profileCard}>
           <div>
             <div className={styles.profileName}>
-              <UserName user={targetUser} plainName />
+              <UserName user={targetUser} noLink />
             </div>
-            @{targetUser}
+            @<UserName user={targetUser} noLink noDisplay />
           </div>
 
           <div className={styles.profileRight}>
