@@ -2,6 +2,7 @@ import React from 'react';
 import { hydrate, render } from 'react-dom';
 import './index.scss';
 import 'normalize.css';
+import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { App } from './App.tsx';
