@@ -3,8 +3,9 @@ export interface UserDoc {
   user_name: string;
   email: string;
   salt_password: string;
-  full_name?: string;
-  photo_link?: string;
+  first_name?: string;
+  last_name?: string;
+  photo?: string;
   summary?: string;
   created_at: Date;
   updated_at: Date;

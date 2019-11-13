@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 
 interface UserLinkProps {
   user_name: string;
+  displayName?: string;
 }
 
 function UserLink(props: UserLinkProps) {
-  const { user_name } = props;
+  const { user_name, displayName } = props;
   return (
     <Link className="hoverLink" to={`/profile/${user_name}`}>
-      {user_name}
+      {displayName || user_name}
     </Link>
   );
 }

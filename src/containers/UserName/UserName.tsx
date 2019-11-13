@@ -28,12 +28,21 @@ function UserName(props: UserNameProps) {
     return <Skeleton inline />;
   }
 
-  const { user_name } = userDoc;
+  const { first_name, last_name, user_name } = userDoc;
+  let displayName;
+
+  if (first_name && last_name) {
+    displayName = `${first_name} ${_.first(last_name)}.`;
+  } else if (first_name) {
+    displayName = first_name;
+  } else {
+    displayName = user_name;
+  }
 
   return plainName ? (
-    <React.Fragment>{user_name}</React.Fragment>
+    <React.Fragment>{displayName}</React.Fragment>
   ) : (
-    <UserLink user_name={user_name} />
+    <UserLink user_name={user_name} displayName={displayName} />
   );
 }
 
