@@ -37,7 +37,7 @@ export const createDocListSelector = ({
   collection: string;
   filter: string;
   prop: string;
-  orderBy?: string;
+  orderBy?: any[];
 }): any => {
   return createSelector(
     [
@@ -49,7 +49,7 @@ export const createDocListSelector = ({
       let docList = _.filter(collectionDict, filterObj);
 
       if (orderBy) {
-        docList = _.orderBy(docList, orderBy, ['desc']);
+        docList = _.orderBy(docList, ...orderBy);
       }
 
       return { [prop]: docList };

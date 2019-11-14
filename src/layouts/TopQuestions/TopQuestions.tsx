@@ -50,6 +50,6 @@ export default connect(
     collection: 'tags',
     filter: 'tagFilter',
     prop: 'tagDocs',
-    orderBy: 'priority',
+    orderBy: ['priority', 'desc'],
   }),
 )(TopQuestions);
