@@ -10,7 +10,7 @@ function RecentQuestions(props: RecentQuestionsProps) {
     <div className={styles.recent}>
       <Paging
         component={FullQuestionListPage}
-        params={{ sort: 'recent', pageSize: 15 }}
+        params={{ sort: 'recent', pageSize: 10 }}
       />
     </div>
   );
