@@ -85,30 +85,27 @@ class RichText extends Component<RichTextProps> {
       quill.on('text-change', () => onChange(getContents()));
     }
 
-    this.setState({ quill });
-    this.updateContent(quill);
+    this.setState({ quill }, this.updateContent);
   }
 
-  updateContent = (quill: any) => {
+  updateContent = () => {
+    const { quill } = this.state;
     const { content } = this.props;
-
-    if (quill) {
-      const delta = getDelta(content);
-      quill.setContents(delta);
-    }
+    const delta = getDelta(content);
+    quill.setContents(delta);
   };
 
   render() {
-    const { placeholder, onChange, className } = this.props;
-    const { id, quill } = this.state;
+    const { placeholder, className, readOnly } = this.props;
+    const { id } = this.state;
     const quillElement = document.querySelector(`#${id} .ql-editor.ql-blank`);
 
     if (quillElement && placeholder) {
       quillElement.setAttribute('data-placeholder', placeholder);
     }
 
-    if (!onChange) {
-      this.updateContent(quill);
+    if (readOnly) {
+      this.updateContent();
     }
 
     return <div id={id} className={classNames(styles.richText, className)} />;

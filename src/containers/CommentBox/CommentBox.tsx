@@ -43,7 +43,6 @@ function CommentBox(props: CommentBoxProps) {
 
       const onSuccess = () => {
         setIsSubmitting(false);
-        setContent('');
         onSubmit && onSubmit();
       };
 
