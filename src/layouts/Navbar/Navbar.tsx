@@ -116,7 +116,6 @@ const mapStateToProps = createSelector(
       collection: 'tags',
       filter: 'none',
       prop: 'tagDocs',
-      orderBy: ['priority', 'desc'],
     }),
     usernameSelector,
   ],
