@@ -9,7 +9,10 @@ export function getQueryParams(paramName?: string) {
   return paramName ? params[paramName] : params;
 }
 
-export function setQueryParams(params: { [paramName: string]: any }) {
+export function setQueryParams(
+  params: { [paramName: string]: any },
+  options?: { replace?: boolean },
+) {
   const queryParams = getQueryParams();
 
   _.each(params, (paramValue, paramName) => {
@@ -17,8 +20,13 @@ export function setQueryParams(params: { [paramName: string]: any }) {
   });
 
   const search = qs.stringify(queryParams);
+  const replace = _.get(options, 'replace');
 
-  history.push({ search });
+  if (replace) {
+    history.replace({ search });
+  } else {
+    history.push({ search });
+  }
 }
 
 export function routeIncludes(subPath: string) {

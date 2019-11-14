@@ -9,7 +9,6 @@ import { loadDocsAction } from '../../redux/actions';
 import { axiosPost } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
 import RichText from '../../components/RichText/RichText';
-import { setQueryParams } from '../../history';
 
 interface CommentBoxProps {
   question: string;
@@ -43,7 +42,6 @@ function CommentBox(props: CommentBoxProps) {
       setIsSubmitting(true);
 
       const onSuccess = () => {
-        setQueryParams({ anchor: undefined });
         setIsSubmitting(false);
         setContent('');
         onSubmit && onSubmit();

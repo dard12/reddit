@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import _ from 'lodash';
-import { getQueryParams } from '../history';
+import { getQueryParams, setQueryParams } from '../history';
 
 export default function useAnchor(anchor: string) {
   const isTarget = getQueryParams('anchor') === anchor;
@@ -10,7 +10,10 @@ export default function useAnchor(anchor: string) {
     : false;
 
   useEffect(() => {
-    targetOffset && window.scrollTo(0, targetOffset - 10);
+    if (targetOffset) {
+      window.scrollTo(0, targetOffset - 10);
+      setQueryParams({ anchor: undefined }, { replace: true });
+    }
   }, [targetOffset]);
 
   return anchorTag;
