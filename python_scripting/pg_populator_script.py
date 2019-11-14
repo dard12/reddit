@@ -430,6 +430,25 @@ def pg_r_print(rows, order_on_idxs=[0], truncate_to=45):
       order_on_idxs = [order_on_idxs]
     ppu.print_order_sql_rows(rows, cols_to_sort=order_on_idxs, siz=truncate_to)
 
+
+def save_tables():
+    conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
+    cur = conn.cursor() 
+    cur.execute(""" 
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema='public'
+      """)
+    tbs = [t for t, in cur]
+    now = str(dt.utcnow())[:10].replace('-', '_')
+    schema = f'snapshot_{now}'
+    cur.execute(f"CREATE SCHEMA {schema}")
+    for t in tbs:
+        print(f"{schema}.{t}")
+        cur.execute(f"CREATE TABLE {schema}.{t} AS (SELECT * FROM {t})")
+    conn.commit()
+
+
 if __name__ == '__main__':
     ##build_and_populate_tables('dev')
     conn = ppu.conn_retry(ppu.get_sql_db(env='dev'))
