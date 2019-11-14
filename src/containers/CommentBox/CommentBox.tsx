@@ -42,14 +42,13 @@ function CommentBox(props: CommentBoxProps) {
       setIsSubmitting(true);
 
       const id = _.get(editingComment, 'id');
-      const parent_id = _.get(editingComment, 'parent_id');
 
       axiosPost(
         '/api/comment',
         {
           id,
           question_id: question,
-          parent_id,
+          parent_id: editingComment ? editingComment.parent_id : parent_id,
           content,
           type,
           is_edited: Boolean(editingComment),
