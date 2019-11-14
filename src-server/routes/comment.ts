@@ -50,19 +50,21 @@ router.post('/api/comment', requireAuth, async (req, res) => {
 });
 
 async function updateQuestion(commentDoc: CommentDoc) {
-  const { id, type, question_id, created_at } = commentDoc;
+  const {
+    id: last_comment_id,
+    type,
+    question_id,
+    created_at: last_commented_at,
+  } = commentDoc;
+
   const targetCount = type === 'response' ? 'response_count' : 'meta_count';
 
   await pg('questions')
     .where({ id: question_id })
     .increment(targetCount, 1);
 
-  const last_comment_id = id;
-  const last_commented_at = created_at;
-  const update = { last_comment_id, last_commented_at };
-
   await pg('questions')
     .where('last_commented_at', '<', last_commented_at)
     .where({ id: question_id })
-    .update(update);
+    .update({ last_comment_id, last_commented_at });
 }
