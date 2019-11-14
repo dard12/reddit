@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import { router, requireAuth } from '../index';
 import pg from '../pg';
-import { execute, getId } from '../util';
+import { execute, getId, upsert } from '../util';
+import { CommentDoc } from '../models';
 
 router.get('/api/comment', async (req, res) => {
   const { query } = req;
@@ -24,53 +25,44 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     ...body,
     id: id || newId,
     parent_id: parent_id || newId,
-  };
-
-  const row = {
-    ...comment,
     author_id: user.id,
     author_name: user.user_name,
     up_votes: 0,
     down_votes: 0,
   };
 
-  let docs;
-
   if (!parent_id) {
-    body.parent_id = row.id;
+    body.parent_id = comment.id;
   }
 
-  if (is_edited) {
-    const { id, content } = row;
+  if (!is_edited) {
+    comment.is_answer = type === 'response' && comment.id === comment.parent_id;
+  }
 
-    docs = await pg('comments')
-      .where({ id })
-      .update({ content })
-      .returning('*');
-  } else {
-    row.is_answer = type === 'response' && row.id === row.parent_id;
+  const docs = await upsert({ id }, comment, 'comments');
+  const commentDoc: CommentDoc | undefined = _.first(docs);
 
-    docs = await pg
-      .insert(row)
-      .into('comments')
-      .returning('*');
-
-    const { id, question_id, created_at } = _.first(docs);
-    const targetCount = type === 'response' ? 'response_count' : 'meta_count';
-
-    await pg('questions')
-      .where({ id: question_id })
-      .increment(targetCount, 1);
-
-    const last_comment_id = id;
-    const last_commented_at = created_at;
-    const update = { last_comment_id, last_commented_at };
-
-    await pg('questions')
-      .where('last_commented_at', '<', last_commented_at)
-      .where({ id: question_id })
-      .update(update);
+  if (!is_edited && commentDoc) {
+    await updateQuestion(commentDoc);
   }
 
   res.status(200).send({ docs });
 });
+
+async function updateQuestion(commentDoc: CommentDoc) {
+  const { id, type, question_id, created_at } = commentDoc;
+  const targetCount = type === 'response' ? 'response_count' : 'meta_count';
+
+  await pg('questions')
+    .where({ id: question_id })
+    .increment(targetCount, 1);
+
+  const last_comment_id = id;
+  const last_commented_at = created_at;
+  const update = { last_comment_id, last_commented_at };
+
+  await pg('questions')
+    .where('last_commented_at', '<', last_commented_at)
+    .where({ id: question_id })
+    .update(update);
+}

@@ -41,24 +41,27 @@ function CommentBox(props: CommentBoxProps) {
     if (isFilled && !isSubmitting) {
       setIsSubmitting(true);
 
-      const id = _.get(editingComment, 'id');
-
-      axiosPost(
-        '/api/comment',
-        {
-          id,
-          question_id: question,
-          parent_id: editingComment ? editingComment.parent_id : parent_id,
-          content,
-          type,
-          is_edited: Boolean(editingComment),
-        },
-        { collection: 'comments', loadDocsAction },
-      ).then(() => {
+      const onSuccess = () => {
         setIsSubmitting(false);
         setContent('');
         onSubmit && onSubmit();
-      });
+      };
+
+      if (editingComment) {
+        const { id, question_id, parent_id } = editingComment;
+
+        axiosPost(
+          '/api/comment',
+          { id, question_id, parent_id, content, type, is_edited: true },
+          { collection: 'comments', loadDocsAction },
+        ).then(onSuccess);
+      } else {
+        axiosPost(
+          '/api/comment',
+          { question_id: question, parent_id, content, type, is_edited: false },
+          { collection: 'comments', loadDocsAction },
+        ).then(onSuccess);
+      }
     }
   };
 
