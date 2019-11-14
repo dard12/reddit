@@ -36,6 +36,7 @@ function CommentBox(props: CommentBoxProps) {
   const [content, setContent] = useState(initialContent);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isFilled = _.size(_.trim(content));
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
   const onClickPublish = () => {
     if (isFilled && !isSubmitting) {
@@ -43,6 +44,7 @@ function CommentBox(props: CommentBoxProps) {
 
       const onSuccess = () => {
         setIsSubmitting(false);
+        setLastUpdate(new Date());
         onSubmit && onSubmit();
       };
 
@@ -97,6 +99,7 @@ function CommentBox(props: CommentBoxProps) {
               placeholder={placeholder}
               content={content}
               onChange={setContent}
+              lastUpdate={lastUpdate}
             />
           </div>
 

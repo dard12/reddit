@@ -13,10 +13,12 @@ interface RichTextProps {
   content?: any;
   placeholder?: string;
   className?: string;
+  lastUpdate?: Date;
 }
 
 interface RichTextState {
   id: string;
+  lastLoad: Date;
   quill?: any;
 }
 
@@ -42,7 +44,11 @@ export function getShouldTruncate(content: any) {
 }
 
 class RichText extends Component<RichTextProps> {
-  state: RichTextState = { id: `id_${_.random(10000000)}`, quill: undefined };
+  state: RichTextState = {
+    id: `id_${_.random(10000000)}`,
+    quill: undefined,
+    lastLoad: new Date(),
+  };
 
   componentDidMount() {
     const { readOnly, onChange, onEnter, placeholder } = this.props;
@@ -96,15 +102,21 @@ class RichText extends Component<RichTextProps> {
   };
 
   render() {
-    const { placeholder, className, readOnly } = this.props;
-    const { id } = this.state;
+    const { placeholder, className, readOnly, lastUpdate } = this.props;
+    const { id, quill, lastLoad } = this.state;
     const quillElement = document.querySelector(`#${id} .ql-editor.ql-blank`);
+    const hasUpdated = lastUpdate && lastUpdate > lastLoad;
+
+    if (hasUpdated && quill) {
+      this.updateContent();
+      this.setState({ lastLoad: new Date() });
+    }
 
     if (quillElement && placeholder) {
       quillElement.setAttribute('data-placeholder', placeholder);
     }
 
-    if (readOnly) {
+    if (readOnly && quill) {
       this.updateContent();
     }
 
