@@ -8,7 +8,10 @@ interface RecentQuestionsProps {}
 function RecentQuestions(props: RecentQuestionsProps) {
   return (
     <div className={styles.recent}>
-      <Paging component={FullQuestionListPage} params={{ sort: 'recent' }} />
+      <Paging
+        component={FullQuestionListPage}
+        params={{ sort: 'recent', pageSize: 15 }}
+      />
     </div>
   );
 }
