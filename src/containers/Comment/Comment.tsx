@@ -229,13 +229,21 @@ const ConnectedComment = connect(
 export default ConnectedComment;
 
 export function getSortedComments(user?: string, comments?: CommentDoc[]) {
-  const sortedChildren = _.orderBy(comments, 'up_votes', 'desc');
-  const allMyComments = _.filter(sortedChildren, { author_id: user });
-  const myComment = _.first(_.orderBy(allMyComments, 'created_at', 'desc'));
+  const serializedComments = _.map(comments, comment => ({
+    ...comment,
+    created_at: new Date(comment.created_at),
+  }));
+  const sortedChildren = _.orderBy(
+    serializedComments,
+    ['up_votes', 'created_at'],
+    ['desc', 'desc'],
+  );
+
+  const myComment = _.first(_.filter(sortedChildren, { author_id: user }));
 
   if (myComment) {
     const { id, created_at } = myComment;
-    const isRecent = differenceInMinutes(new Date(), created_at) <= 1;
+    const isRecent = Math.abs(differenceInMinutes(new Date(), created_at)) <= 1;
 
     if (isRecent) {
       _.remove(sortedChildren, { id });
