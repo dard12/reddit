@@ -33,7 +33,7 @@ function Question(props: QuestionProps) {
   const { result, isSuccess } = useAxiosGet(
     '/api/question',
     { id: question },
-    { cachedResult: questionDoc, name: 'Question' },
+    { cachedResult: questionDoc, name: 'Question', reloadOnChange: true },
   );
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
