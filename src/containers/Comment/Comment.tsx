@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { createSelector } from 'redux-starter-kit';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { differenceInMinutes } from 'date-fns';
+import { differenceInMinutes, parseJSON } from 'date-fns';
 import styles from './Comment.module.scss';
 import { CommentDoc } from '../../../src-server/models';
 import { loadDocsAction } from '../../redux/actions';
@@ -231,7 +231,7 @@ export default ConnectedComment;
 export function getSortedComments(user?: string, comments?: CommentDoc[]) {
   const serializedComments = _.map(comments, comment => ({
     ...comment,
-    created_at: new Date(comment.created_at),
+    created_at: parseJSON(comment.created_at),
   }));
   const sortedChildren = _.orderBy(
     serializedComments,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { distanceInWordsToNow } from 'date-fns';
+import { formatDistanceToNow, parseJSON } from 'date-fns';
 
 interface TimeAgoProps {
   timestamp: Date;
@@ -8,7 +8,9 @@ interface TimeAgoProps {
 function TimeAgo(props: TimeAgoProps) {
   const { timestamp } = props;
 
-  return <React.Fragment>{distanceInWordsToNow(timestamp)}</React.Fragment>;
+  return (
+    <React.Fragment>{formatDistanceToNow(parseJSON(timestamp))}</React.Fragment>
+  );
 }
 
 export default TimeAgo;
