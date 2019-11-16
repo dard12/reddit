@@ -29,7 +29,7 @@ function Paging(props: PagingProps) {
   const seeMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    setQueryParams({ page: nextPage });
+    setQueryParams({ page: nextPage }, { replace: true });
   };
 
   const gapClass = gridGap === '3' ? styles.gridGap3 : styles.gridGap4;
