@@ -8,6 +8,7 @@
   margin-right: $margin-3;
   text-align: center;
   width: calc(50rem / 14);
+  flex-shrink: 0;
 
   > * {
     display: flex;
