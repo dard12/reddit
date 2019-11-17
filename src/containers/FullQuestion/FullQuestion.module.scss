@@ -5,6 +5,10 @@
   border: 1px solid $dark-6;
   border-bottom: 0;
   display: flex;
+
+  > * {
+    flex-shrink: 0;
+  }
 }
 
 .comment {
