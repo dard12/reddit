@@ -46,16 +46,22 @@ function Navbar(props: NavbarProps) {
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
         <div className={styles.brand}>
-          <Link to="/recent">Questions</Link>
+          <Link to={username ? '/questions/recent' : '/'}>Questions</Link>
           <span className={styles.subscript}>by CoverStory</span>
         </div>
 
         <div className={styles.navActions}>
-          <NavLink to="/recent" activeClassName={styles.active}>
-            Home
+          {!username && (
+            <NavLink exact to="/" activeClassName={styles.active}>
+              Home
+            </NavLink>
+          )}
+
+          <NavLink to="/questions/recent" activeClassName={styles.active}>
+            Recent
           </NavLink>
 
-          <NavLink to="/question" activeClassName={styles.active}>
+          <NavLink to="/questions/top" activeClassName={styles.active}>
             Top Questions
           </NavLink>
 

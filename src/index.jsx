@@ -14,6 +14,7 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import LegalPrivacy from './layouts/LegalPrivacy/LegalPrivacy';
 import LegalTerms from './layouts/LegalTerms/LegalTerms';
 import LegalGuidelines from './layouts/LegalGuidelines/LegalGuidelines';
+import Landing from './layouts/Landing/Landing';
 
 Sentry.init({
   dsn: 'https://e3617d1dda95457498a4997450ffe700@sentry.io/1817670',
@@ -36,6 +37,7 @@ init(
     <Router history={history}>
       <ScrollToTop>
         <Switch>
+          <Route exact path="/" component={withTracker(Landing)} />
           <Route exact path="/legal/privacy-policy" component={LegalPrivacy} />
           <Route exact path="/legal/terms-of-use" component={LegalTerms} />
           <Route
@@ -43,6 +45,7 @@ init(
             path="/legal/user-guidelines"
             component={LegalGuidelines}
           />
+
           <Route
             component={withTracker(App, {
               userId: localStorage.getItem('id'),

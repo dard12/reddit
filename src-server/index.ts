@@ -24,8 +24,14 @@ if (isProd) {
   app.use(
     prerender
       .set('prerenderToken', PRERENDER_TOKEN)
-      .whitelisted(['/', '/home'])
-      .blacklisted(['/question.*', '/register', '/login', '/legal.*']),
+      .whitelisted(['/'])
+      .blacklisted([
+        '/questions.*',
+        '/question.*',
+        '/register',
+        '/login',
+        '/legal.*',
+      ]),
   );
 }
 

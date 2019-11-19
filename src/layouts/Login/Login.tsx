@@ -31,7 +31,7 @@ function Login(props: LoginProps) {
   const isLogin = routeIncludes('/login');
   const isLoginFailed = getQueryParams('failed');
   const isLoginSuccess = getQueryParams('success');
-  const redirect = localStorage.getItem('redirect') || '/home';
+  const redirect = localStorage.getItem('redirect') || '/questions/recent';
   const actionText = isLogin ? 'Login' : 'Sign up';
   const isFilled = isLogin
     ? username && password

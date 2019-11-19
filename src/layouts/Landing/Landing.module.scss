@@ -1,0 +1,132 @@
+@import '../../template.scss';
+
+.landingHeader {
+  width: 100%;
+  height: 66vh;
+  min-height: calc(350rem / 14);
+  display: flex;
+  align-items: center;
+
+  @media (max-device-width: 768px) {
+    text-align: center;
+    height: 40vh;
+  }
+}
+
+.landingContent {
+  margin: 0 auto;
+  width: $width-2;
+
+  a {
+    margin-top: $margin-3;
+  }
+
+  @media (max-device-width: 768px) {
+    width: $width-1;
+  }
+}
+
+.landingSlide {
+  position: relative;
+  height: 80vh;
+  min-height: calc(350rem / 14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: calc(200rem / 14);
+
+  h2 {
+    font-size: $text-7;
+    font-family: $serif;
+    font-weight: 400;
+    color: $dark-6;
+
+    @media (max-device-width: 768px) {
+      font-size: $text-6;
+    }
+  }
+
+  b {
+    color: $dark-9;
+    font-weight: 400;
+    border-bottom: 2px dashed $dark-4;
+  }
+
+  i {
+    color: $dark-9;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 100%;
+    transform: skewY(-12deg);
+    z-index: -1;
+    border-top: 3px solid $primary-5;
+
+    @media (max-device-width: 768px) {
+      top: -5%;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    left: 0;
+    width: 100%;
+    transform: skewY(8deg);
+    z-index: -1;
+    border-bottom: 2px solid $dark-9;
+
+    @media (max-device-width: 768px) {
+      bottom: -5%;
+    }
+  }
+
+  @media (max-device-width: 768px) {
+    height: 60vh;
+    margin-bottom: calc(150rem / 14);
+    padding-left: $margin-5;
+  }
+}
+
+.landingTitle {
+  font-family: $serif;
+  font-weight: bold;
+  margin-bottom: $margin-4;
+  font-size: $text-8;
+
+  @media (max-device-width: 768px) {
+    font-size: $text-7;
+  }
+}
+
+.landingFeed {
+  max-width: calc(800rem / 14);
+  margin: 0 auto;
+  display: grid;
+  grid-gap: $margin-4;
+
+  @media (max-device-width: 768px) {
+    padding: 0 $margin-4;
+  }
+}
+
+.landingReviews {
+  font-size: $text-7;
+  font-weight: bold;
+  font-family: $serif;
+
+  @media (max-device-width: 768px) {
+    text-align: center;
+  }
+}
+
+.landingFeedCTA {
+  display: flex;
+  justify-content: center;
+  margin: $margin-5 0;
+}
