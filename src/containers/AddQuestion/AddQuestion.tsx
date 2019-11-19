@@ -63,13 +63,16 @@ function AddQuestion(props: AddQuestionProps) {
       <div className={styles.guidelineContainer}>
         <div className="heading-0">Community Guidelines</div>
         <div>
-          <b>1.</b> Be human.
+          <b>1.</b> Post a question you would ask in a job interview.
         </div>
         <div>
-          <b>2.</b> Search for duplicates before you post.
+          <b>2.</b> Be human.
         </div>
         <div>
-          <b>3.</b> Provide thoughtful details.
+          <b>3.</b> Search for duplicates before you post.
+        </div>
+        <div>
+          <b>4.</b> Provide thoughtful details.
         </div>
       </div>
 
