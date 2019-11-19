@@ -29,7 +29,7 @@ export default function Footer() {
       <div>
         <div className={styles.footerLabel}>Contact</div>
         <a
-          href="mailto:lihsing@coverstory.page"
+          href="mailto:team@coverstory.page"
           target="_blank"
           rel="noopener noreferrer"
         >

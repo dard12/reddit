@@ -46,12 +46,12 @@ function Navbar(props: NavbarProps) {
     <div className={styles.navbarContainer}>
       <div className={styles.navbar}>
         <div className={styles.brand}>
-          <Link to="/home">Questions</Link>
+          <Link to="/recent">Questions</Link>
           <span className={styles.subscript}>by CoverStory</span>
         </div>
 
         <div className={styles.navActions}>
-          <NavLink to="/home" activeClassName={styles.active}>
+          <NavLink to="/recent" activeClassName={styles.active}>
             Home
           </NavLink>
 

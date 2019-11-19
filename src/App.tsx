@@ -21,7 +21,7 @@ function App() {
       <div className="page-container">
         <Suspense fallback={null}>
           <Switch>
-            <Route exact path="/home" render={() => <RecentQuestions />} />
+            <Route exact path="/recent" render={() => <RecentQuestions />} />
             <Route
               exact
               path="/question"
@@ -73,7 +73,7 @@ function App() {
               render={props => <Login {...props} />}
             />
 
-            <Route render={() => <Redirect to="/home" />} />
+            <Route render={() => <Redirect to="/recent" />} />
           </Switch>
         </Suspense>
       </div>
