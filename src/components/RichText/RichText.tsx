@@ -63,7 +63,7 @@ class RichText extends Component<RichTextProps> {
       theme: 'bubble',
       placeholder,
       readOnly,
-      formats: ['bold', 'italic', 'link', 'blockquote', 'list'],
+      formats: ['bold', 'italic', 'link', 'blockquote', 'list', 'indent'],
       modules: {
         toolbar: [
           'bold',
