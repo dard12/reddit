@@ -5,7 +5,7 @@ import styles from './Landing.module.scss';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { userSelector } from '../../redux/selectors';
-import FullQuestionListPage from '../../containers/FullQuestionListPage/FullQuestionListPage';
+import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
 interface LandingProps {
   user?: string;
@@ -17,11 +17,6 @@ function Landing(props: LandingProps) {
   if (user) {
     return <Redirect to="/questions/recent" />;
   }
-
-  const params = {
-    sort: 'featured',
-    pageSize: 3,
-  };
 
   return (
     <React.Fragment>
@@ -57,9 +52,9 @@ function Landing(props: LandingProps) {
         </div>
 
         <div className={styles.landingFeed}>
-          <div className={styles.landingReviews}>Recent Answers</div>
+          <div className={styles.landingReviews}>Recent Questions</div>
 
-          <FullQuestionListPage params={params} />
+          <QuestionListPage params={{ sort: 'featured', pageSize: 3 }} />
 
           <div className={styles.landingFeedCTA}>
             <Link to="/register" className="ctaButton">
