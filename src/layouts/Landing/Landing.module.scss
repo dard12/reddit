@@ -16,6 +16,9 @@
 .landingContent {
   margin: 0 auto;
   width: $width-2;
+  border-left: 3px dashed $dark-9;
+  padding-left: $margin-5;
+  padding-bottom: $margin-4;
 
   a {
     margin-top: $margin-3;
@@ -28,61 +31,21 @@
 
 .landingSlide {
   position: relative;
-  height: 80vh;
+  height: 60vh;
   min-height: calc(350rem / 14);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: calc(200rem / 14);
+  margin-bottom: calc(100rem / 14);
 
   h2 {
     font-size: $text-7;
     font-family: $serif;
     font-weight: 400;
-    color: $dark-6;
+    margin: $margin-3 0;
 
     @media (max-device-width: 768px) {
       font-size: $text-6;
-    }
-  }
-
-  b {
-    color: $dark-9;
-    font-weight: 400;
-    border-bottom: 2px dashed $dark-4;
-  }
-
-  i {
-    color: $dark-9;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    left: 0;
-    width: 100%;
-    transform: skewY(-12deg);
-    z-index: -1;
-    border-top: 3px solid $primary-5;
-
-    @media (max-device-width: 768px) {
-      top: -5%;
-    }
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -15%;
-    left: 0;
-    width: 100%;
-    transform: skewY(8deg);
-    z-index: -1;
-    border-bottom: 2px solid $dark-9;
-
-    @media (max-device-width: 768px) {
-      bottom: -5%;
     }
   }
 

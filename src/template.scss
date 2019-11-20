@@ -282,6 +282,33 @@ textarea {
   outline: none;
 }
 
+.ctaButton {
+  @extend .btn;
+  font-size: $text-3;
+  background-color: $primary-5;
+  color: $dark-9;
+  font-weight: 600;
+  padding-left: $margin-4;
+  padding-right: $margin-4;
+  box-shadow: 0 3px $text-6 rgba($primary-5, 0.5);
+  margin-right: $margin-2;
+
+  &:hover:not([disabled]) {
+    color: $dark-9;
+    background-color: $primary-5;
+    box-shadow: 0 6px $text-6 rgba($primary-5, 0.7);
+  }
+}
+
+.ctaButtonSecondary {
+  @extend .btn;
+  font-size: $text-3;
+  font-weight: 600;
+  padding-left: $margin-4;
+  padding-right: $margin-4;
+  margin-left: $margin-2;
+}
+
 .ql-editor {
   padding: 0;
 }

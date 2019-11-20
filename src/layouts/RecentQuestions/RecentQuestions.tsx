@@ -3,14 +3,18 @@ import styles from './RecentQuestions.module.scss';
 import Paging from '../../containers/Paging/Paging';
 import FullQuestionListPage from '../../containers/FullQuestionListPage/FullQuestionListPage';
 
-interface RecentQuestionsProps {}
+interface RecentQuestionsProps {
+  pageSize?: number;
+}
 
 function RecentQuestions(props: RecentQuestionsProps) {
+  const { pageSize = 10 } = props;
+
   return (
     <div className={styles.recent}>
       <Paging
         component={FullQuestionListPage}
-        params={{ sort: 'recent', pageSize: 10 }}
+        params={{ sort: 'recent', pageSize }}
       />
     </div>
   );

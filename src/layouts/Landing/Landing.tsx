@@ -5,6 +5,7 @@ import styles from './Landing.module.scss';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { userSelector } from '../../redux/selectors';
+import FullQuestionListPage from '../../containers/FullQuestionListPage/FullQuestionListPage';
 
 interface LandingProps {
   user?: string;
@@ -17,6 +18,11 @@ function Landing(props: LandingProps) {
     return <Redirect to="/questions/recent" />;
   }
 
+  const params = {
+    sort: 'featured',
+    pageSize: 3,
+  };
+
   return (
     <React.Fragment>
       <Navbar />
@@ -25,54 +31,43 @@ function Landing(props: LandingProps) {
         <div className={styles.landingHeader}>
           <div className={styles.landingContent}>
             <div className={styles.landingTitle}>
-              {"Let's"} talk about interviewing.
+              Find out how to answer interview questions.
             </div>
 
             <Link to="/register" className="ctaButton">
-              Get Started — {"It's"} Free!
+              Try it — {"It's"} Free!
             </Link>
           </div>
         </div>
 
         <div className={styles.landingSlide}>
           <div className={styles.landingContent}>
-            <h2>
-              Explore <b>20 million</b> songs.
-            </h2>
-            <h2>
-              <b>Listen</b> on all major streaming platforms.
-            </h2>
-            <h2>
-              <b>Rate</b> your music ⁠— show your friends <i>{"what's"} good</i>
-              .
-            </h2>
+            <h2>1. Explore soft interview questions.</h2>
+            <h2>2. Discuss different answers.</h2>
+            <h2>3. Find the best answers to questions.</h2>
 
             <Link to="/register" className="ctaButton">
               Sign Up
             </Link>
 
-            <Link
-              to="/charts/best-albums-of-2019"
-              className="ctaButtonSecondary"
-            >
-              See Top Albums
+            <Link to="/questions/top" className="ctaButtonSecondary">
+              See Top Questions
             </Link>
           </div>
         </div>
 
         <div className={styles.landingFeed}>
-          <div className={styles.landingReviews}>Featured Music Reviews</div>
+          <div className={styles.landingReviews}>Recent Answers</div>
+
+          <FullQuestionListPage params={params} />
 
           <div className={styles.landingFeedCTA}>
             <Link to="/register" className="ctaButton">
               Sign Up
             </Link>
 
-            <Link
-              to="/charts/best-albums-of-2019"
-              className="ctaButtonSecondary"
-            >
-              See Top Albums
+            <Link to="/questions/recent" className="ctaButtonSecondary">
+              See More
             </Link>
           </div>
         </div>

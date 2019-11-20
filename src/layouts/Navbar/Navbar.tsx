@@ -58,7 +58,7 @@ function Navbar(props: NavbarProps) {
           )}
 
           <NavLink to="/questions/recent" activeClassName={styles.active}>
-            Recent
+            Recent Posts
           </NavLink>
 
           <NavLink to="/questions/top" activeClassName={styles.active}>
