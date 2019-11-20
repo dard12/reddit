@@ -63,30 +63,27 @@ function AddQuestion(props: AddQuestionProps) {
       <div className={styles.guidelineContainer}>
         <div className="heading-0">Community Guidelines</div>
         <div>
-          <b>1.</b> Post a question you would ask in a job interview.
+          <b>1.</b> Post only interview questions.
         </div>
         <div>
-          <b>2.</b> Be human.
+          <b>2.</b> Search for duplicates before you post.
         </div>
         <div>
-          <b>3.</b> Search for duplicates before you post.
-        </div>
-        <div>
-          <b>4.</b> Provide thoughtful details.
+          <b>3.</b> Provide thoughtful details.
         </div>
       </div>
 
       <div className={styles.questionContainer}>
         <Input
           className={styles.questionTitle}
-          placeholder="Write your question…"
+          placeholder="Write a interview question…"
           value={title}
           onChange={createOnChange(setTitle)}
           autoFocus
         />
         <div className={styles.questionDescription}>
           <TextareaAutosize
-            placeholder="Add some brief details to consider when answering this question…"
+            placeholder="What details should candidates consider in their answer?"
             maxLength={300}
             minRows={4}
             value={description}
