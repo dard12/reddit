@@ -13,7 +13,7 @@ function Tag(props: TagProps) {
     const queryParams = getQueryParams();
     queryParams.tag = tag;
     const search = qs.stringify(queryParams);
-    history.push({ pathname: '/question', search });
+    history.push({ pathname: '/questions/top', search });
   };
 
   return (
