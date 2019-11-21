@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
-import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { setQueryParams } from '../../history';
 import styles from './Tabs.module.scss';
 
@@ -15,41 +15,66 @@ interface TabsProps {
 
 function Tabs(props: TabsProps) {
   const { tabs, currentTab, defaultTab, queryParamName, seeMore } = props;
+  const [isMore, setIsMore] = useState(false);
   const createOnClick = (value: string) => () => {
     setQueryParams({ [queryParamName]: value });
   };
+  const toggleIsMore = () => setIsMore(!isMore);
 
   if (!currentTab) {
     const clickDefault = createOnClick(defaultTab);
     clickDefault();
   }
 
-  const viewableTabs = seeMore ? _.take(tabs, 9) : tabs;
+  const mainTabs = seeMore ? _.take(tabs, 8) : tabs;
+  const otherTabs = _.slice(tabs, 8, 33);
 
   return (
-    <div className={styles.tabsContainer}>
-      {/* <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}> */}
-      <div className={styles.tabs}>
-        {_.map(viewableTabs, ({ label, value }) => (
-          <div
-            onClick={createOnClick(value)}
-            className={currentTab === value ? styles.active : undefined}
-            key={value}
-          >
-            {label}
+    <div>
+      <div className={styles.tabsContainer}>
+        <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
+          {_.map(mainTabs, ({ label, value }) => (
+            <div
+              onClick={createOnClick(value)}
+              className={currentTab === value ? styles.active : undefined}
+              key={value}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+
+        {seeMore && (
+          <div className={styles.seeMore}>
+            <div className={styles.divider} />
+            <span onClick={toggleIsMore}>
+              {isMore ? (
+                <React.Fragment>
+                  close <IoIosArrowUp />
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  more <IoIosArrowDown />
+                </React.Fragment>
+              )}
+            </span>
           </div>
-        ))}
+        )}
       </div>
 
-      {/* {seeMore && (
-        <div className={styles.seeMore}>
-          <div className={styles.divider} />
-          <span>
-            more
-            <IoIosArrowDown />
-          </span>
+      {isMore && (
+        <div className={styles.tabsMore}>
+          {_.map(otherTabs, ({ label, value }) => (
+            <div
+              onClick={createOnClick(value)}
+              className={currentTab === value ? styles.active : undefined}
+              key={value}
+            >
+              {label}
+            </div>
+          ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 }
