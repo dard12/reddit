@@ -58,7 +58,8 @@ function Navbar(props: NavbarProps) {
           )}
 
           <NavLink to="/questions/recent" activeClassName={styles.active}>
-            Recent Posts
+            Recent
+            <MediaQuery minDeviceWidth={768}>{' Posts'}</MediaQuery>
           </NavLink>
 
           <NavLink to="/questions/top" activeClassName={styles.active}>

@@ -24,11 +24,12 @@ function Tabs(props: TabsProps) {
     clickDefault();
   }
 
-  const viewableTabs = seeMore ? _.take(tabs, 10) : tabs;
+  const viewableTabs = seeMore ? _.take(tabs, 9) : tabs;
 
   return (
     <div className={styles.tabsContainer}>
-      <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
+      {/* <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}> */}
+      <div className={styles.tabs}>
         {_.map(viewableTabs, ({ label, value }) => (
           <div
             onClick={createOnClick(value)}
@@ -40,7 +41,7 @@ function Tabs(props: TabsProps) {
         ))}
       </div>
 
-      {seeMore && (
+      {/* {seeMore && (
         <div className={styles.seeMore}>
           <div className={styles.divider} />
           <span>
@@ -48,7 +49,7 @@ function Tabs(props: TabsProps) {
             <IoIosArrowDown />
           </span>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
