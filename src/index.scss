@@ -41,7 +41,8 @@ a {
 .page-container {
   width: $width-5;
   margin: 0 auto;
-  margin-bottom: calc(30rem / 14);
+  margin-bottom: calc(80rem / 14);
+  min-height: 50vh;
   padding: $margin-4;
 
   @media (max-device-width: 768px) {
