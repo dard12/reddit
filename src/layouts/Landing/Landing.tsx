@@ -6,6 +6,7 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { userSelector } from '../../redux/selectors';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
+import MediaQuery from 'react-responsive';
 
 interface LandingProps {
   user?: string;
@@ -46,7 +47,9 @@ function Landing(props: LandingProps) {
             </Link>
 
             <Link to="/questions/top" className="ctaButtonSecondary">
-              See Top Questions
+              {'See '}
+              <MediaQuery minDeviceWidth={768}>{'Top '}</MediaQuery>
+              Questions
             </Link>
           </div>
         </div>

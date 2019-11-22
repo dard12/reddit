@@ -26,6 +26,9 @@
 
   @media (max-device-width: 768px) {
     width: $width-1;
+    padding-left: 0;
+    padding-right: $margin-2;
+    border: 0;
   }
 }
 
