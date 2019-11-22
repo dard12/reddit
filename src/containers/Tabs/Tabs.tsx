@@ -30,8 +30,8 @@ function Tabs(props: TabsProps) {
   const otherTabs = _.slice(tabs, 7, 32);
 
   return (
-    <div>
-      <div className={styles.tabsContainer}>
+    <div className={styles.tabsContainer}>
+      <div className={styles.tabsTopRow}>
         <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
           {_.map(mainTabs, ({ label, value }) => (
             <div

@@ -34,10 +34,8 @@
 .guidelineContainer {
   display: grid;
   grid-gap: $margin-1;
-  background-color: $dark-1;
-  border: 1px solid $dark-9;
-  border-bottom: 2px solid $dark-8;
-  padding: $margin-3;
+  padding-bottom: $margin-4;
+  border-bottom: 2px dashed $dark-7;
 }
 
 .questionTitle {

@@ -20,6 +20,11 @@
   border-bottom: 1px solid $dark-1;
 }
 
+.profileTabs {
+  @extend .tabs;
+  border-bottom: 2px solid $dark-8;
+}
+
 .profileName {
   font-weight: 600;
   font-size: $text-3;

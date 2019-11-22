@@ -1,10 +1,13 @@
 @import '../../template.scss';
 
 .tabsContainer {
+  border-bottom: 2px solid $dark-8;
+}
+
+.tabsTopRow {
   display: flex;
   white-space: nowrap;
   align-items: center;
-  border-bottom: 2px solid $dark-8;
 }
 
 .tabs {
@@ -53,9 +56,9 @@
 .tabsMore {
   @extend .card;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-gap: $margin-2;
-  border-top: 1px solid $dark-2;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-gap: $margin-3;
+  border-top: 2px dashed $dark-4;
 
   > * {
     @extend .truncate;

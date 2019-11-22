@@ -2,9 +2,8 @@
 
 .comment {
   @extend .card;
-  border-top: 0;
-  background-color: $dark-1;
-  border-bottom: 3px solid $dark-8;
+  @extend .card;
+  border-top: 2px dashed $dark-4;
 
   > div {
     margin-top: 0;

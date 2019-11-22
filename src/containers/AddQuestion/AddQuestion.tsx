@@ -63,7 +63,7 @@ function AddQuestion(props: AddQuestionProps) {
       <div className={styles.guidelineContainer}>
         <div className="heading-0">Community Guidelines</div>
         <div>
-          <b>1.</b> Post only interview questions.
+          <b>1.</b> Post only soft interview questions.
         </div>
         <div>
           <b>2.</b> Search for duplicates before you post.
@@ -76,7 +76,7 @@ function AddQuestion(props: AddQuestionProps) {
       <div className={styles.questionContainer}>
         <Input
           className={styles.questionTitle}
-          placeholder="Write a interview question…"
+          placeholder="Write a soft interview question…"
           value={title}
           onChange={createOnChange(setTitle)}
           autoFocus

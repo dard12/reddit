@@ -65,7 +65,7 @@ function Profile(props: ProfileProps) {
           </div>
         </div>
 
-        <div className="tabs">
+        <div className={styles.profileTabs}>
           <NavLink to={answersLink} activeClassName="active">
             Answers
           </NavLink>
