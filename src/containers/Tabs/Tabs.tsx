@@ -26,8 +26,8 @@ function Tabs(props: TabsProps) {
     clickDefault();
   }
 
-  const mainTabs = seeMore ? _.take(tabs, 8) : tabs;
-  const otherTabs = _.slice(tabs, 8, 33);
+  const mainTabs = seeMore ? _.take(tabs, 7) : tabs;
+  const otherTabs = _.slice(tabs, 7, 32);
 
   return (
     <div>

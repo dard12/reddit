@@ -2,15 +2,17 @@
 
 .tag {
   @extend .hoverLink;
-  margin-bottom: $margin-2;
+  margin-top: $margin-2;
+  margin-bottom: $margin-3;
   font-size: $text-1;
-  color: $dark-6;
+  background-color: $dark-2;
+  padding: 3px 5px;
 
   + .tag {
     margin-left: $margin-2;
   }
 
   &:hover {
-    color: $dark-9;
+    text-decoration: none;
   }
 }

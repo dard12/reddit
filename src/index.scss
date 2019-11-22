@@ -25,7 +25,8 @@ body {
   padding: 0;
   color: $dark-9;
   font-family: $sans-serif;
-  background-color: $white;
+  background-color: $dark-1;
+  font-size: $text-3;
 
   textarea {
     line-height: $line-height-3;

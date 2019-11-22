@@ -8,6 +8,7 @@ import { useLoadDocs, useAxiosGet } from '../../hooks/useAxios';
 import { CommentDoc } from '../../../src-server/models';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { createTreeChildSelector, userSelector } from '../../redux/selectors';
+import styles from './QuestionComments.module.scss';
 
 interface QuestionCommentsProps {
   question: string;
@@ -34,18 +35,20 @@ function QuestionComments(props: QuestionCommentsProps) {
   const sortedComments = getSortedComments(user, childrenComments);
 
   return (
-    <div>
+    <div className={styles.commentSection}>
       {_.isEmpty(sortedComments) ? (
         <div className="card">No comments yet.</div>
       ) : (
         _.map(sortedComments, ({ id }) => (
-          <Comment
-            question={question}
-            type={type}
-            comment={id}
-            depth={0}
-            key={id}
-          />
+          <div className={styles.rootComment}>
+            <Comment
+              question={question}
+              type={type}
+              comment={id}
+              depth={0}
+              key={id}
+            />
+          </div>
         ))
       )}
     </div>

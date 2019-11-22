@@ -9,7 +9,6 @@
   grid-template-columns: 1fr 1fr 1fr 3fr;
   line-height: 1.7;
   box-sizing: border-box;
-  border-top: 2px solid $dark-9;
 
   a {
     @extend .hoverLink;

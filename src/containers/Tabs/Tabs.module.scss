@@ -2,7 +2,6 @@
 
 .tabsContainer {
   display: flex;
-  overflow: hidden;
   white-space: nowrap;
   align-items: center;
 }
@@ -28,9 +27,7 @@
 }
 
 .seeMore {
-  border: 1px solid $dark-9;
-  border-bottom-width: 3px;
-  border-left: none;
+  background-color: $white;
   padding: $margin-3 0;
   padding-right: $margin-2;
   cursor: pointer;
@@ -54,12 +51,10 @@
 
 .tabsMore {
   @extend .card;
-  border: 1px solid $dark-9;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   grid-gap: $margin-2;
-  border-top: 0px;
-  background-color: $dark-1;
+  border-top: 1px solid $dark-2;
 
   > * {
     @extend .truncate;
