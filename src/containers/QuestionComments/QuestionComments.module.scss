@@ -3,9 +3,11 @@
 .commentSection {
   display: grid;
   grid-gap: $margin-3;
+  margin-top: $margin-3;
 }
 
 .rootComment {
   @extend .card;
   padding: $margin-3 $margin-4;
+  padding-bottom: $margin-4;
 }

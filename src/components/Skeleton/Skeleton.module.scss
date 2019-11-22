@@ -2,15 +2,15 @@
 
 @keyframes pulse {
   0% {
-    background-color: $dark-1;
-  }
-
-  50% {
     background-color: $dark-2;
   }
 
+  50% {
+    background-color: $dark-3;
+  }
+
   100% {
-    background-color: $dark-1;
+    background-color: $dark-2;
   }
 }
 
@@ -22,7 +22,7 @@
 }
 
 .line {
-  background-color: $dark-1;
+  background-color: $dark-2;
   animation: pulse 3s ease infinite;
   display: inline-block;
   width: 100%;

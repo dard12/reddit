@@ -21,7 +21,7 @@
 
 .author {
   font-weight: 600;
-  font-size: $text-1;
+  font-size: $text-2;
   cursor: pointer;
 
   &:hover {
@@ -51,7 +51,7 @@
 
 .commentFooter {
   margin-top: $margin-1;
-  font-size: $text-1;
+  font-size: $text-2;
   display: flex;
 }
 
@@ -88,7 +88,7 @@
 .collapseText {
   margin-left: $margin-2;
   cursor: pointer;
-  font-size: $text-1;
+  font-size: $text-2;
   font-weight: 600;
 
   &:hover {
@@ -99,13 +99,13 @@
 
 .answerLabel {
   font-weight: 600;
-  font-size: $text-1;
+  font-size: $text-2;
   margin-right: $margin-2;
   color: $secondary-5;
 }
 
 .commentPoints {
-  font-size: $text-1;
+  font-size: $text-2;
   margin-left: $margin-2;
   color: $dark-6;
 }

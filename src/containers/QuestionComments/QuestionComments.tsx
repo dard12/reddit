@@ -37,7 +37,7 @@ function QuestionComments(props: QuestionCommentsProps) {
   return (
     <div className={styles.commentSection}>
       {_.isEmpty(sortedComments) ? (
-        <div className="card">No comments yet.</div>
+        <div className="card faded">No comments yet.</div>
       ) : (
         _.map(sortedComments, ({ id }) => (
           <div className={styles.rootComment}>

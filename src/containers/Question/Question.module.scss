@@ -3,7 +3,7 @@
 .item {
   @extend .card;
   @extend .shadow-1;
-  border-bottom: 3px solid $dark-8;
+  border-bottom: 2px solid $dark-8;
   display: flex;
 }
 
@@ -16,8 +16,6 @@
   font-weight: 600;
   display: block;
   margin-bottom: $margin-1;
-  font-size: $text-3;
-  text-decoration: underline;
 
   a:hover {
     background-color: $primary-5;

@@ -1,9 +1,5 @@
 @import '../../template.scss';
 
-.label {
-  font-size: $text-1;
-}
-
 .comment {
   @extend .card;
   border-top: 0;

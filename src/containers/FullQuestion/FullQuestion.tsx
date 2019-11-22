@@ -31,7 +31,6 @@ function FullQuestion(props: FullQuestionProps) {
 
       {comment && commentDoc && (
         <div className={styles.comment}>
-          {/* <div className={styles.commentTitle}>Recent post</div> */}
           <Comment
             question={question}
             comment={comment}
