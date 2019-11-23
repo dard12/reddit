@@ -28,13 +28,19 @@ interface NavbarProps extends RouteComponentProps {
 
 function Navbar(props: NavbarProps) {
   const { username, tagDocs, logoutAction, loadDocsAction } = props;
-  const { result } = useAxiosGet(
+  const { result: tagResult } = useAxiosGet(
     '/api/tag',
     { approved: true },
     { cachedResult: tagDocs, name: 'Navbar' },
   );
+  const { result: userResult } = useAxiosGet(
+    '/api/user',
+    { user_name: username },
+    { cachedResult: tagDocs, name: 'Navbar' },
+  );
 
-  useLoadDocs({ collection: 'tags', result, loadDocsAction });
+  useLoadDocs({ collection: 'tags', result: tagResult, loadDocsAction });
+  useLoadDocs({ collection: 'users', result: userResult, loadDocsAction });
 
   const addQuestionBtn = (
     <Button className={styles.addQuestionBtn}>
