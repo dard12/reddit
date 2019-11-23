@@ -81,7 +81,7 @@ function CommentBox(props: CommentBoxProps) {
     submit = 'Comment';
   } else {
     placeholder =
-      'Is this a good interview question? What makes this a good or bad question?';
+      'Is this a good soft interview question? What makes this a good or bad question?';
     submit = 'Comment';
   }
 

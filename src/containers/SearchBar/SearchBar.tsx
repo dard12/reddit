@@ -30,7 +30,7 @@ function SearchBar(props: SearchBarProps) {
   return (
     <Input
       className={styles.searchBar}
-      placeholder="Search for Interview Questions..."
+      placeholder="Search for Soft Interview Questions..."
       onChange={onChange}
       value={query}
     />
