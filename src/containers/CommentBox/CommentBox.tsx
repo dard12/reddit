@@ -76,7 +76,8 @@ function CommentBox(props: CommentBoxProps) {
     placeholder = 'Write your reply…';
     submit = 'Reply';
   } else if (type === 'response') {
-    placeholder = 'How would you respond to this question?';
+    placeholder =
+      'How would you respond to this question? What makes for a good answer? ';
     submit = 'Comment';
   } else {
     placeholder =
