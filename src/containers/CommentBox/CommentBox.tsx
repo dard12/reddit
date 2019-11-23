@@ -88,21 +88,23 @@ function CommentBox(props: CommentBoxProps) {
   return (
     <div>
       <div className={styles.commentText}>
-        <RichText
-          placeholder={placeholder}
-          content={content}
-          onChange={setContent}
-          lastUpdate={lastUpdate}
-        />
-      </div>
+        {user && (
+          <RichText
+            placeholder={placeholder}
+            content={content}
+            onChange={setContent}
+            lastUpdate={lastUpdate}
+          />
+        )}
 
-      <div className={styles.commentAction}>
         {!user && (
           <div className={styles.commentSignUp}>
             To comment please <SignUp />.
           </div>
         )}
+      </div>
 
+      <div className={styles.commentAction}>
         {actions}
 
         <Button className="btn" onClick={onClickPublish} disabled={!user}>
