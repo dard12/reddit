@@ -86,34 +86,30 @@ function CommentBox(props: CommentBoxProps) {
   }
 
   return (
-    <React.Fragment>
-      {!user && (
-        <div className="card">
-          To comment please <SignUp />.
-        </div>
-      )}
+    <div>
+      <div className={styles.commentText}>
+        <RichText
+          placeholder={placeholder}
+          content={content}
+          onChange={setContent}
+          lastUpdate={lastUpdate}
+        />
+      </div>
 
-      {user && (
-        <div>
-          <div className={styles.commentText}>
-            <RichText
-              placeholder={placeholder}
-              content={content}
-              onChange={setContent}
-              lastUpdate={lastUpdate}
-            />
+      <div className={styles.commentAction}>
+        {!user && (
+          <div className={styles.commentSignUp}>
+            To comment please <SignUp />.
           </div>
+        )}
 
-          <div className={styles.commentAction}>
-            {actions}
+        {actions}
 
-            <Button className="btn" onClick={onClickPublish}>
-              {submit}
-            </Button>
-          </div>
-        </div>
-      )}
-    </React.Fragment>
+        <Button className="btn" onClick={onClickPublish} disabled={!user}>
+          {submit}
+        </Button>
+      </div>
+    </div>
   );
 }
 
