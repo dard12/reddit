@@ -3,7 +3,7 @@
 .commentText {
   @extend .card;
   border: 0;
-  background-color: $dark-3;
+  background-color: $dark-2;
   padding: $margin-3;
 
   > div > div:first-child {
@@ -14,7 +14,7 @@
 .commentAction {
   display: flex;
   justify-content: flex-end;
-  margin-top: $margin-2;
+  margin-top: $margin-3;
 
   > * {
     margin-left: $margin-2;

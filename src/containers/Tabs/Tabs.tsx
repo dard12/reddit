@@ -11,10 +11,19 @@ interface TabsProps {
   queryParamName: string;
   currentTab?: string;
   seeMore?: boolean;
+  className?: string;
 }
 
 function Tabs(props: TabsProps) {
-  const { tabs, currentTab, defaultTab, queryParamName, seeMore } = props;
+  const {
+    tabs,
+    currentTab,
+    defaultTab,
+    queryParamName,
+    seeMore,
+    className = styles.tabsContainer,
+  } = props;
+
   const [isMore, setIsMore] = useState(false);
   const createOnClick = (value: string) => () => {
     setQueryParams({ [queryParamName]: value });
@@ -30,7 +39,7 @@ function Tabs(props: TabsProps) {
   const otherTabs = _.slice(tabs, 7, 32);
 
   return (
-    <div className={styles.tabsContainer}>
+    <div className={className}>
       <div className={styles.tabsTopRow}>
         <div className={classNames(styles.tabs, { [styles.hasMore]: seeMore })}>
           {_.map(mainTabs, ({ label, value }) => (

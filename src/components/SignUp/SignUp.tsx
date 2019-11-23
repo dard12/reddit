@@ -16,12 +16,12 @@ export default function SignUp(props: SignUpProps) {
 
   return (
     <span>
-      <Link className="link primary" to="/register" onClick={onClick}>
-        Sign up
+      <Link className="hoverLink" to="/register" onClick={onClick}>
+        <b>Sign up</b>
       </Link>
       {' or '}
       <Link className="hoverLink" to="/login" onClick={onClick}>
-        Login
+        <b>Login</b>
       </Link>
     </span>
   );

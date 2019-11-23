@@ -93,7 +93,7 @@ function CommentBox(props: CommentBoxProps) {
       )}
 
       {user && (
-        <React.Fragment>
+        <div>
           <div className={styles.commentText}>
             <RichText
               placeholder={placeholder}
@@ -110,7 +110,7 @@ function CommentBox(props: CommentBoxProps) {
               {submit}
             </Button>
           </div>
-        </React.Fragment>
+        </div>
       )}
     </React.Fragment>
   );

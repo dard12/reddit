@@ -39,14 +39,17 @@ function QuestionPage(props: QuestionPageProps) {
     <div className={styles.questionPage}>
       <Question question={question} disableActions />
 
-      <div className={styles.commentSection}>
+      <div>
         <Tabs
           tabs={tabs}
           queryParamName="type"
           currentTab={type}
           defaultTab="response"
+          className={styles.questionTabs}
         />
-        <CommentBox question={question} type={type} />
+        <div className={styles.commentSection}>
+          <CommentBox question={question} type={type} />
+        </div>
       </div>
 
       <QuestionComments question={question} type={type} />
