@@ -30,6 +30,8 @@ export const withTracker = <P extends RouteComponentProps>(
             scope.setUser({ id: userId, username });
             scope.setExtra('sessionURL', LogRocket.sessionURL);
           });
+
+          LogRocket.identify(userId, { name: username });
         }
       }
     }, [page]);

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
 import styles from './Landing.module.scss';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { userSelector } from '../../redux/selectors';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
-import MediaQuery from 'react-responsive';
 
 interface LandingProps {
   user?: string;
