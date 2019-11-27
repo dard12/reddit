@@ -103,11 +103,15 @@ function CommentVote(props: CommentVoteProps) {
       ) : (
         <React.Fragment>
           <SignUpModal
-            buttonChildren={<IoIosArrowUp />}
+            buttonRender={(openModal: any) => (
+              <IoIosArrowUp onClick={openModal} />
+            )}
             prompt="To vote please "
           />
           <SignUpModal
-            buttonChildren={<IoIosArrowDown />}
+            buttonRender={(openModal: any) => (
+              <IoIosArrowDown onClick={openModal} />
+            )}
             prompt="To vote please "
           />
         </React.Fragment>

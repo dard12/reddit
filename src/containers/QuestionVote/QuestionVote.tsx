@@ -111,14 +111,18 @@ function QuestionVote(props: QuestionVoteProps) {
       ) : (
         <React.Fragment>
           <SignUpModal
-            buttonChildren={<IoIosArrowUp />}
+            buttonRender={(openModal: any) => (
+              <IoIosArrowUp onClick={openModal} />
+            )}
             prompt="To vote please "
           />
 
           <span>{scoreDisplay}</span>
 
           <SignUpModal
-            buttonChildren={<IoIosArrowDown />}
+            buttonRender={(openModal: any) => (
+              <IoIosArrowDown onClick={openModal} />
+            )}
             prompt="To vote please "
           />
         </React.Fragment>
