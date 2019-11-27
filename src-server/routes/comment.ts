@@ -27,8 +27,6 @@ router.post('/api/comment', requireAuth, async (req, res) => {
     parent_id: parent_id || newId,
     author_id: user.id,
     author_name: user.user_name,
-    up_votes: 0,
-    down_votes: 0,
   };
 
   if (!parent_id) {
