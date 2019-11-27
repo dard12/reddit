@@ -5,16 +5,16 @@ import styles from './SignUpModal.module.scss';
 
 interface SignUpModalProps {
   prompt: string;
-  buttonChildren: any;
+  buttonRender: any;
 }
 
 export default function SignUpModal(props: SignUpModalProps) {
-  const { buttonChildren, prompt } = props;
+  const { buttonRender, prompt } = props;
 
   return (
     <Modal
-      buttonChildren={buttonChildren}
-      render={closeModal => (
+      buttonRender={buttonRender}
+      modalRender={closeModal => (
         <div className={styles.signUpModal}>
           {prompt} <SignUp onClick={closeModal} />.
         </div>

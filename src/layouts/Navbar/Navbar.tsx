@@ -42,8 +42,8 @@ function Navbar(props: NavbarProps) {
   useLoadDocs({ collection: 'tags', result: tagResult, loadDocsAction });
   useLoadDocs({ collection: 'users', result: userResult, loadDocsAction });
 
-  const addQuestionBtn = (
-    <Button className={styles.addQuestionBtn}>
+  const addQuestionBtn = (openModal: any) => (
+    <Button className={styles.addQuestionBtn} onClick={openModal}>
       <span>Add Question</span>
     </Button>
   );
@@ -84,8 +84,8 @@ function Navbar(props: NavbarProps) {
           <MediaQuery minDeviceWidth={768}>
             {username ? (
               <Modal
-                buttonChildren={addQuestionBtn}
-                render={closeModal => (
+                buttonRender={addQuestionBtn}
+                modalRender={closeModal => (
                   <AddQuestion
                     closeModal={closeModal}
                     tagFilter={{ approved: true }}
@@ -94,7 +94,7 @@ function Navbar(props: NavbarProps) {
               />
             ) : (
               <SignUpModal
-                buttonChildren={addQuestionBtn}
+                buttonRender={addQuestionBtn}
                 prompt="To ask a question please "
               />
             )}

@@ -3,15 +3,14 @@ import ReactModal from 'react-modal';
 import styles from './Modal.module.scss';
 
 interface ModalProps {
-  buttonClassName?: string;
-  buttonChildren: any;
-  render: (closeModal: Function) => any;
+  buttonRender: (openModal: Function) => any;
+  modalRender: (closeModal: Function) => any;
 }
 
 ReactModal.setAppElement('#root');
 
 export default function Modal(props: ModalProps) {
-  const { buttonClassName, buttonChildren, render } = props;
+  const { buttonRender, modalRender } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => setIsOpen(false);
@@ -27,9 +26,7 @@ export default function Modal(props: ModalProps) {
 
   return (
     <React.Fragment>
-      <div className={buttonClassName} onClick={openModal}>
-        {buttonChildren}
-      </div>
+      {buttonRender(openModal)}
 
       <ReactModal
         isOpen={isOpen}
@@ -37,7 +34,7 @@ export default function Modal(props: ModalProps) {
         className={styles.modal}
         overlayClassName={styles.overlay}
       >
-        {render(closeModal)}
+        {modalRender(closeModal)}
       </ReactModal>
     </React.Fragment>
   );
