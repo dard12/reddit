@@ -43,9 +43,11 @@ function Navbar(props: NavbarProps) {
   useLoadDocs({ collection: 'users', result: userResult, loadDocsAction });
 
   const addQuestionBtn = (openModal: any) => (
-    <Button className={styles.addQuestionBtn} onClick={openModal}>
-      <span>Add Question</span>
-    </Button>
+    <div>
+      <Button className={styles.addQuestionBtn} onClick={openModal}>
+        <span>Add Question</span>
+      </Button>
+    </div>
   );
 
   return (

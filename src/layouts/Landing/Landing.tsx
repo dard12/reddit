@@ -27,11 +27,11 @@ function Landing(props: LandingProps) {
         <div className={styles.landingHeader}>
           <div className={styles.landingContent}>
             <div className={styles.landingTitle}>
-              Find out how to answer interview questions.
+              {"Don't"} fail your interviews because of <i>Culture Fit</i>.
             </div>
 
             <Link to="/register" className="ctaButton">
-              Try it — {"It's"} Free!
+              Get Prepared — Try it Free!
             </Link>
           </div>
         </div>

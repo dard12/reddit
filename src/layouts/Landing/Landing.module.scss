@@ -15,7 +15,7 @@
 
 .landingContent {
   margin: 0 auto;
-  width: $width-2;
+  width: calc(650rem / 14);
   border-left: 3px dashed $dark-9;
   padding-left: $margin-5;
   padding-bottom: $margin-4;
@@ -62,11 +62,23 @@
 .landingTitle {
   font-family: $serif;
   font-weight: bold;
-  margin-bottom: $margin-4;
+  margin-bottom: $margin-3;
   font-size: $text-8;
 
   @media (max-device-width: 768px) {
     font-size: $text-7;
+    padding: 0 $margin-3;
+  }
+}
+
+.landingSubtitle {
+  font-family: $serif;
+  font-weight: bold;
+  margin-bottom: $margin-4;
+  font-size: $text-8;
+
+  @media (max-device-width: 768px) {
+    font-size: $text-6;
   }
 }
 
