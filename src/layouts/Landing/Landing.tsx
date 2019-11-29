@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import MediaQuery from 'react-responsive';
 import styles from './Landing.module.scss';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
@@ -38,19 +37,35 @@ function Landing(props: LandingProps) {
 
         <div className={styles.landingSlide}>
           <div className={styles.landingContent}>
-            <h2>1. Explore soft interview questions.</h2>
-            <h2>2. Discuss different answers.</h2>
-            <h2>3. Find the best answers to questions.</h2>
+            <h2>1. Search by company or topic.</h2>
+            <h2>2. Browse soft skills interview questions.</h2>
+            <h2>3. Find the best answers for your onsite.</h2>
 
-            <Link to="/register" className="ctaButton">
-              Sign Up
-            </Link>
+            <div className={styles.ctaGrid}>
+              <Link to="/questions/top" className="ctaButtonTertiary">
+                Netflix
+              </Link>
 
-            <Link to="/questions/top" className="ctaButtonSecondary">
-              {'See '}
-              <MediaQuery minDeviceWidth={768}>{'Top '}</MediaQuery>
-              Questions
-            </Link>
+              <Link to="/questions/top" className="ctaButtonTertiary">
+                Google
+              </Link>
+
+              <Link to="/questions/top" className="ctaButtonTertiary">
+                Facebook
+              </Link>
+
+              <Link to="/questions/top" className="ctaButtonTertiary">
+                Amazon
+              </Link>
+
+              <Link to="/register" className="ctaButton">
+                Sign Up
+              </Link>
+
+              <Link to="/questions/top" className="ctaButtonSecondary">
+                All Questions
+              </Link>
+            </div>
           </div>
         </div>
 

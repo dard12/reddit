@@ -20,15 +20,17 @@
   padding-left: $margin-5;
   padding-bottom: $margin-4;
 
-  a {
-    margin-top: $margin-3;
-  }
-
   @media (max-device-width: 768px) {
     width: $width-1;
-    padding-left: 0;
-    padding-right: $margin-2;
+    padding: 0;
     border: 0;
+  }
+}
+
+.landingSlide .landingContent {
+  @media (max-device-width: 768px) {
+    padding-left: 0;
+    padding-right: $margin-4;
   }
 }
 
@@ -106,5 +108,24 @@
 .landingFeedCTA {
   display: flex;
   justify-content: center;
-  margin: $margin-5 0;
+  margin-top: $margin-3;
+  margin-bottom: $margin-5;
+}
+
+.ctaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: $margin-2;
+  grid-row-gap: $margin-3;
+  margin-top: $margin-4;
+
+  > * {
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  @media (max-device-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
