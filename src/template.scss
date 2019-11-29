@@ -310,15 +310,15 @@ textarea {
 
 .ctaButtonTertiary {
   @extend .btn;
+  @extend .shadow-1;
   font-size: $text-3;
   font-weight: 600;
   padding-left: $margin-4;
   padding-right: $margin-4;
   margin-left: $margin-2;
-  background-color: $dark-1;
+  background-color: $white;
   color: $dark-9;
-  border: 2px solid $dark-9;
-  border-bottom-width: 3px;
+  border-bottom: 2px solid $dark-9;
 
   &:hover:not([disabled]) {
     color: $dark-9;
