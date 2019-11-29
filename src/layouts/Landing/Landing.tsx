@@ -26,7 +26,7 @@ function Landing(props: LandingProps) {
         <div className={styles.landingHeader}>
           <div className={styles.landingContent}>
             <div className={styles.landingTitle}>
-              {"Don't"} fail your interviews because of <i>Culture Fit</i>.
+              {"Don't"} fail tech interviews because of <i>Culture Fit</i>.
             </div>
 
             <Link to="/register" className="ctaButton">
