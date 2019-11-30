@@ -51,7 +51,7 @@ function TopQuestions(props: TopQuestionsProps) {
         currentTab={company}
         queryParamName="company"
         defaultTab="all"
-        classNameTabs={styles.btnGroup}
+        classNameTabs={styles.companyTabs}
         classNameContainer="none"
         classNameActive={styles.active}
       />

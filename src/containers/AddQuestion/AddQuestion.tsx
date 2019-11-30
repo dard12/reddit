@@ -95,7 +95,7 @@ function AddQuestion(props: AddQuestionProps) {
           onChange={setTags}
           options={allTagOptions}
           maxItems={5}
-          placeholder="Add tags (optional)"
+          placeholder="What topic is this question under? (optional)"
           onCreateOption={onCreateTag}
           isSearchable
           isMulti

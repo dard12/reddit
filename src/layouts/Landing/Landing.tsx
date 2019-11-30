@@ -42,19 +42,31 @@ function Landing(props: LandingProps) {
             <h2>3. Find the best answers for your onsite.</h2>
 
             <div className={styles.ctaGrid}>
-              <Link to="/questions/top" className="ctaButtonTertiary">
+              <Link
+                to="/questions/top?company=netflix"
+                className="ctaButtonTertiary"
+              >
                 Netflix
               </Link>
 
-              <Link to="/questions/top" className="ctaButtonTertiary">
+              <Link
+                to="/questions/top?company=google"
+                className="ctaButtonTertiary"
+              >
                 Google
               </Link>
 
-              <Link to="/questions/top" className="ctaButtonTertiary">
+              <Link
+                to="/questions/top?company=facebook"
+                className="ctaButtonTertiary"
+              >
                 Facebook
               </Link>
 
-              <Link to="/questions/top" className="ctaButtonTertiary">
+              <Link
+                to="/questions/top?company=amazon"
+                className="ctaButtonTertiary"
+              >
                 Amazon
               </Link>
 

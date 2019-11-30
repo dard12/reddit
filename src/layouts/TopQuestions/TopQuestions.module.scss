@@ -11,14 +11,14 @@
   }
 }
 
-.btnGroup {
-  display: flex;
-
+.companyTabs {
   > * {
     @extend .chip;
     background-color: $dark-2;
     margin-right: $margin-2;
+    margin-bottom: $margin-2;
     cursor: pointer;
+    display: inline-block;
   }
 
   .active {

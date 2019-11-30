@@ -2,22 +2,20 @@
 
 .tabsContainer {
   border-bottom: 2px solid $dark-8;
-}
-
-.tabsTopRow {
-  display: flex;
-  white-space: nowrap;
-  align-items: center;
+  background-color: $white;
 }
 
 .tabs {
   @extend .tabs;
+  display: inline-flex;
   width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  justify-content: space-around;
+
+  > * {
+    white-space: nowrap;
+  }
 
   &.hasMore {
+    width: auto;
     justify-content: flex-start;
     border-right: none;
   }
@@ -35,7 +33,7 @@
   padding: $margin-3 0;
   padding-right: $margin-2;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
 
   svg {

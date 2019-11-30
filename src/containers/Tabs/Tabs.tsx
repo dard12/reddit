@@ -44,7 +44,7 @@ function Tabs(props: TabsProps) {
 
   return (
     <div className={classNameContainer}>
-      <div className={styles.tabsTopRow}>
+      <div>
         <div
           className={classNames(classNameTabs, { [styles.hasMore]: seeMore })}
         >
