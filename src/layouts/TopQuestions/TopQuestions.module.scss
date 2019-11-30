@@ -10,3 +10,18 @@
     width: 100%;
   }
 }
+
+.btnGroup {
+  display: flex;
+
+  > * {
+    @extend .chip;
+    background-color: $dark-2;
+    margin-right: $margin-2;
+    cursor: pointer;
+  }
+
+  > .active {
+    font-weight: 600;
+  }
+}

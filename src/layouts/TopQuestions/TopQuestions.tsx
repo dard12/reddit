@@ -56,6 +56,8 @@ function TopQuestions(props: TopQuestionsProps) {
         currentTab={company}
         queryParamName="company"
         defaultTab="all"
+        classNameTabs={styles.btnGroup}
+        classNameContainer="none"
       />
 
       <Paging component={QuestionListPage} params={params} />

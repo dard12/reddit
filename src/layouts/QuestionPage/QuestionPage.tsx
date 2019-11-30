@@ -45,7 +45,7 @@ function QuestionPage(props: QuestionPageProps) {
           queryParamName="type"
           currentTab={type}
           defaultTab="response"
-          className={styles.questionTabs}
+          classNameContainer={styles.questionTabs}
         />
         <div className={styles.commentSection}>
           <CommentBox question={question} type={type} />
