@@ -13,6 +13,7 @@ interface TabsProps {
   seeMore?: boolean;
   classNameContainer?: string;
   classNameTabs?: string;
+  classNameActive?: string;
 }
 
 function Tabs(props: TabsProps) {
@@ -24,6 +25,7 @@ function Tabs(props: TabsProps) {
     seeMore,
     classNameContainer = styles.tabsContainer,
     classNameTabs = styles.tabs,
+    classNameActive = styles.active,
   } = props;
 
   const [isMore, setIsMore] = useState(false);
@@ -49,7 +51,7 @@ function Tabs(props: TabsProps) {
           {_.map(mainTabs, ({ label, value }) => (
             <div
               onClick={createOnClick(value)}
-              className={currentTab === value ? styles.active : undefined}
+              className={currentTab === value ? classNameActive : undefined}
               key={value}
             >
               {label}

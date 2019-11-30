@@ -27,19 +27,34 @@ function TopQuestions(props: TopQuestionsProps) {
   };
   const topics = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
 
-  topics.unshift({ label: 'All', value: 'all' });
+  topics.unshift({ label: 'All Topics', value: 'all' });
 
   const companies = [
-    { label: 'All', value: 'all' },
+    { label: 'All Companies', value: 'all' },
     { label: 'Netflix', value: 'netflix' },
     { label: 'Amazon', value: 'amazon' },
     { label: 'Google', value: 'google' },
     { label: 'Facebook', value: 'facebook' },
+    { label: 'Apple', value: 'apple' },
+    { label: 'Microsoft', value: 'microsoft' },
+    { label: 'Uber', value: 'uber' },
+    { label: 'Lyft', value: 'lyft' },
+    { label: 'Airbnb', value: 'airbnb' },
   ];
 
   return (
     <div className={styles.topQuestions}>
       <SearchBar query={query} />
+
+      <Tabs
+        tabs={companies}
+        currentTab={company}
+        queryParamName="company"
+        defaultTab="all"
+        classNameTabs={styles.btnGroup}
+        classNameContainer="none"
+        classNameActive={styles.active}
+      />
 
       <MediaQuery minDeviceWidth={768}>
         <Tabs
@@ -50,15 +65,6 @@ function TopQuestions(props: TopQuestionsProps) {
           seeMore
         />
       </MediaQuery>
-
-      <Tabs
-        tabs={companies}
-        currentTab={company}
-        queryParamName="company"
-        defaultTab="all"
-        classNameTabs={styles.btnGroup}
-        classNameContainer="none"
-      />
 
       <Paging component={QuestionListPage} params={params} />
     </div>
