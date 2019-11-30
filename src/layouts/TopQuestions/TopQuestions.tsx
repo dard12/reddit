@@ -15,18 +15,27 @@ interface TopQuestionsProps {
   tag?: string;
   tagDocs?: TagDoc[];
   tagFilter?: any;
+  company?: string;
 }
 
 function TopQuestions(props: TopQuestionsProps) {
-  const { query, tag, tagDocs } = props;
+  const { query, tag, tagDocs, company } = props;
   const params = {
-    search: { text: query, tags: [tag] },
+    search: { text: query, tags: [tag], companies: [company] },
     sort: 'up_votes',
     pageSize: 10,
   };
-  const tabs = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
+  const topics = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
 
-  tabs.unshift({ label: 'All', value: 'all' });
+  topics.unshift({ label: 'All', value: 'all' });
+
+  const companies = [
+    { label: 'All', value: 'all' },
+    { label: 'Netflix', value: 'netflix' },
+    { label: 'Amazon', value: 'amazon' },
+    { label: 'Google', value: 'google' },
+    { label: 'Facebook', value: 'facebook' },
+  ];
 
   return (
     <div className={styles.topQuestions}>
@@ -34,13 +43,20 @@ function TopQuestions(props: TopQuestionsProps) {
 
       <MediaQuery minDeviceWidth={768}>
         <Tabs
-          tabs={tabs}
+          tabs={topics}
           currentTab={tag}
           queryParamName="tag"
           defaultTab="all"
           seeMore
         />
       </MediaQuery>
+
+      <Tabs
+        tabs={companies}
+        currentTab={company}
+        queryParamName="company"
+        defaultTab="all"
+      />
 
       <Paging component={QuestionListPage} params={params} />
     </div>

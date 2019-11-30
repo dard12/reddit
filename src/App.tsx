@@ -32,11 +32,13 @@ function App() {
               render={() => {
                 const query = getQueryParams('query');
                 const tag = getQueryParams('tag');
+                const company = getQueryParams('company');
 
                 return (
                   <TopQuestions
                     query={query}
                     tag={tag}
+                    company={company}
                     tagFilter={{ approved: true }}
                   />
                 );

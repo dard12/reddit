@@ -5,14 +5,8 @@ import { execute, getId } from '../util';
 
 router.get('/api/question', async (req, res) => {
   const { query } = req;
-  const { sort, search, upvoted_by } = query;
-  const where = _.omit(query, [
-    'search',
-    'sort',
-    'page',
-    'pageSize',
-    'upvoted_by',
-  ]);
+  const { sort, search, upvoted_by, ...remaining } = query;
+  const where = _.omit(remaining, ['page', 'pageSize']);
 
   const pgQuery = pg
     .select('*')
@@ -46,11 +40,16 @@ router.get('/api/question', async (req, res) => {
 
   if (search) {
     const searchDict = JSON.parse(query.search);
-    const { tags } = searchDict;
+    const { tags, companies } = searchDict;
     const validTags = _.compact(_.pullAll(tags, ['all']));
+    const validCompanies = _.compact(_.pullAll(companies, ['all']));
 
     if (!_.isEmpty(validTags)) {
       pgQuery.whereRaw('tags && ?', [validTags]);
+    }
+
+    if (!_.isEmpty(validCompanies)) {
+      pgQuery.whereRaw('companies && ?', [validCompanies]);
     }
 
     if (searchDict.text) {
