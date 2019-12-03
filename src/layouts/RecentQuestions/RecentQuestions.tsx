@@ -8,7 +8,7 @@ interface RecentQuestionsProps {
 }
 
 function RecentQuestions(props: RecentQuestionsProps) {
-  const { pageSize = 7 } = props;
+  const { pageSize = 5 } = props;
 
   return (
     <div className={styles.recent}>

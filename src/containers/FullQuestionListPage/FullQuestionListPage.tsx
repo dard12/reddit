@@ -6,15 +6,18 @@ import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { Button } from '../../components/Button/Button';
 import FullQuestion from '../FullQuestion/FullQuestion';
+import { userSelector } from '../../redux/selectors';
+import SignUp from '../../components/SignUp/SignUp';
 
 interface FullQuestionListPageProps {
+  user?: string;
   params: any;
   seeMore?: Function;
   loadDocsAction?: Function;
 }
 
 function FullQuestionListPage(props: FullQuestionListPageProps) {
-  const { params, seeMore, loadDocsAction } = props;
+  const { user, params, seeMore, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet('/api/question', params, {
     reloadOnChange: true,
     name: 'FullQuestionListPage',
@@ -34,6 +37,8 @@ function FullQuestionListPage(props: FullQuestionListPageProps) {
 
   const { docs, next, page } = result;
 
+  const accountWall = !user && page > 0;
+
   return (
     <React.Fragment>
       {_.isEmpty(docs) && page === 0 ? (
@@ -44,7 +49,13 @@ function FullQuestionListPage(props: FullQuestionListPageProps) {
         ))
       )}
 
-      {seeMore && next && (
+      {accountWall && (
+        <div className="card">
+          Please <SignUp /> to see more posts.
+        </div>
+      )}
+
+      {!accountWall && seeMore && next && (
         <div>
           <Button className="btn" onClick={seeMore}>
             See More
@@ -56,6 +67,6 @@ function FullQuestionListPage(props: FullQuestionListPageProps) {
 }
 
 export default connect(
-  null,
+  userSelector,
   { loadDocsAction },
 )(FullQuestionListPage);
