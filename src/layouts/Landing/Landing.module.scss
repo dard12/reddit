@@ -113,19 +113,5 @@
 }
 
 .ctaGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: $margin-2;
-  grid-row-gap: $margin-3;
   margin-top: $margin-4;
-
-  > * {
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  @media (max-device-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
 }

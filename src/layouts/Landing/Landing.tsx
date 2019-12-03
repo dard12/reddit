@@ -47,7 +47,7 @@ function Landing(props: LandingProps) {
               </Link>
 
               <Link to="/questions/top" className="ctaButtonSecondary">
-                All Questions
+                See Top Questions
               </Link>
             </div>
           </div>
