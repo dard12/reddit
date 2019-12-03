@@ -6,15 +6,18 @@ import { useAxiosGet, useLoadDocs } from '../../hooks/useAxios';
 import { loadDocsAction } from '../../redux/actions';
 import Skeleton from '../../components/Skeleton/Skeleton';
 import { Button } from '../../components/Button/Button';
+import { userSelector } from '../../redux/selectors';
+import SignUp from '../../components/SignUp/SignUp';
 
 interface QuestionListPageProps {
+  user?: string;
   params: any;
   seeMore?: Function;
   loadDocsAction?: Function;
 }
 
 function QuestionListPage(props: QuestionListPageProps) {
-  const { params, seeMore, loadDocsAction } = props;
+  const { user, params, seeMore, loadDocsAction } = props;
   const { result, isSuccess } = useAxiosGet('/api/question', params, {
     name: 'QuestionListPage',
     reloadOnChange: true,
@@ -33,6 +36,7 @@ function QuestionListPage(props: QuestionListPageProps) {
   }
 
   const { docs, next, page } = result;
+  const accountWall = !user && page > 0;
 
   return (
     <React.Fragment>
@@ -42,7 +46,13 @@ function QuestionListPage(props: QuestionListPageProps) {
         _.map(docs, ({ id }) => <Question question={id} key={id} />)
       )}
 
-      {seeMore && next && (
+      {accountWall && (
+        <div className="card">
+          Please <SignUp /> to see more results.
+        </div>
+      )}
+
+      {!accountWall && seeMore && next && (
         <div>
           <Button className="btn" onClick={seeMore}>
             See More
@@ -54,6 +64,6 @@ function QuestionListPage(props: QuestionListPageProps) {
 }
 
 export default connect(
-  null,
+  userSelector,
   { loadDocsAction },
 )(QuestionListPage);

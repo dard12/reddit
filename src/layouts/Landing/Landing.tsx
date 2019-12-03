@@ -37,39 +37,11 @@ function Landing(props: LandingProps) {
 
         <div className={styles.landingSlide}>
           <div className={styles.landingContent}>
-            <h2>1. Search by company or topic.</h2>
-            <h2>2. Browse soft skills interview questions.</h2>
+            <h2>1. Browse soft skills interview questions.</h2>
+            <h2>2. Discuss different answers.</h2>
             <h2>3. Find the best answers for your onsite.</h2>
 
             <div className={styles.ctaGrid}>
-              <Link
-                to="/questions/top?company=netflix"
-                className="ctaButtonTertiary"
-              >
-                Netflix
-              </Link>
-
-              <Link
-                to="/questions/top?company=google"
-                className="ctaButtonTertiary"
-              >
-                Google
-              </Link>
-
-              <Link
-                to="/questions/top?company=facebook"
-                className="ctaButtonTertiary"
-              >
-                Facebook
-              </Link>
-
-              <Link
-                to="/questions/top?company=amazon"
-                className="ctaButtonTertiary"
-              >
-                Amazon
-              </Link>
-
               <Link to="/register" className="ctaButton">
                 Sign Up
               </Link>

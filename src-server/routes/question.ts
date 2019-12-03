@@ -14,7 +14,7 @@ router.get('/api/question', async (req, res) => {
     .where(where);
 
   if (sort === 'featured') {
-    pgQuery.whereIn('id', ['j5kxa1s8rqqv', '59tc3q3eck61', 'u8gmex7sehxb']);
+    pgQuery.whereIn('id', ['klmay7msp9r7', 'kel4fl46b6da', 'yrj4dl3wrfsm']);
   } else if (sort === 'recent') {
     pgQuery
       .orderBy('last_commented_at', 'desc')
