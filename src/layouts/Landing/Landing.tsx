@@ -30,7 +30,7 @@ function Landing(props: LandingProps) {
             </div>
 
             <Link to="/register" className="ctaButton">
-              Get Prepared — Try it Free!
+              Get Prepared — Sign Up for Free!
             </Link>
           </div>
         </div>
