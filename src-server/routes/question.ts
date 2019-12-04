@@ -13,7 +13,13 @@ router.get('/api/question', async (req, res) => {
     .from('questions')
     .where(where);
 
-  if (sort === 'featured') {
+  if (sort === 'top') {
+    pgQuery
+      .select(pg.raw('(up_votes + fake_up_votes - down_votes) as rank'))
+      .orderBy('rank', 'desc')
+      .orderBy('response_count', 'desc')
+      .orderBy('id');
+  } else if (sort === 'featured') {
     pgQuery.whereIn('id', ['klmay7msp9r7', 'kel4fl46b6da', 'yrj4dl3wrfsm']);
   } else if (sort === 'recent') {
     pgQuery

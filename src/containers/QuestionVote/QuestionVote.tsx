@@ -157,9 +157,15 @@ export function getScoreDisplay({
   voteDoc?: QuestionVoteDoc | CommentVoteDoc;
   currentVote?: number;
 }) {
-  const { up_votes, down_votes } = targetDoc;
+  const { up_votes, down_votes, fake_up_votes } = targetDoc;
   const savedVote = getVoteScore(voteDoc);
-  const score = _.sum([up_votes, -1 * down_votes, -1 * savedVote, currentVote]);
+  const score = _.sum([
+    up_votes,
+    fake_up_votes,
+    -1 * down_votes,
+    -1 * savedVote,
+    currentVote,
+  ]);
 
   return Math.abs(score) > 999 ? `${_.round(score / 1000, 1)}k` : score;
 }

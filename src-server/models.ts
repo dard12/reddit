@@ -22,6 +22,7 @@ export interface QuestionDoc {
   meta_count: number;
   up_votes: number;
   down_votes: number;
+  fake_up_votes: number;
   last_comment_id: string;
   created_at: Date;
   updated_at: Date;
@@ -39,6 +40,7 @@ export interface CommentDoc {
   updated_at: Date;
   up_votes: number;
   down_votes: number;
+  fake_up_votes: number;
   is_edited: boolean;
   is_answer: boolean;
 }

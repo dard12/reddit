@@ -22,7 +22,7 @@ function TopQuestions(props: TopQuestionsProps) {
   const { query, tag, tagDocs, company } = props;
   const params = {
     search: { text: query, tags: [tag], companies: [company] },
-    sort: 'up_votes',
+    sort: 'top',
     pageSize: 5,
   };
   const topics = _.map(tagDocs, ({ id }) => ({ label: id, value: id }));
