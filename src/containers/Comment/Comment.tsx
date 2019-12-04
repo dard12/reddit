@@ -233,9 +233,13 @@ export function getSortedComments(user?: string, comments?: CommentDoc[]) {
     ...comment,
     created_at: parseJSON(comment.created_at),
   }));
+  const rankedChildren = _.map(serializedComments, comment => ({
+    rank: comment.up_votes + comment.fake_up_votes + -1 * comment.down_votes,
+    ...comment,
+  }));
   const sortedChildren = _.orderBy(
-    serializedComments,
-    ['up_votes', 'created_at'],
+    rankedChildren,
+    ['rank', 'created_at'],
     ['desc', 'desc'],
   );
 
