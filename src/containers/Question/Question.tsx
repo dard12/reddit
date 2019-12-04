@@ -12,6 +12,7 @@ import Skeleton from '../../components/Skeleton/Skeleton';
 import QuestionName from '../QuestionName/QuestionName';
 import Highlight from '../Highlight/Highlight';
 import Tag from '../Tag/Tag';
+import { IoMdChatboxes, IoMdChatbubbles } from 'react-icons/io';
 
 interface QuestionProps {
   question: string;
@@ -42,9 +43,8 @@ function Question(props: QuestionProps) {
     return <Skeleton card count={4} />;
   }
 
-  const { description, meta_count, response_count, tags } = questionDoc;
+  const { description, response_count, tags, updated_at } = questionDoc;
   const questionResponseLink = `/question/${question}?type=response`;
-  const questionMetaLink = `/question/${question}?type=meta`;
 
   return (
     <div className={className}>
@@ -65,19 +65,13 @@ function Question(props: QuestionProps) {
           ))}
         </div>
 
-        {!disableActions && (
-          <div className={styles.itemActions}>
+        <div className={styles.itemActions}>
+          {!disableActions && (
             <Link to={questionResponseLink} className={styles.itemMeta}>
-              {response_count} responses
+              <IoMdChatbubbles /> {response_count} comments
             </Link>
-
-            <span>•</span>
-
-            <Link to={questionMetaLink} className={styles.itemMeta}>
-              {meta_count} meta-comments
-            </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

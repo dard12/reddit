@@ -28,28 +28,12 @@ function QuestionPage(props: QuestionPageProps) {
 
   useLoadDocs({ collection: 'questions', result, loadDocsAction });
 
-  const response_count = _.get(questionDoc, 'response_count') || 0;
-  const meta_count = _.get(questionDoc, 'meta_count') || 0;
-  const tabs = [
-    { label: `Answer Discussion (${response_count})`, value: 'response' },
-    { label: `Meta Discussion (${meta_count})`, value: 'meta' },
-  ];
-
   return (
     <div className={styles.questionPage}>
       <Question question={question} disableActions />
 
-      <div>
-        <Tabs
-          tabs={tabs}
-          queryParamName="type"
-          currentTab={type}
-          defaultTab="response"
-          classNameContainer={styles.questionTabs}
-        />
-        <div className={styles.commentSection}>
-          <CommentBox question={question} type={type} />
-        </div>
+      <div className={styles.commentSection}>
+        <CommentBox question={question} type={type} />
       </div>
 
       <QuestionComments question={question} type={type} />
