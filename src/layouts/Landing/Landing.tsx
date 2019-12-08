@@ -26,7 +26,7 @@ function Landing(props: LandingProps) {
         <div className={styles.landingHeader}>
           <div className={styles.landingContent}>
             <div className={styles.landingTitle}>
-              {"Don't"} fail tech interviews because of <i>Culture Fit</i>.
+              {"Don't"} fail interviews because of <i>Culture Fit</i>.
             </div>
 
             <Link to="/register" className="ctaButton">
@@ -37,7 +37,7 @@ function Landing(props: LandingProps) {
 
         <div className={styles.landingSlide}>
           <div className={styles.landingContent}>
-            <h2>1. Browse soft skills interview questions.</h2>
+            <h2>1. Browse behavioral questions.</h2>
             <h2>2. Discuss different answers.</h2>
             <h2>3. Find the best answers for your onsite.</h2>
 
