@@ -37,7 +37,7 @@ function FullQuestionListPage(props: FullQuestionListPageProps) {
 
   const { docs, next, page } = result;
 
-  const accountWall = !user;
+  const accountWall = !user && seeMore;
 
   return (
     <React.Fragment>

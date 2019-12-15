@@ -36,7 +36,7 @@ function QuestionListPage(props: QuestionListPageProps) {
   }
 
   const { docs, next, page } = result;
-  const accountWall = !user;
+  const accountWall = !user && seeMore;
 
   return (
     <React.Fragment>
