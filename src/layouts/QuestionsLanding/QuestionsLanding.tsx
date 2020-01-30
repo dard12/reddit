@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styles from './Landing.module.scss';
+import styles from './QuestionsLanding.module.scss';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { userSelector } from '../../redux/selectors';
 import QuestionListPage from '../../containers/QuestionListPage/QuestionListPage';
 
-interface LandingProps {
+interface QuestionsLandingProps {
   user?: string;
 }
 
-function Landing(props: LandingProps) {
+function QuestionsLanding(props: QuestionsLandingProps) {
   const { user } = props;
 
   if (user) {
@@ -25,7 +25,9 @@ function Landing(props: LandingProps) {
       <div>
         <div className={styles.landingHeader}>
           <div className={styles.landingContent}>
-            <div className={styles.landingTitle}>Something</div>
+            <div className={styles.landingTitle}>
+              {"Don't"} fail interviews because of <i>Culture Fit</i>.
+            </div>
 
             <Link to="/register" className="ctaButton">
               Get Prepared — Sign Up for Free!
@@ -73,4 +75,4 @@ function Landing(props: LandingProps) {
   );
 }
 
-export default connect(userSelector)(Landing);
+export default connect(userSelector)(QuestionsLanding);

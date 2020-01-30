@@ -60,7 +60,7 @@ function Navbar(props: NavbarProps) {
 
         <div className={styles.navActions}>
           {!username && (
-            <NavLink exact to="/" activeClassName={styles.active}>
+            <NavLink exact to="/questions" activeClassName={styles.active}>
               Home
             </NavLink>
           )}

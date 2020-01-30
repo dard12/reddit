@@ -4,16 +4,17 @@ import './index.scss';
 import 'normalize.css';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
+import * as Sentry from '@sentry/browser';
+import { Router, Route, Switch } from 'react-router-dom';
 import { store } from './redux/store';
 import { App } from './App.tsx';
-import { Router, Route, Switch } from 'react-router-dom';
 import history from './history';
 import { withTracker } from './components/WithTracker/WithTracker';
-import * as Sentry from '@sentry/browser';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import LegalPrivacy from './layouts/LegalPrivacy/LegalPrivacy';
 import LegalTerms from './layouts/LegalTerms/LegalTerms';
 import LegalGuidelines from './layouts/LegalGuidelines/LegalGuidelines';
+import QuestionsLanding from './layouts/QuestionsLanding/QuestionsLanding';
 import Landing from './layouts/Landing/Landing';
 
 Sentry.init({
@@ -38,6 +39,11 @@ init(
       <ScrollToTop>
         <Switch>
           <Route exact path="/" component={withTracker(Landing)} />
+          <Route
+            exact
+            path="/questions"
+            component={withTracker(QuestionsLanding)}
+          />
           <Route exact path="/legal/privacy-policy" component={LegalPrivacy} />
           <Route exact path="/legal/terms-of-use" component={LegalTerms} />
           <Route
