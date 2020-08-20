@@ -7,7 +7,7 @@
     "@sentry/node": "^5.7.1",
     "@tippy.js/react": "^2.2.3",
     "axios": "^0.18.1",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "big-integer": "^1.6.47",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.6",
